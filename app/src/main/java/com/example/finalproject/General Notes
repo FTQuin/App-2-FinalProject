@@ -1,15 +1,23 @@
 Features:
 - "Location-based forum"
 - Forum user is seeing will automatically change based on device location.
-- Name of city/ area displayed on top.
+- Name of city/ area automatically displayed somewhere.
 - Simple "new post" or + button to create post.
-- Messaging?
--
+- Up/ down vote posts.
+- Comment on posts.
+- User messaging?
+- Banner ads? (or whatever kind for monetization marks)
+- Startup splash screen with some kind animation? spinning logo or something? (for animation/ graphic marks)
+- "Pro" (Paid version) Features:
+    - No ads
+    - customize location (pick on map? enter postal code?)
+    - witch between multiple saved locations? (tap location name to show list of saved ones?)
+    - customize location radius to a point?
 
-Requirements:
-    Permissions:
+Software Requirements:
+    Permissions/ Sensors:
     - Location
-    - orientation
+    - Orientation
     - Notifications
     - Internet
 
@@ -17,13 +25,13 @@ Requirements:
     - Firebase
     - Tables (columns):
         - feed (id, location, ...)
-        - post (feedId, id, title, date, content, upvotes, downvotes, rank?, numComments, ...)
+        - post (feedId, id, title, date, content, numVotes, rank, numComments, ...)
         - comments (postId, id, content, date, upvotes, downvotes, rank?)
             *Not sure if it makes more sense to have seperate table for comments linking to post or
             have comments as a column in post somehow?
         -
 
-General Ideas:
+General Ideas/ Thoughts/ Concerns:
 -
 
 TODO: Currently? Everything lol.
