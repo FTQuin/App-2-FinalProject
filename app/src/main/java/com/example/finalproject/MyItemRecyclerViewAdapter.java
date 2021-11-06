@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.finalproject.placeholder.PlaceholderContent.PlaceholderItem;
-import com.example.finalproject.databinding.FeedRecyclerBinding;
+import com.example.finalproject.databinding.FragmentPostBinding;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new ViewHolder(FeedRecyclerBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(FragmentPostBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
 
     }
 
@@ -48,7 +48,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         //public final TextView mContentView;
         public PlaceholderItem mItem;
 
-        public ViewHolder(FeedRecyclerBinding binding) {
+        public ViewHolder(FragmentPostBinding binding) {
             super(binding.getRoot());
             //mIdView = binding.itemNumber;
             //mContentView = binding.content;
