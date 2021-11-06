@@ -22,12 +22,26 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        //Example of using view binding so I dont have to look it up:
-        /*binding.<elementId>.setOnClickListener(new View.OnClickListener() {
+        binding.locationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.textView01.setText("Welcome!");
+                // TODO: display map fragment on button click.
+                binding.locationBtn.setText("Kelowna");
             }
-        });*/
+        });
+
+        binding.menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: display menu fragment on button click.
+            }
+        });
+
+        binding.chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: display chat fragment on button click.
+            }
+        });
     }
 }
