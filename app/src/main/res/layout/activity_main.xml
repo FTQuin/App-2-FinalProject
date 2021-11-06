@@ -9,6 +9,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/theme_colour"
@@ -29,20 +30,43 @@
 
         <ImageButton
             android:id="@+id/chatBtn"
-            android:layout_weight="0.33"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_chat"
-            android:background="@android:color/transparent" />
+            android:layout_weight="0.33"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_chat" />
 
         <ImageButton
             android:id="@+id/menuBtn"
-            android:layout_weight="0.33"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_menu"
-            android:background="@android:color/transparent" />
+            android:layout_weight="0.33"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_menu" />
 
 
     </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.example.finalproject.FeedFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<FrameLayout
+        android:id="@+id/overlayContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#B9000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
