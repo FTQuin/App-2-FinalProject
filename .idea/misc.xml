@@ -3,28 +3,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/drawable/ic_arrow_down.xml" value="0.5978070175438597" />
-        <entry key="app/src/main/res/drawable/ic_arrow_up.xml" value="0.5978070175438597" />
-        <entry key="app/src/main/res/drawable/ic_chat.xml" value="0.5978070175438597" />
-        <entry key="app/src/main/res/drawable/ic_comment.xml" value="0.5978070175438597" />
-        <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.5978070175438597" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.45" />
-        <entry key="app/src/main/res/layout/feed_recycler.xml" value="0.5842105263157895" />
-        <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.5842105263157895" />
-        <entry key="app/src/main/res/layout/fragment_feed_list.xml" value="0.6692307692307692" />
-        <entry key="app/src/main/res/layout/fragment_new_post.xml" value="0.35789473684210527" />
-        <entry key="app/src/main/res/layout/fragment_post.xml" value="0.5842105263157895" />
-        <entry key="app/src/main/res/layout/fragment_post_1.xml" value="0.5842105263157895" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.3574561403508772" />
-        <entry key="app/src/main/res/layout/fragment_view_post_list.xml" value="0.6694444444444444" />
-        <entry key="app/src/main/res/layout/post_item.xml" value="0.5074074074074074" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/activity_main.xml" value="0.125" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/feed_recycler.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/fragment_feed.xml" value="0.3390625" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/fragment_feed_list.xml" value="0.3390625" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/fragment_maps.xml" value="0.23958333333333334" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/fragment_post.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/fragment_view_post.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/fragment_view_post_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/post_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/view_post_recycler.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Embedded JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.23489583333333333" />
+      </ProjectState>
+    </option>
   </component>
 </project>
