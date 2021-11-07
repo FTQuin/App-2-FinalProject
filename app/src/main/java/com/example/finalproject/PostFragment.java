@@ -36,7 +36,7 @@ public class PostFragment extends Fragment {
     private String mParam2;
 
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mConditionRef = mRootRef.child("condition");
+    private DatabaseReference mPostRef = mRootRef.child("posts");
 
     public PostFragment() {
         // Required empty public constructor
@@ -83,11 +83,20 @@ public class PostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mConditionRef.addValueEventListener(new ValueEventListener() {
+        mPostRef.child("00001").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String numVotes = snapshot.getValue(String.class);
-                binding.numVotesText.setText(numVotes);
+                String title = snapshot.child("title").getValue(String.class);
+                binding.postTitleText.setText(title);
+
+                String content = snapshot.child("content").getValue(String.class);
+                binding.postContentText.setText(content);
+
+                Long numVotes = snapshot.child("numVotes").getValue(Long.class);
+                binding.numVotesText.setText(numVotes.toString());
+
+                Long numComments = snapshot.child("numComments").getValue(Long.class);
+                binding.numCommentsText.setText(numComments.toString());
             }
 
             @Override
@@ -100,6 +109,7 @@ public class PostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO: Update number of votes in database. Update text view with new number.
+
             }
         });
 

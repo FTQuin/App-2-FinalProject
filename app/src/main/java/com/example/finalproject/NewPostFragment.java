@@ -2,11 +2,18 @@ package com.example.finalproject;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.finalproject.databinding.FragmentNewPostBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +26,8 @@ public class NewPostFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private FragmentNewPostBinding binding;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,6 +68,27 @@ public class NewPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_post, container, false);
+        binding = FragmentNewPostBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        binding.publishPostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String titleIn = binding.titleInput.getText().toString();
+                String contentIn = binding.contentInput.getText().toString();
+
+                if(titleIn.matches("") || contentIn.matches("")){
+                    Toast.makeText(getContext(), "ERROR: Fields can not be blank.", Toast.LENGTH_SHORT).show();
+                }else{
+                    //TODO; update database with new post. need to automatically add location & date. return to feed fragment
+                    Toast.makeText(getContext(), "Publish Button clicked", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

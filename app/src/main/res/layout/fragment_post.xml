@@ -2,11 +2,11 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="14dp"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="14dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -32,6 +32,7 @@
             android:text="@string/post_content_placeholder"
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/postTitleText" />
@@ -39,7 +40,7 @@
         <RelativeLayout
             android:id="@+id/linearLayout"
             android:layout_width="40dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,36 +58,36 @@
                 android:id="@+id/numVotesText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/upVoteBtn"
                 android:text="5290"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:layout_below="@+id/upVoteBtn"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <ImageButton
                 android:id="@+id/downVoteBtn"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:layout_below="@+id/numVotesText"
                 android:layout_marginTop="-5dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_down"
-                android:layout_below="@+id/numVotesText" />
+                android:src="@drawable/ic_arrow_down" />
 
             <ImageButton
                 android:id="@+id/commentBtn"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@android:color/transparent"
+                android:layout_below="@+id/downVoteBtn"
                 android:layout_marginTop="9dp"
-                android:src="@drawable/ic_comment"
-                android:layout_below="@+id/downVoteBtn" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_comment" />
 
             <TextView
                 android:id="@+id/numCommentsText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/downVoteBtn"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="9dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="13dp"
                 android:background="@android:color/transparent"
                 android:text="213 "
                 android:textAlignment="center"
