@@ -12,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.finalproject.databinding.FragmentPostBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +34,9 @@ public class PostFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mConditionRef = mRootRef.child("condition");
 
     public PostFragment() {
         // Required empty public constructor
@@ -74,6 +82,19 @@ public class PostFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mConditionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String numVotes = snapshot.getValue(String.class);
+                binding.numVotesText.setText(numVotes);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         binding.upVoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override

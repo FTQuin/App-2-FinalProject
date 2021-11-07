@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:background="@color/theme_colour"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,17 +22,26 @@
             android:id="@+id/locationBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".73"
+            android:layout_weight=".78"
+            android:paddingTop="-4dp"
             android:background="@android:color/transparent"
             android:text="Kamloops"
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <ImageButton
+            android:id="@+id/newPostBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.30"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_add" />
+
+        <ImageButton
             android:id="@+id/chatBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.33"
+            android:layout_weight="0.30"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_chat" />
 
@@ -40,7 +49,7 @@
             android:id="@+id/menuBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.33"
+            android:layout_weight="0.30"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_menu" />
 
