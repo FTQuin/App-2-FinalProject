@@ -23,7 +23,7 @@ public interface PostDao {
     public void updatePosts(Post... posts);
 
     // Simple query that does not take parameters and returns nothing.
-    @Query("DELETE * FROM post_table WHERE postId LIKE :post ")
+    @Query("DELETE FROM post_table WHERE postId LIKE :post ")
     void deletePost(String post);
 
 

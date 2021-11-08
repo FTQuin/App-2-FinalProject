@@ -5,6 +5,7 @@ package com.example.finalproject.database;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -23,8 +24,10 @@ public class Post {
     @ColumnInfo(name = "content")
     private String content;
     @NonNull
-    @ColumnInfo(name = "location")
-    private LatLng location;
+    @ColumnInfo(name = "latitude")
+    private double latitude;
+    @ColumnInfo(name = "longitude")
+    private double longitude;
     @ColumnInfo(name = "numVotes")
     private long numVotes;
     @ColumnInfo(name = "numComments")
@@ -32,6 +35,9 @@ public class Post {
     @NonNull
     @ColumnInfo(name = "date")
     private String date;
+
+    @Ignore
+    private LatLng location;
 
     public Post(){};
 
@@ -43,6 +49,9 @@ public class Post {
         this.date = date;
         this.numVotes = numVotes;
         this.numComments = numComments;
+
+        this.latitude = location.latitude;
+        this.longitude = location.longitude;
     }
 
     public String getPostId(){
@@ -71,6 +80,20 @@ public class Post {
     }
     public void setLocation(LatLng location){
         this.location = location;
+        this.latitude = location.latitude;
+        this.longitude = location.longitude;
+    }
+    public double getLatitude() {
+        return latitude;
+    }
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+    public double getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public long getNumVotes(){

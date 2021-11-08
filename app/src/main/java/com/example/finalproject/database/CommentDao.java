@@ -22,7 +22,7 @@ public interface CommentDao {
     public void updateComments(Comment... comments);
 
     // Simple query that does not take parameters and returns nothing.
-    @Query("DELETE * FROM comment_table WHERE id LIKE :com_id")
+    @Query("DELETE FROM comment_table WHERE id LIKE :com_id")
     void deleteComment(String com_id);
 
     // Simple query without parameters that returns values.
