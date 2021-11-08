@@ -83,7 +83,7 @@ public class PostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mPostRef.addValueEventListener(new ValueEventListener() {
+        mPostRef.child("-Mnwmh0-wT_WZRUymHAM").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String title = snapshot.child("title").getValue(String.class);
@@ -93,10 +93,10 @@ public class PostFragment extends Fragment {
                 binding.postContentText.setText(content);
 
                 Long numVotes = snapshot.child("numVotes").getValue(Long.class);
-                binding.numVotesText.setText(numVotes.toString());
+                binding.numVotesText.setText(String.valueOf(numVotes));
 
                 Long numComments = snapshot.child("numComments").getValue(Long.class);
-                binding.numCommentsText.setText(numComments.toString());
+                binding.numCommentsText.setText(String.valueOf(numComments));
             }
 
             @Override
