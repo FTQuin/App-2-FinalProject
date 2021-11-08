@@ -14,6 +14,9 @@ public class Comment {
     @ColumnInfo(name = "id")
     private String id;
     @NonNull
+    @ColumnInfo(name = "postId")
+    private String postId;
+    @NonNull
     @ColumnInfo(name = "content")
     private String content;
     @NonNull
@@ -25,26 +28,37 @@ public class Comment {
 
     public Comment(){}
 
-    public Comment(@NonNull String id, @NonNull String content, @NonNull long numVotes, @NonNull String date){
+    public Comment(@NonNull String id, @NonNull String postId, @NonNull String content, @NonNull long numVotes, @NonNull String date){
         this.id = id;
         this.content = content;
         this.numVotes = numVotes;
         this.date = date;
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
+    @NonNull
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(@NonNull String postId) {
+        this.postId = postId;
+    }
+
+    @NonNull
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(@NonNull String content) {
         this.content = content;
     }
 
@@ -56,11 +70,12 @@ public class Comment {
         this.numVotes = numVotes;
     }
 
+    @NonNull
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(@NonNull String date) {
         this.date = date;
     }
 
