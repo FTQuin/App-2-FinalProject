@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.database;
 
 //Class to represent structure of post in database.
 

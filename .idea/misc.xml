@@ -3,13 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/activity_main.xml" value="0.2361111111111111" />
+        <entry key="..\:/Users/quinj/Documents/School/Fall 2021/App Dev 2 - COMP 3160/FinalProject/app/src/main/res/layout/fragment_comment.xml" value="0.2361111111111111" />
         <entry key="app/src/main/res/drawable/ic_add.xml" value="0.5978070175438597" />
         <entry key="app/src/main/res/drawable/ic_arrow_down.xml" value="0.5978070175438597" />
         <entry key="app/src/main/res/drawable/ic_arrow_up.xml" value="0.5978070175438597" />
         <entry key="app/src/main/res/drawable/ic_chat.xml" value="0.5978070175438597" />
         <entry key="app/src/main/res/drawable/ic_comment.xml" value="0.5978070175438597" />
         <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.5978070175438597" />
-        <entry key="app/src/main/res/drawable/layout_bg.xml" value="0.5978070175438597" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.45" />
         <entry key="app/src/main/res/layout/feed_recycler.xml" value="0.5842105263157895" />
         <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.5842105263157895" />
