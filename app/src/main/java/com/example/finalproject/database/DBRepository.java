@@ -26,10 +26,6 @@ public class DBRepository {
         return mAllPosts;
     }
 
-    public void insert (Post post) {
-        new insertPostAsyncTask(mPostDao).execute(post);
-    }
-
     public LiveData<List<Comment>> getAllComments() {
         return mAllComments;
     }
