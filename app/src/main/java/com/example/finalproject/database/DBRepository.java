@@ -22,9 +22,9 @@ public class DBRepository {
     private LiveData<List<Post>> mAllPosts;
     private LiveData<List<Comment>> mAllComments;
 
-    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
-    private DatabaseReference mPostRef = mRootRef.child("posts");
-    private DatabaseReference mComRef = mRootRef.child("comments");
+    private static DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
+    private static DatabaseReference mPostRef = mRootRef.child("posts");
+    private static DatabaseReference mComRef = mRootRef.child("comments");
 
     DBRepository(Application application) {
         DBRoomDatabase db = DBRoomDatabase.getDatabase(application);
@@ -43,15 +43,7 @@ public class DBRepository {
 
     public void insertPost(Post post) {
         new insertPostAsyncTask(mPostDao).execute(post);
-        mPostRef.push().setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Log.d("===TESTING: NEW_POST===", "Publish successful.");
 
-                }
-            }
-        });
     }
 
     public void deletePost(String postId) {
@@ -68,8 +60,15 @@ public class DBRepository {
 
         @Override
         protected Void doInBackground(final Post... params) {
+            // add to firebase first
+            mPostRef.push().setValue(params[0]).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    // then add to local database
+                    mAsyncTaskDao.insert(params[0]);
+                    Log.d("===TESTING: NEW_POST===", "Publish successful.");
+                }
+            });
 
-            mAsyncTaskDao.insert(params[0]);
             return null;
         }
     }
