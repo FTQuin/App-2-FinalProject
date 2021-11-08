@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.finalproject.database.DBViewModel;
 import com.example.finalproject.database.Post;
 import com.example.finalproject.databinding.FragmentNewPostBinding;
 import com.google.android.gms.maps.model.LatLng;
@@ -48,6 +50,8 @@ public class NewPostFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    DBViewModel viewModel;
 
     public NewPostFragment() {
         // Required empty public constructor
@@ -85,6 +89,9 @@ public class NewPostFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentNewPostBinding.inflate(inflater, container, false);
+
+        viewModel = new ViewModelProvider(this).get(DBViewModel.class);
+
         return binding.getRoot();
     }
 
@@ -115,7 +122,7 @@ public class NewPostFragment extends Fragment {
 
                     Post post = new Post(postId, editTitle, editContent, location, date, 1, 0);
 
-                    insertPost(post);
+                    viewModel.insertPost(post);
                     //TODO: close new post fragment and return to feed fragment.
                 }
             }
