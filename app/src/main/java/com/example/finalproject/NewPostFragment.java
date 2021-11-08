@@ -115,16 +115,8 @@ public class NewPostFragment extends Fragment {
 
                     Post post = new Post(postId, editTitle, editContent, location, date, 1, 0);
 
-                    mPostRef.push().setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(getContext(), "Post published successfully!", Toast.LENGTH_SHORT).show();
-                                Log.d("===TESTING: NEW_POST===", "Publish successful.");
-                                //TODO: close new post fragment and return to feed fragment.
-                            }
-                        }
-                    });
+                    insertPost(post);
+                    //TODO: close new post fragment and return to feed fragment.
                 }
             }
         });
