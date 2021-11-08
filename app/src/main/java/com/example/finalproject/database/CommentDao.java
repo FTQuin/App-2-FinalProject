@@ -26,10 +26,10 @@ public interface CommentDao {
     void deleteAll();
 
     // Simple query without parameters that returns values.
-    @Query("SELECT * from comment_table ORDER BY comment ASC")
+    @Query("SELECT * from comment_table ORDER BY id ASC")
     LiveData<List<Comment>> getAllComments();
 
     // Query with parameter that returns a specific comment or comments.
-    @Query("SELECT * FROM comment_table WHERE comment LIKE :comment ")
-    public List<Comment> findComment(String comment);
+    @Query("SELECT * FROM comment_table WHERE id LIKE :search_id ")
+    public List<Comment> findComment(String search_id);
 }
