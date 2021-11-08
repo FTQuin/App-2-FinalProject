@@ -4,7 +4,6 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
@@ -22,8 +21,8 @@ public class DBViewModel extends AndroidViewModel {
         mAllComments = mRepository.getAllComments();
     }
 
-    public LiveData<List<Post>> getAllPosts() { return mAllPosts; }
-    public LiveData<List<Comment>> getAllComments() { return mAllComments; }
+    LiveData<List<Post>> getAllPosts() { return mAllPosts; }
+    LiveData<List<Comment>> getAllComments() { return mAllComments; }
 
     public void insertPost(Post post) { mRepository.insertPost(post); }
     public void insertComment(Comment comment) { mRepository.insertComment(comment); }

@@ -79,10 +79,7 @@ public class NewPostFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //viewModel = new ViewModelProvider(this).get(DBViewModel.class);
-        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
-        viewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
-            //Update post UI
-        });
+        viewModel = new ViewModelProvider(this).get(DBViewModel.class);
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
