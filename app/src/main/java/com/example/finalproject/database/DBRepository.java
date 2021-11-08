@@ -22,20 +22,19 @@ public class DBRepository {
         mAllComments = mCommentDao.getAllComments();
     }
 
+    /*===================================================================
+    * Post Functionality
+    ===================================================================*/
     LiveData<List<Post>> getAllPosts() {
         return mAllPosts;
-    }
-
-    public LiveData<List<Comment>> getAllComments() {
-        return mAllComments;
     }
 
     public void insertPost(Post post) {
         new insertPostAsyncTask(mPostDao).execute(post);
     }
 
-    public void insertComment(Comment comment) {
-        new insertCommentAsyncTask(mCommentDao).execute(comment);
+    public void deletePost(String postId) {
+        deletePost(postId);
     }
 
     private static class insertPostAsyncTask extends AsyncTask<Post, Void, Void> {
@@ -51,6 +50,21 @@ public class DBRepository {
             mAsyncTaskDao.insert(params[0]);
             return null;
         }
+    }
+
+    /*===================================================================
+    * Comment Functionality
+    ===================================================================*/
+    public LiveData<List<Comment>> getAllComments() {
+        return mAllComments;
+    }
+
+    public void insertComment(Comment comment) {
+        new insertCommentAsyncTask(mCommentDao).execute(comment);
+    }
+
+    public void deleteComment(String commentId) {
+        deleteComment(commentId);
     }
 
     private static class insertCommentAsyncTask extends AsyncTask<Comment, Void, Void> {
