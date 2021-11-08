@@ -15,18 +15,27 @@ public class Post {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "postId")
-
     private String postId;
+    @NonNull
+    @ColumnInfo(name = "title")
     private String title;
+    @NonNull
+    @ColumnInfo(name = "content")
     private String content;
+    @NonNull
+    @ColumnInfo(name = "location")
     private LatLng location;
+    @ColumnInfo(name = "numVotes")
     private long numVotes;
+    @ColumnInfo(name = "numComments")
     private long numComments;
+    @NonNull
+    @ColumnInfo(name = "date")
     private String date;
 
     public Post(){};
 
-    public Post(@NonNull String postId, String title, String content, LatLng location, String date, long numVotes, long numComments){
+    public Post(@NonNull String postId, @NonNull String title, @NonNull String content, @NonNull LatLng location, @NonNull String date, long numVotes, long numComments){
         this.postId = postId;
         this.title = title;
         this.content = content;
