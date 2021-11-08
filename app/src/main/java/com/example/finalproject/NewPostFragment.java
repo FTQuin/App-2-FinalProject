@@ -111,6 +111,8 @@ public class NewPostFragment extends Fragment {
 
                     String postId = mRootRef.push().getKey();
 
+                    Log.d("New PostId:", postId);
+
                     Post post = new Post(postId, editTitle, editContent, location, date, 1, 0);
 
                     mPostRef.push().setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
