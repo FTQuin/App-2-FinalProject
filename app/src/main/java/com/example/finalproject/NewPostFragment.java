@@ -43,6 +43,8 @@ public class NewPostFragment extends Fragment {
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
     private DatabaseReference mPostRef = mRootRef.child("posts");
 
+    private String editTitle, editContent, date, location;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -93,9 +95,8 @@ public class NewPostFragment extends Fragment {
         binding.publishPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String editTitle = binding.titleInput.getText().toString();
-                String editContent = binding.contentInput.getText().toString();
-                String date, location;
+                editTitle = binding.titleInput.getText().toString();
+                editContent = binding.contentInput.getText().toString();
 
                 //Ensures title and content are not blank before attempting to write to DB.
                 if(TextUtils.isEmpty(editTitle) || TextUtils.isEmpty(editContent) ){
