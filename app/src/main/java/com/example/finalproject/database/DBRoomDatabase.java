@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 public abstract class DBRoomDatabase extends RoomDatabase {
 
     public abstract PostDao postDao();
+    public abstract CommentDao commentDao();
 
     private static DBRoomDatabase INSTANCE;
 
