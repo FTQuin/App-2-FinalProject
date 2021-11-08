@@ -50,8 +50,7 @@ public class NewPostFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    DBViewModel viewModel;
+    private DBViewModel viewModel;
 
     public NewPostFragment() {
         // Required empty public constructor
@@ -78,6 +77,13 @@ public class NewPostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //viewModel = new ViewModelProvider(this).get(DBViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
+        viewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
+            //Update post UI
+        });
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -90,14 +96,14 @@ public class NewPostFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentNewPostBinding.inflate(inflater, container, false);
 
-        viewModel = new ViewModelProvider(this).get(DBViewModel.class);
-
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
         binding.publishPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
