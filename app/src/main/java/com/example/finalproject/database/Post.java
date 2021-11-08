@@ -2,12 +2,19 @@ package com.example.finalproject.database;
 
 //Class to represent structure of post in database.
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
 
 @Entity(tableName = "post_table")
 public class Post {
+
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "postId")
 
     private String postId;
     private String title;
@@ -19,7 +26,7 @@ public class Post {
 
     public Post(){};
 
-    public Post(String postId, String title, String content, LatLng location, String date, long numVotes, long numComments){
+    public Post(@NonNull String postId, String title, String content, LatLng location, String date, long numVotes, long numComments){
         this.postId = postId;
         this.title = title;
         this.content = content;
