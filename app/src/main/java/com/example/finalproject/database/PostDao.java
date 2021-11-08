@@ -27,10 +27,10 @@ public interface PostDao {
     void deleteAll();
 
     // Simple query without parameters that returns values.
-    @Query("SELECT * from post_table ORDER BY post ASC")
+    @Query("SELECT * from post_table ORDER BY postId ASC")
     LiveData<List<Post>> getAllPosts();
 
     // Query with parameter that returns a specific post or posts.
-    @Query("SELECT * FROM post_table WHERE post LIKE :post ")
+    @Query("SELECT * FROM post_table WHERE postId LIKE :post ")
     public List<Post> findPost(String post);
 }
