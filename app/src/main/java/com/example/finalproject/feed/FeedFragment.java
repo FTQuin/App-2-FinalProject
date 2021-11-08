@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.feed;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.finalproject.R;
 import com.example.finalproject.placeholder.PlaceholderContent;
 
 /**
