@@ -2,18 +2,25 @@ package com.example.finalproject.database;
 
 //Class to represent structure of post in database.
 
+import androidx.room.Entity;
+
+import com.google.android.gms.maps.model.LatLng;
+
+@Entity(tableName = "post_table")
 public class Post {
 
+    private String postId;
     private String title;
     private String content;
-    private String location;
+    private LatLng location;
     private long numVotes;
     private long numComments;
     private String date;
 
     public Post(){};
 
-    public Post(String title, String content, String location, String date, long numVotes, long numComments){
+    public Post(String postId, String title, String content, LatLng location, String date, long numVotes, long numComments){
+        this.postId = postId;
         this.title = title;
         this.content = content;
         this.location = location;
@@ -36,10 +43,10 @@ public class Post {
         this.content = content;
     }
 
-    public String getLocation(){
+    public LatLng getLocation(){
         return location;
     }
-    public void setLocation(String location){
+    public void setLocation(LatLng location){
         this.location = location;
     }
 

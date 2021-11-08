@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.finalproject.database.Post;
 import com.example.finalproject.databinding.FragmentNewPostBinding;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +42,8 @@ public class NewPostFragment extends Fragment {
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
     private DatabaseReference mPostRef = mRootRef.child("posts");
 
-    private String editTitle, editContent, date, location;
+    private String editTitle, editContent, date;
+    private LatLng location;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -105,9 +107,11 @@ public class NewPostFragment extends Fragment {
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
                     date = df.format(d);
 
-                    location = "Kamloops"; //TODO: Get proper location.
+                    location = new LatLng( 50.665493, -120.332842); //TODO: Get proper location.
 
-                    Post post = new Post(editTitle, editContent, location, date, 1, 0);
+                    String postId = mRootRef.push().getKey();
+
+                    Post post = new Post(postId, editTitle, editContent, location, date, 1, 0);
 
                     mPostRef.push().setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

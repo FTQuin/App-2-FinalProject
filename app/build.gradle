@@ -35,7 +35,6 @@ android {
 dependencies {
 
     def room_version = "2.3.0"
-
     implementation "androidx.room:room-runtime:$room_version"
 
     implementation 'com.google.android.gms:play-services-location:18.0.0'
