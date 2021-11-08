@@ -5,19 +5,15 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.finalproject.database.Post;
-import com.example.finalproject.database.PostDao;
-import com.example.finalproject.database.PostRoomDatabase;
-
 import java.util.List;
 
-public class PostRepository {
+public class DBRepository {
 
     private PostDao mPostDao;
     private LiveData<List<Post>> mAllPosts;
 
-    PostRepository(Application application) {
-        PostRoomDatabase db = PostRoomDatabase.getDatabase(application);
+    DBRepository(Application application) {
+        DBRoomDatabase db = DBRoomDatabase.getDatabase(application);
         mPostDao = db.postDao();
         mAllPosts = mPostDao.getAllPosts();
     }

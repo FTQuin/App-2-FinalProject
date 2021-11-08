@@ -5,20 +5,17 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.finalproject.database.Post;
-import com.example.finalproject.database.PostRepository;
-
 import java.util.List;
 
-public class PostViewModel extends AndroidViewModel {
+public class DBViewModel extends AndroidViewModel {
 
-    private PostRepository mRepository;
+    private DBRepository mRepository;
 
     private LiveData<List<Post>> mAllPosts;
 
-    public PostViewModel(Application application) {
+    public DBViewModel(Application application) {
         super(application);
-        mRepository = new PostRepository(application);
+        mRepository = new DBRepository(application);
         mAllPosts = mRepository.getAllPosts();
     }
 
