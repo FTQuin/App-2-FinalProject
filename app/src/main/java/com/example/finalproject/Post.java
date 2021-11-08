@@ -1,5 +1,7 @@
 package com.example.finalproject;
 
+//Class to represent structure of post in database.
+
 public class Post {
 
     private String title;
@@ -60,5 +62,14 @@ public class Post {
     }
     public void setDate(String date){
         this.date = date;
+    }
+
+    public String toString(){
+        return "Title: " + getTitle() +
+                "\nContent: " + getContent() +
+                "\nLocation: " + getLocation() +
+                "\nDate: " + getDate() +
+                "\nNumVotes: " + getNumVotes() +
+                "\nNumComments: " + getNumComments();
     }
 }

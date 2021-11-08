@@ -36,8 +36,8 @@
             android:id="@+id/publishPostBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Publish"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"
+            android:text="Publish" />
 
 
     </LinearLayout>

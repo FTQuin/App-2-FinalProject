@@ -83,7 +83,7 @@ public class PostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mPostRef.child("00001").addValueEventListener(new ValueEventListener() {
+        mPostRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String title = snapshot.child("title").getValue(String.class);

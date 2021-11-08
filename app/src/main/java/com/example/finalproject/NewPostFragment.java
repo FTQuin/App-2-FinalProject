@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.finalproject.databinding.FragmentNewPostBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +40,8 @@ public class NewPostFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private FragmentNewPostBinding binding;
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
+    private DatabaseReference mPostRef = mRootRef.child("posts");
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -79,14 +93,33 @@ public class NewPostFragment extends Fragment {
         binding.publishPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String titleIn = binding.titleInput.getText().toString();
-                String contentIn = binding.contentInput.getText().toString();
+                String editTitle = binding.titleInput.getText().toString();
+                String editContent = binding.contentInput.getText().toString();
+                String date, location;
 
-                if(titleIn.matches("") || contentIn.matches("")){
-                    Toast.makeText(getContext(), "ERROR: Fields can not be blank.", Toast.LENGTH_SHORT).show();
+                //Ensures title and content are not blank before attempting to write to DB.
+                if(TextUtils.isEmpty(editTitle) || TextUtils.isEmpty(editContent) ){
+                    Toast.makeText(getContext(), "ERROR: All fields must not be blank.", Toast.LENGTH_SHORT).show();
+                    Log.d("===TESTING: NEW_POST===", "Publish unsuccessful: Blank field.");
                 }else{
-                    //TODO; update database with new post. need to automatically add location & date. return to feed fragment
-                    Toast.makeText(getContext(), "Publish Button clicked", Toast.LENGTH_SHORT).show();
+                    Date d = Calendar.getInstance().getTime();
+                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+                    date = df.format(d);
+
+                    location = "Kamloops"; //TODO: Get proper location.
+
+                    Post post = new Post(editTitle, editContent, location, date, 1, 0);
+
+                    mPostRef.push().setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(getContext(), "Post published successfully!", Toast.LENGTH_SHORT).show();
+                                Log.d("===TESTING: NEW_POST===", "Publish successful.");
+                                //TODO: close new post fragment and return to feed fragment.
+                            }
+                        }
+                    });
                 }
             }
         });
