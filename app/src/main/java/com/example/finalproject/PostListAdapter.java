@@ -9,20 +9,26 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.finalproject.database.Post;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
 
     private Context context;
     private List<Post> posts;
-    private final LayoutInflater mInflater;
+    //private final LayoutInflater mInflater;
     private List<Post> mPosts; // Cached copy of words
     //private FragmentPostBinding binding;
 
-    public PostListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    //public PostListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+
+    public PostListAdapter(List<Post> posts){
+        this.posts = posts;
+    }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater mInflater = LayoutInflater.from(context);
         View itemView = mInflater.inflate(R.layout.fragment_post, parent, false);
         return new PostViewHolder(itemView);
     }
@@ -40,8 +46,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
         } else {
             // Covers the case of data not being ready yet.
-            holder.postTitle.setText("Error. See Below.");
-            holder.postContent.setText("Error communicating with database to retrieve posts. Please try again later.");
+            holder.postTitle.setText(R.string.error_loading_posts);
+            holder.postContent.setText(R.string.error_loading_posts_desc);
         }
     }
 

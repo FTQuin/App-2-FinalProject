@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.telecom.Call;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.finalproject.PostListAdapter;
 import com.example.finalproject.R;
@@ -26,6 +28,8 @@ import com.example.finalproject.database.Post;
 import com.example.finalproject.placeholder.PlaceholderContent;
 
 import com.example.finalproject.databinding.FeedRecyclerBinding;
+import com.google.android.gms.common.api.Response;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,56 +67,74 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.feed_recycler, container, false);
-
         binding = FeedRecyclerBinding.inflate(inflater, container, false);
-        //return binding.getRoot();
+        return binding.getRoot();
+    }
 
-        // Set the adapter
-        repository = new DBRepository(getActivity().getApplication());
-        getPosts = new ArrayList<>();
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         recyclerView = binding.recyclerview;
+        getPosts = new ArrayList<>();
+
+        for (int i = 0; i <= 5; i++) {
+            String t = "title" + String.valueOf(i);
+            String c = "Content"  + String.valueOf(i);
+            LatLng l = new LatLng(100, 100);
+            Post p = new Post (String.valueOf(i), t, c, l, "11/04/2021", 0, 0);
+            getPosts.add(p);
+        }
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        postListAdapter = new PostListAdapter(getPosts);
+        //postListAdapter = new PostListAdapter(binding.getRoot().getContext());
         recyclerView.setAdapter(postListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        postListAdapter = new PostListAdapter(view.getContext());
+
 
         // Get a new or existing ViewModel from the ViewModelProvider.
         viewModel = new ViewModelProvider(this).get(DBViewModel.class);
 
-        makeRequest();
+        //makeRequest();
 
-        viewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
-            @Override
-            public void onChanged(List<Post> posts) {
-                recyclerView.setAdapter(postListAdapter);
-                //Updating cached copy of posted in the adapter.
-                postListAdapter.setPosts(posts);
-            }
+        viewModel.getAllPosts().observe(getViewLifecycleOwner(), posts -> {
+            recyclerView.setAdapter(postListAdapter);
+            //Updating cached copy of posted in the adapter.
+            postListAdapter.setPosts(posts);
         });
 
-
-        /*if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
-        }*/
-        return view;
     }
 
-    /*@Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        makeRequest();
-    }*/
-
     private void makeRequest(){
-        //Call<List<Post>> call = repository.getAllPosts();
+
+
+
+        /*Call<List<Post>> call = repository.getAllPosts();
+        call.enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
+                if (!response.isSuccessful()) {
+                    Log.d("MVVMX", "--- Not successful");
+                } else {
+                    Log.d("MVVMX", "------" + response.body());
+                    List<Post> mAllPosts = response.body();
+                    if (mAllPosts != null){
+                        for (Post post : mAllPosts) {
+                            //Log.d("MVVMX", "---" + post.getId());
+                            //Log.d("MVVMX", "---" + post.getEmail());
+                            repository.
+
+                            repository.insert(new Post(post.getId(), post.getEmail()));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.d("MVVMX", "--- FAILED " + t.getMessage());
+            }
+        }); */
 
 
     }

@@ -8,10 +8,12 @@
         this sound. ding Remember to run in a straight line, and run as long as possible. The second
         time you fail to complete a lap before the sound, your test is over. The test will begin on
         the word start. On your mark, get ready, start.</string>
-    <string name="hello_blank_fragment">Hello World!</string>
+    <string name="error_loading_posts">Error. See Below.</string>
+    <string name="error_loading_posts_desc">An internal error occurred. Please try again later.</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
     <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>
     <string name="permission_required_toast">Location permission is required for this demo.</string>
+    <string name="hello_blank_fragment">Hello World!</string>
 </resources>
