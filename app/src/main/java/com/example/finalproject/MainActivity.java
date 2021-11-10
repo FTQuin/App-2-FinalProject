@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 
 import com.example.finalproject.databinding.ActivityMainBinding;
+import com.example.finalproject.feed.FeedFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //To remove top app title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
 
@@ -37,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         //Setting feed fragment to open when app launches.
-        //fragmentTransaction.add(binding.fragmentContainerView.getId(), new FeedFragment());
-        fragmentTransaction.add(binding.fragmentContainerView.getId(), new NewPostFragment());
+        fragmentTransaction.add(binding.fragmentContainerView.getId(), new FeedFragment());
+        //fragmentTransaction.add(binding.fragmentContainerView.getId(), new PostFragment());
         fragmentTransaction.commit();
 
         binding.locationBtn.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         binding.newPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: dispay new post fragment.
+                // TODO: display new post fragment.
             }
         });
 

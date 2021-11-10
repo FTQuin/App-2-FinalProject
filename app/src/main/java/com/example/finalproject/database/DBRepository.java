@@ -26,7 +26,7 @@ public class DBRepository {
     private static DatabaseReference mPostRef = mRootRef.child("posts");
     private static DatabaseReference mComRef = mRootRef.child("comments");
 
-    DBRepository(Application application) {
+    public DBRepository(Application application) {
         DBRoomDatabase db = DBRoomDatabase.getDatabase(application);
         mPostDao = db.postDao();
         mCommentDao = db.commentDao();
@@ -37,7 +37,7 @@ public class DBRepository {
     /*===================================================================
     * Post Functionality
     ===================================================================*/
-    LiveData<List<Post>> getAllPosts() {
+    public LiveData<List<Post>> getAllPosts() {
         return mAllPosts;
     }
 

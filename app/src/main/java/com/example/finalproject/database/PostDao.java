@@ -26,7 +26,6 @@ public interface PostDao {
     @Query("DELETE FROM post_table WHERE postId LIKE :post ")
     void deletePost(String post);
 
-
     // Simple query without parameters that returns values.
     @Query("SELECT * from post_table ORDER BY postId ASC")
     LiveData<List<Post>> getAllPosts();
