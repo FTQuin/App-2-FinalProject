@@ -113,5 +113,26 @@ public class PostFragment extends Fragment {
             }
         });
 
+        binding.downVoteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Update number of votes in database. Update text view.
+            }
+        });
+
+        binding.postOptionsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: show options. (delete, edit, etc)
+            }
+        });
+
+        binding.commentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: show view post fragment.
+            }
+        });
+
     }
 }

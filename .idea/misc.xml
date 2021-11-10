@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/drawable/ic_chat.xml" value="0.5978070175438597" />
         <entry key="app/src/main/res/drawable/ic_comment.xml" value="0.5978070175438597" />
         <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.5978070175438597" />
+        <entry key="app/src/main/res/drawable/ic_options.xml" value="0.5978070175438597" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.45" />
         <entry key="app/src/main/res/layout/feed_recycler.xml" value="0.5842105263157895" />
         <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.5842105263157895" />
