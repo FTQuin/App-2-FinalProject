@@ -38,8 +38,6 @@ public class ViewPostFragment extends Fragment {
     public ViewPostFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static ViewPostFragment newInstance(int postID) {
         ViewPostFragment fragment = new ViewPostFragment();
         Bundle args = new Bundle();

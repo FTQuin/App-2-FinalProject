@@ -91,49 +91,6 @@ public class FeedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.recyclerview);
-        getPosts = new ArrayList<>();
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        postListAdapter = new PostListAdapter(view.getContext());
-
-        // Get a new or existing ViewModel from the ViewModelProvider.
-        viewModel = new ViewModelProvider(this).get(DBViewModel.class);
-
-        //makeRequest();
-
-        viewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
-            @Override
-            public void onChanged(List<Post> posts) {
-                recyclerView.setAdapter(postListAdapter);
-                //Updating cached copy of posted in the adapter.
-                postListAdapter.setPosts(posts);
-            }
-        });
-
-
-
-        *//*
-        for (int i = 0; i <= 5; i++) {
-            String t = "title" + String.valueOf(i);
-            String c = "Content"  + String.valueOf(i);
-            LatLng l = new LatLng(100, 100);
-            Post p = new Post (String.valueOf(i), t, c, l, "11/04/2021", 0, 0);
-            getPosts.add(p);
-        }
-
-        for (int i = 0; i <= 5; i++) {
-            String t = "title" + String.valueOf(i);
-            String c = "Content"  + String.valueOf(i);
-            LatLng l = new LatLng(100, 100);
-            Post p = new Post (String.valueOf(i), t, c, l, "11/04/2021", 0, 0);
-            getPosts.add(p);
-        }
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        postListAdapter = new PostListAdapter(getPosts, view.getContext());
-        recyclerView.setAdapter(postListAdapter);
-        *//*
-
-    }*/
+     */
 
 }

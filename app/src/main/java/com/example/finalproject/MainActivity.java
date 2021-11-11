@@ -2,6 +2,7 @@ package com.example.finalproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -22,10 +23,17 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private FeedFragment feedFragment;
+    private NewPostFragment newPostFragment;
+
+    FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        feedFragment = new FeedFragment();
+        newPostFragment = new NewPostFragment();
 
         //To remove top app title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -36,13 +44,9 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         //Setting feed fragment to open when app launches.
-        fragmentTransaction.add(binding.fragmentContainerView.getId(), new FeedFragment());
-        //fragmentTransaction.add(binding.fragmentContainerView.getId(), new NewPostFragment());
-        fragmentTransaction.commit();
+        fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
+                feedFragment).commit();
 
         binding.locationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
         binding.newPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: display new post fragment.
+                // TODO: animate appearance of fragment. disable touch actions on feed feed fragment.
+                fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
+                        newPostFragment).commit();
             }
         });
 
