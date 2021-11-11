@@ -98,7 +98,17 @@ public class DBRepository {
 
         @Override
         protected Void doInBackground(final Comment... params) {
-            mAsyncTaskDao.insert(params[0]);
+            // add to firebase first
+            Log.d("=TESTING: NEW_COMMENT=", "Trying to publish Comment.");
+            mComRef.push().setValue(params[0]).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    // then add to local database
+//                    mAsyncTaskDao.insert(params[0]);
+                    Log.d("=TESTING: NEW_COMMENT=", "Publish successful.");
+                }
+                else Log.d("=TESTING: NEW_COMMENT=", "Publish not successful.");
+            });
+            Log.d("=TESTING: NEW_COMMENT=", "Publish done.");
             return null;
         }
     }
