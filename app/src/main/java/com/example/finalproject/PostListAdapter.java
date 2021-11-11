@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.finalproject.database.Post;
-import com.example.finalproject.databinding.FragmentCommentBinding;
 import com.example.finalproject.databinding.FragmentPostBinding;
 
 import java.util.ArrayList;
@@ -16,28 +15,21 @@ import java.util.List;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
 
-    private Context context;
-    private final List<Post> posts;
-    private LayoutInflater mInflater;
-    private List<Post> mPosts; // Cached copy of words
-    //private FragmentPostBinding binding;
-
-    //public PostListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    private final List<Post> postList;
 
     public PostListAdapter(List<Post> posts){
-        this.posts = posts;
+        postList = posts;
     }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        FragmentPostBinding itemView = FragmentPostBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new PostViewHolder(itemView);
+        return new PostListAdapter.PostViewHolder(FragmentPostBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
-        if (mPosts != null) {
-            Post current = mPosts.get(position);
+        if (postList != null) {
+            Post current = postList.get(position);
 
             holder.postTitle.setText(current.getTitle());
             holder.postContent.setText(current.getContent());
@@ -56,8 +48,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
-        if (mPosts != null)
-            return mPosts.size();
+        if (postList != null)
+            return postList.size();
         else return 0;
     }
 
@@ -67,6 +59,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         private final TextView postDate;
         private final TextView postNumVotes;
         private final TextView postNumComments;
+        public Post mPosts;
 
         public PostViewHolder(FragmentPostBinding binding) {
             super(binding.getRoot());
@@ -77,5 +70,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postNumVotes = binding.numVotesText;
             postNumComments = binding.numCommentsText;
         }
+
     }
 }
