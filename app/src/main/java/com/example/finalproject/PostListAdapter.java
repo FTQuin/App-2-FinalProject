@@ -16,14 +16,10 @@ import java.util.List;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
 
-    private Context context;
-    private LayoutInflater mInflater;
-    private List<Post> mPosts; // Cached copy of words
-
-    //public PostListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    private final List<Post> postList;
 
     public PostListAdapter(List<Post> posts){
-        this.mPosts = posts;
+        postList = posts;
     }
 
     @Override
@@ -33,8 +29,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
-        if (mPosts != null) {
-            Post current = mPosts.get(position);
+        if (postList != null) {
+            Post current = postList.get(position);
 
             holder.postTitle.setText(current.getTitle());
             holder.postContent.setText(current.getContent());
@@ -53,8 +49,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
-        if (mPosts != null)
-            return mPosts.size();
+        if (postList != null)
+            return postList.size();
         else return 0;
     }
 
