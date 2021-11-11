@@ -57,6 +57,7 @@ public class ViewPostFragment extends Fragment {
         }
     }
 
+    //TODO: move to onViewCreated
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,12 +75,8 @@ public class ViewPostFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             //TODO: change this to get just comments for specific post
-            viewModel.getAllComments().observe(getViewLifecycleOwner(), new Observer<List<Comment>>() {
-                @Override
-                public void onChanged(List<Comment> comments) {
-                    recyclerView.setAdapter(new CommentAdapter(comments));
-                }
-            });
+            viewModel.getAllComments().observe(getViewLifecycleOwner(),
+                    comments -> recyclerView.setAdapter(new CommentAdapter(comments)));
         }
         return view;
     }
