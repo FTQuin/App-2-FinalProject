@@ -78,9 +78,6 @@ public class NewPostFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //viewModel = new ViewModelProvider(this).get(DBViewModel.class);
-        viewModel = new ViewModelProvider(this).get(DBViewModel.class);
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
