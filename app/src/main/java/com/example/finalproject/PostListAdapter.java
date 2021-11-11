@@ -16,19 +16,19 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
     private Context context;
     private List<Post> posts;
-    //private final LayoutInflater mInflater;
+    private LayoutInflater mInflater;
     private List<Post> mPosts; // Cached copy of words
     //private FragmentPostBinding binding;
 
     //public PostListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
 
-    public PostListAdapter(List<Post> posts){
-        this.posts = posts;
+    public PostListAdapter(List<Post> posts, Context context){
+        this.mPosts = posts;
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater mInflater = LayoutInflater.from(context);
         View itemView = mInflater.inflate(R.layout.fragment_post, parent, false);
         return new PostViewHolder(itemView);
     }

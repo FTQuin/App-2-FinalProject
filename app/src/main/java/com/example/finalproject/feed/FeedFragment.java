@@ -67,15 +67,33 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FeedRecyclerBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        //binding = FeedRecyclerBinding.inflate(inflater, container, false);
+        //return binding.getRoot();
+
+        View view = inflater.inflate(R.layout.feed_recycler, container, false);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = binding.recyclerview;
+        recyclerView = view.findViewById(R.id.recyclerview);
+        getPosts = new ArrayList<>();
+
+        for (int i = 0; i <= 5; i++) {
+            String t = "title" + String.valueOf(i);
+            String c = "Content"  + String.valueOf(i);
+            LatLng l = new LatLng(100, 100);
+            Post p = new Post (String.valueOf(i), t, c, l, "11/04/2021", 0, 0);
+            getPosts.add(p);
+        }
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        postListAdapter = new PostListAdapter(getPosts, view.getContext());
+        recyclerView.setAdapter(postListAdapter);
+
+        /*recyclerView = binding.recyclerview;
         getPosts = new ArrayList<>();
 
         for (int i = 0; i <= 5; i++) {
@@ -101,13 +119,11 @@ public class FeedFragment extends Fragment {
             recyclerView.setAdapter(postListAdapter);
             //Updating cached copy of posted in the adapter.
             postListAdapter.setPosts(posts);
-        });
+        });*/
 
     }
 
     private void makeRequest(){
-
-
 
         /*Call<List<Post>> call = repository.getAllPosts();
         call.enqueue(new Callback<List<Post>>() {
