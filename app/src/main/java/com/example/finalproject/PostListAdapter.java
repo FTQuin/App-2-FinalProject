@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.finalproject.database.Post;
+import com.example.finalproject.databinding.FragmentCommentBinding;
+import com.example.finalproject.databinding.FragmentPostBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +25,12 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     //public PostListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
 
     public PostListAdapter(List<Post> posts){
-        posts = posts;
+        this.posts = posts;
     }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.fragment_post, parent, false);
+        FragmentPostBinding itemView = FragmentPostBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new PostViewHolder(itemView);
     }
 
@@ -66,14 +68,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         private final TextView postNumVotes;
         private final TextView postNumComments;
 
-        public PostViewHolder(View itemView) {
-            super(itemView);
+        public PostViewHolder(FragmentPostBinding binding) {
+            super(binding.getRoot());
 
-            postTitle = itemView.findViewById(R.id.postTitleText);
-            postContent = itemView.findViewById(R.id.postContentText);
-            postDate = itemView.findViewById(R.id.postDateText);
-            postNumVotes = itemView.findViewById(R.id.numVotesText);
-            postNumComments = itemView.findViewById(R.id.numCommentsText);
+            postTitle = binding.postTitleText;
+            postContent = binding.postContentText;
+            postDate = binding.postDateText;
+            postNumVotes = binding.numVotesText;
+            postNumComments = binding.numCommentsText;
         }
     }
 }
