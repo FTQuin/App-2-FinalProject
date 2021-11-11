@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,17 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.finalproject.R;
+import com.example.finalproject.database.Comment;
+import com.example.finalproject.database.DBViewModel;
 import com.example.finalproject.placeholder.PlaceholderContent;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  */
 public class ViewPostFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+    private static final String ARG_POST_ID = "post-id";
+    private int mColumnCount;
+
+    private DBViewModel viewModel;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -34,10 +40,10 @@ public class ViewPostFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ViewPostFragment newInstance(int columnCount) {
+    public static ViewPostFragment newInstance(int postID) {
         ViewPostFragment fragment = new ViewPostFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putInt(ARG_POST_ID, postID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,7 +53,7 @@ public class ViewPostFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mColumnCount = getArguments().getInt(ARG_POST_ID);
         }
     }
 
@@ -55,6 +61,8 @@ public class ViewPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_post_recycler, container, false);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -65,7 +73,13 @@ public class ViewPostFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter2(PlaceholderContent.ITEMS));
+            //TODO: change this to get just comments for specific post
+            viewModel.getAllComments().observe(getViewLifecycleOwner(), new Observer<List<Comment>>() {
+                @Override
+                public void onChanged(List<Comment> comments) {
+                    recyclerView.setAdapter(new CommentAdapter(comments));
+                }
+            });
         }
         return view;
     }

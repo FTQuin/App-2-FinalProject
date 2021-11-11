@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.finalproject.database.Comment;
 import com.example.finalproject.placeholder.PlaceholderContent.PlaceholderItem;
 import com.example.finalproject.databinding.FragmentCommentBinding;
 
@@ -15,12 +16,12 @@ import java.util.List;
  * {@link RecyclerView.Adapter} that can display a {@link PlaceholderItem}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyclerViewAdapter2.ViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
-    private final List<PlaceholderItem> mValues;
+    private final List<Comment> commentList;
 
-    public MyItemRecyclerViewAdapter2(List<PlaceholderItem> items) {
-        mValues = items;
+    public CommentAdapter(List<Comment> comments) {
+        commentList = comments;
     }
 
     @Override
@@ -32,20 +33,20 @@ public class MyItemRecyclerViewAdapter2 extends RecyclerView.Adapter<MyItemRecyc
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mItem = commentList.get(position);
+        holder.mIdView.setText(commentList.get(position).getId());
+        holder.mContentView.setText(commentList.get(position).getContent());
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return commentList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mIdView;
         public final TextView mContentView;
-        public PlaceholderItem mItem;
+        public Comment mItem;
 
         public ViewHolder(FragmentCommentBinding binding) {
             super(binding.getRoot());
