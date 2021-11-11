@@ -111,7 +111,7 @@ public class NewPostFragment extends Fragment {
                     Log.d("===TESTING: NEW_POST===", "Publish unsuccessful: Blank field.");
                 }else{
                     Date d = Calendar.getInstance().getTime();
-                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
                     date = df.format(d);
 
                     location = new LatLng( 50.665493, -120.332842); //TODO: Get proper location.
