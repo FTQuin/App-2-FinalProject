@@ -56,6 +56,22 @@ public class DBRepository {
 
             }
         });
+
+        // comments
+        mComRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot data : snapshot.getChildren()){
+                    Comment c = data.getValue(Comment.class);
+                    new initCommentsAsyncTask(mCommentDao).execute(c);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     /*===================================================================
@@ -149,6 +165,22 @@ public class DBRepository {
                 else Log.d("=TESTING: NEW_COMMENT=", "Publish not successful.");
             });
             Log.d("=TESTING: NEW_COMMENT=", "Publish done.");
+            return null;
+        }
+    }
+
+    private static class initCommentsAsyncTask extends AsyncTask<Comment, Void, Void> {
+
+        private CommentDao mAsyncTaskDao;
+
+        initCommentsAsyncTask(CommentDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Comment... params) {
+            mAsyncTaskDao.insert(params[0]);
+
             return null;
         }
     }

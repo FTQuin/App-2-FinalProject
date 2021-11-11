@@ -17,21 +17,18 @@ import java.util.List;
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
 
     private Context context;
-    private final List<Post> posts;
     private LayoutInflater mInflater;
     private List<Post> mPosts; // Cached copy of words
-    //private FragmentPostBinding binding;
 
     //public PostListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
 
     public PostListAdapter(List<Post> posts){
-        this.posts = posts;
+        this.mPosts = posts;
     }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        FragmentPostBinding itemView = FragmentPostBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new PostViewHolder(itemView);
+        return new PostViewHolder(FragmentPostBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override

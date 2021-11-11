@@ -12,6 +12,7 @@ import android.view.Window;
 
 import com.example.finalproject.databinding.ActivityMainBinding;
 import com.example.finalproject.feed.FeedFragment;
+import com.example.finalproject.viewpost.ViewPostFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
