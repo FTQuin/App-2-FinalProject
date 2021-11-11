@@ -30,6 +30,7 @@ public class Comment {
 
     public Comment(@NonNull String id, @NonNull String postId, @NonNull String content, @NonNull long numVotes, @NonNull String date){
         this.id = id;
+        this.postId = postId;
         this.content = content;
         this.numVotes = numVotes;
         this.date = date;
