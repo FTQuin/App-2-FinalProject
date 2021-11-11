@@ -120,7 +120,7 @@ public class NewPostFragment extends Fragment {
 
                     Log.d("New PostId:", postId);
 
-                    Post post = new Post(postId, editTitle, editContent, location, date, 1, 0);
+                    Post post = new Post(postId, editTitle, editContent, date, location.latitude, location.longitude, 1, 0);
 
                     viewModel.insertPost(post);
                     //TODO: close new post fragment and return to feed fragment.

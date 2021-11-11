@@ -26,32 +26,33 @@ public class Post {
     @NonNull
     @ColumnInfo(name = "latitude")
     private double latitude;
+    @NonNull
     @ColumnInfo(name = "longitude")
     private double longitude;
+    @NonNull
     @ColumnInfo(name = "numVotes")
     private long numVotes;
+    @NonNull
     @ColumnInfo(name = "numComments")
     private long numComments;
     @NonNull
     @ColumnInfo(name = "date")
     private String date;
 
-    @Ignore
-    private LatLng location;
-
     public Post(){};
 
-    public Post(@NonNull String postId, @NonNull String title, @NonNull String content, @NonNull LatLng location, @NonNull String date, long numVotes, long numComments){
+    public Post(@NonNull String postId, @NonNull String title, @NonNull String content,
+                @NonNull String date, @NonNull double lat, @NonNull double lon,
+                @NonNull long numVotes, @NonNull long numComments){
         this.postId = postId;
         this.title = title;
         this.content = content;
-        this.location = location;
         this.date = date;
         this.numVotes = numVotes;
         this.numComments = numComments;
 
-        this.latitude = location.latitude;
-        this.longitude = location.longitude;
+        this.latitude = lat;
+        this.longitude = lon;
     }
 
     public String getPostId(){
@@ -75,13 +76,9 @@ public class Post {
         this.content = content;
     }
 
-    public LatLng getLocation(){
-        return location;
-    }
-    public void setLocation(LatLng location){
-        this.location = location;
-        this.latitude = location.latitude;
-        this.longitude = location.longitude;
+    public void setLocation(double lat, double lon){
+        this.latitude = lat;
+        this.longitude = lon;
     }
     public double getLatitude() {
         return latitude;
@@ -117,12 +114,17 @@ public class Post {
         this.date = date;
     }
 
-    public String toString(){
-        return "Title: " + getTitle() +
-                "\nContent: " + getContent() +
-                "\nLocation: " + getLocation() +
-                "\nDate: " + getDate() +
-                "\nNumVotes: " + getNumVotes() +
-                "\nNumComments: " + getNumComments();
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId='" + postId + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", numVotes=" + numVotes +
+                ", numComments=" + numComments +
+                ", date='" + date + '\'' +
+                '}';
     }
 }

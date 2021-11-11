@@ -70,6 +70,8 @@ public class FeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.feed_recycler, container, false);
 
+        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -79,12 +81,8 @@ public class FeedFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            viewModel.getAllPosts().observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
-                @Override
-                public void onChanged(List<Post> posts) {
-                    recyclerView.setAdapter(new PostListAdapter(posts));
-                }
-            });
+            viewModel.getAllPosts().observe(getViewLifecycleOwner(),
+                    posts -> recyclerView.setAdapter(new PostListAdapter(posts)));
         }
         return view;
     }

@@ -10,8 +10,11 @@ import androidx.lifecycle.LiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -22,9 +25,9 @@ public class DBRepository {
     private LiveData<List<Post>> mAllPosts;
     private LiveData<List<Comment>> mAllComments;
 
-    private static DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
-    private static DatabaseReference mPostRef = mRootRef.child("posts");
-    private static DatabaseReference mComRef = mRootRef.child("comments");
+    private static DatabaseReference mRootRef;
+    private static DatabaseReference mPostRef;
+    private static DatabaseReference mComRef;
 
     public DBRepository(Application application) {
         DBRoomDatabase db = DBRoomDatabase.getDatabase(application);
@@ -32,6 +35,27 @@ public class DBRepository {
         mCommentDao = db.commentDao();
         mAllPosts = mPostDao.getAllPosts();
         mAllComments = mCommentDao.getAllComments();
+
+        mRootRef = FirebaseDatabase.getInstance().getReference();;
+        mPostRef = mRootRef.child("posts");
+        mComRef = mRootRef.child("comments");
+
+        // add data listener for firebase
+        // posts
+        mPostRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot data : snapshot.getChildren()){
+                    Post p = data.getValue(Post.class);
+                    new initPostsAsyncTask(mPostDao).execute(p);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     /*===================================================================
@@ -68,6 +92,22 @@ public class DBRepository {
                     Log.d("===TESTING: NEW_POST===", "Publish successful.");
                 }
             });
+
+            return null;
+        }
+    }
+
+    private static class initPostsAsyncTask extends AsyncTask<Post, Void, Void> {
+
+        private PostDao mAsyncTaskDao;
+
+        initPostsAsyncTask(PostDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Post... params) {
+            mAsyncTaskDao.insert(params[0]);
 
             return null;
         }

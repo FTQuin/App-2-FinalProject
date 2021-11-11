@@ -9,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Post.class, Comment.class}, version = 10)
+@Database(entities = {Post.class, Comment.class}, version = 11)
 public abstract class DBRoomDatabase extends RoomDatabase {
 
     public abstract PostDao postDao();
