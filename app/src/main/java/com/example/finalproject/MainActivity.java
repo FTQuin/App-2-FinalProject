@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Setting feed fragment to open when app launches.
         fragmentTransaction.add(binding.fragmentContainerView.getId(), new FeedFragment());
-        //fragmentTransaction.add(binding.fragmentContainerView.getId(), new PostFragment());
+        //fragmentTransaction.add(binding.fragmentContainerView.getId(), new NewPostFragment());
         fragmentTransaction.commit();
 
         binding.locationBtn.setOnClickListener(new View.OnClickListener() {

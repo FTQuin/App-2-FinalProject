@@ -15,16 +15,15 @@ import java.util.List;
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
 
     private Context context;
-    private List<Post> posts;
+    private final List<Post> posts;
     private LayoutInflater mInflater;
     private List<Post> mPosts; // Cached copy of words
     //private FragmentPostBinding binding;
 
     //public PostListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
 
-    public PostListAdapter(List<Post> posts, Context context){
-        this.mPosts = posts;
-        mInflater = LayoutInflater.from(context);
+    public PostListAdapter(List<Post> posts){
+        posts = posts;
     }
 
     @Override
@@ -51,11 +50,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         }
     }
 
-    public void setPosts(List<Post> posts){
-        mPosts = posts;
-        notifyDataSetChanged();
-    }
-
     // getItemCount() is called many times, and when it is first called,
     // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
@@ -72,7 +66,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         private final TextView postNumVotes;
         private final TextView postNumComments;
 
-        private PostViewHolder(View itemView) {
+        public PostViewHolder(View itemView) {
             super(itemView);
 
             postTitle = itemView.findViewById(R.id.postTitleText);
