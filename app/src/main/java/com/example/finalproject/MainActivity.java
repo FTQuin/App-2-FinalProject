@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FeedFragment feedFragment;
     private NewPostFragment newPostFragment;
+    private MapsFragment mapsFragment;
+    private ViewPostFragment viewPostFragment;
+    private MenuFragment menuFragment;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
 
