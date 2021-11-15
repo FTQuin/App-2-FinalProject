@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         feedFragment = new FeedFragment();
         newPostFragment = new NewPostFragment();
 
-
-
         //To remove top app title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
@@ -78,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 if (fragmentInFrame instanceof FeedFragment){
                     Log.d("debug", "Feed fragment displayed. would show new post fragment");
                     fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
-                            newPostFragment).addToBackStack(null).commit();
+                            newPostFragment).addToBackStack("new_post_frag").commit();
                 } else if (fragmentInFrame instanceof NewPostFragment){
                     Log.d("debug", "new post fragment shown. would remove new post fragment.");
                     fragmentManager.beginTransaction().remove(newPostFragment).commit();

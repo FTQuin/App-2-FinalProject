@@ -1,5 +1,7 @@
 package com.example.finalproject;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.finalproject.database.DBViewModel;
@@ -121,10 +125,18 @@ public class NewPostFragment extends Fragment {
 
                     Log.d("New PostId:", postId);
 
-                    Post post = new Post(postId, editTitle, editContent, date, location.latitude, location.longitude, 1, 0);
+                    //Post post = new Post(postId, editTitle, editContent, date, location.latitude, location.longitude, 1, 0);
 
-                    viewModel.insertPost(post);
-                    //TODO: close new post fragment and return to feed fragment.
+                    //viewModel.insertPost(post);
+
+                    binding.titleInput.setText("");
+                    binding.contentInput.setText("");
+
+                    //Closes new post fragment.
+                    //NOTE: Fragment must be call addToBackStack() before commit() in main/
+                    getActivity().getSupportFragmentManager().popBackStackImmediate();
+
+                    //TODO: automatically hide keyboard
                 }
             }
         });
