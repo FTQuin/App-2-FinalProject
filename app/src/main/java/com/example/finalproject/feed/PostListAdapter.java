@@ -1,17 +1,15 @@
-package com.example.finalproject;
+package com.example.finalproject.feed;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.finalproject.R;
 import com.example.finalproject.database.Post;
-import com.example.finalproject.databinding.FragmentCommentBinding;
 import com.example.finalproject.databinding.FragmentPostBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
