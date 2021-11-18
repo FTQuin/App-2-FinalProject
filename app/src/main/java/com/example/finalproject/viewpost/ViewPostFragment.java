@@ -2,24 +2,18 @@ package com.example.finalproject.viewpost;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.finalproject.R;
-import com.example.finalproject.database.Comment;
 import com.example.finalproject.database.DBViewModel;
-import com.example.finalproject.placeholder.PlaceholderContent;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.

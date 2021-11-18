@@ -1,14 +1,14 @@
 package com.example.finalproject.viewpost;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.finalproject.database.Comment;
-import com.example.finalproject.placeholder.PlaceholderContent.PlaceholderItem;
 import com.example.finalproject.databinding.FragmentCommentBinding;
+import com.example.finalproject.placeholder.PlaceholderContent.PlaceholderItem;
 
 import java.util.List;
 
