@@ -1,14 +1,16 @@
 package com.example.finalproject.feed;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.database.Post;
 import com.example.finalproject.databinding.FragmentPostBinding;
+import com.example.finalproject.viewpost.ViewPostFragment;
 
 import java.util.List;
 
@@ -27,20 +29,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
-        if (postList != null) {
-            Post current = postList.get(position);
-
-            holder.postTitle.setText(current.getTitle());
-            holder.postContent.setText(current.getContent());
-            holder.postDate.setText(current.getDate());
-            holder.postNumVotes.setText(String.valueOf(current.getNumVotes()));
-            holder.postNumComments.setText(String.valueOf(current.getNumComments()));
-
-        } else {
-            // Covers the case of data not being ready yet.
-            holder.postTitle.setText(R.string.error_loading_posts);
-            holder.postContent.setText(R.string.error_loading_posts_desc);
-        }
+        holder.bind(postList.get(position), position);
     }
 
     // getItemCount() is called many times, and when it is first called,
@@ -53,20 +42,37 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder {
-        private final TextView postTitle;
-        private final TextView postContent;
-        private final TextView postDate;
-        private final TextView postNumVotes;
-        private final TextView postNumComments;
+        private final FragmentPostBinding binding;
 
         public PostViewHolder(FragmentPostBinding binding) {
             super(binding.getRoot());
 
-            postTitle = binding.postTitleText;
-            postContent = binding.postContentText;
-            postDate = binding.postDateText;
-            postNumVotes = binding.numVotesText;
-            postNumComments = binding.numCommentsText;
+            this.binding = binding;
+        }
+
+        public void bind(Post post, int position){
+            if (postList != null) {
+                binding.postTitleText.setText(post.getTitle());
+                binding.postContentText.setText(post.getContent());
+                binding.postDateText.setText(post.getDate());
+                binding.numVotesText.setText(String.valueOf(post.getNumVotes()));
+                binding.numCommentsText.setText(String.valueOf(post.getNumComments()));
+
+            } else {
+                // Covers the case of data not being ready yet.
+                binding.postTitleText.setText(R.string.error_loading_posts);
+                binding.postContentText.setText(R.string.error_loading_posts_desc);
+            }
+
+            binding.getRoot().setOnClickListener(view -> {
+                ViewPostFragment mFragment = new ViewPostFragment();
+                Bundle mBundle = new Bundle();
+                mBundle.putString("post_id", post.getPostId());
+                mFragment.setArguments(mBundle);
+
+                ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainerView, mFragment).addToBackStack(null).commit();
+            });
         }
     }
 }
