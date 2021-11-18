@@ -3,6 +3,7 @@ package com.example.finalproject.feed;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,7 +11,7 @@ import com.example.finalproject.MainActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.database.Post;
 import com.example.finalproject.databinding.FragmentPostBinding;
-import com.example.finalproject.viewpost.ViewPostFragment;
+import com.example.finalproject.viewpost.CommentRecycler;
 
 import java.util.List;
 
@@ -65,10 +66,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             }
 
             binding.getRoot().setOnClickListener(view -> {
-                ViewPostFragment mFragment = new ViewPostFragment();
+                CommentRecycler mFragment = new CommentRecycler();
                 Bundle mBundle = new Bundle();
                 mBundle.putString("post_id", post.getPostId());
                 mFragment.setArguments(mBundle);
+
+                int loc[] = new int[2];
+                view.getLocationInWindow(loc);
+                Toast.makeText(view.getContext(),"X "+loc[0] +"\nY "+loc[1],Toast.LENGTH_SHORT).show();
 
                 ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainerView, mFragment).addToBackStack(null).commit();

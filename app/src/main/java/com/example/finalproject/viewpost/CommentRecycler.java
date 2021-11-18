@@ -18,7 +18,7 @@ import com.example.finalproject.database.DBViewModel;
 /**
  * A fragment representing a list of Items.
  */
-public class ViewPostFragment extends Fragment {
+public class CommentRecycler extends Fragment {
 
     private static final String ARG_POST_ID = "post-id";
     private int mColumnCount;
@@ -29,11 +29,11 @@ public class ViewPostFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ViewPostFragment() {
+    public CommentRecycler() {
     }
 
-    public static ViewPostFragment newInstance(int postID) {
-        ViewPostFragment fragment = new ViewPostFragment();
+    public static CommentRecycler newInstance(int postID) {
+        CommentRecycler fragment = new CommentRecycler();
         Bundle args = new Bundle();
         args.putInt(ARG_POST_ID, postID);
         fragment.setArguments(args);
@@ -53,7 +53,7 @@ public class ViewPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.view_post_recycler, container, false);
+        View view = inflater.inflate(R.layout.comment_recycler, container, false);
 
         viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 

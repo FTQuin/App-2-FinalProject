@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.finalproject.databinding.ActivityMainBinding;
 import com.example.finalproject.feed.FeedFragment;
-import com.example.finalproject.viewpost.ViewPostFragment;
+import com.example.finalproject.viewpost.CommentRecycler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private FeedFragment feedFragment;
     private NewPostFragment newPostFragment;
     private MapsFragment mapsFragment;
-    private ViewPostFragment viewPostFragment;
+    private CommentRecycler viewPostFragment;
     private MenuFragment menuFragment;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
