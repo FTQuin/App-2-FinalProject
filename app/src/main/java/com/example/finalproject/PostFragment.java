@@ -10,11 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.finalproject.databinding.FragmentPostBinding;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class PostFragment extends Fragment {
 
@@ -51,56 +48,6 @@ public class PostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO: Move/ change this code for filling in post fields.
-        mPostRef.child("-Mny-YIDGwEfaESAqsUO").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String title = snapshot.child("title").getValue(String.class);
-                binding.postTitleText.setText(title);
-
-                String content = snapshot.child("content").getValue(String.class);
-                binding.postContentText.setText(content);
-
-                Long numVotes = snapshot.child("numVotes").getValue(Long.class);
-                binding.numVotesText.setText(String.valueOf(numVotes));
-
-                Long numComments = snapshot.child("numComments").getValue(Long.class);
-                binding.numCommentsText.setText(String.valueOf(numComments));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        binding.upVoteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Update number of votes in database. Update text view with new number.
-            }
-        });
-
-        binding.downVoteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Update number of votes in database. Update text view.
-            }
-        });
-
-        binding.postOptionsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: show options. (delete, edit, etc)
-            }
-        });
-
-        binding.commentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: show view post fragment.
-            }
-        });
-
+        //button onClick listeners located in PostListAdapter.java
     }
 }
