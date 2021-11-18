@@ -53,7 +53,8 @@ public class MenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.menuPopup.setVisibility(View.INVISIBLE);
+        binding.menuPopup.animate().alpha(0.0f).setDuration(0);
+        //binding.menuPopup.setVisibility(View.INVISIBLE);
         binding.popupUpgradeBtn.setVisibility(View.INVISIBLE);
 
         //binding.yourLocationsBtn.setEnabled(false);
@@ -65,7 +66,7 @@ public class MenuFragment extends Fragment {
             binding.menuPopupTitleText.setText(title);
             binding.menuPopupContentText.setText(R.string.upgrade_text);
             binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
-            binding.menuPopup.setVisibility(View.VISIBLE);
+            binding.menuPopup.animate().alpha(1.0f).setDuration(200);
         });
 
         binding.helpAndSupportBtn.setOnClickListener(view12 -> {
@@ -73,7 +74,7 @@ public class MenuFragment extends Fragment {
             binding.menuPopupTitleText.setText(title);
             binding.menuPopupContentText.setText(R.string.help_text);
             binding.popupUpgradeBtn.setVisibility(View.INVISIBLE);
-            binding.menuPopup.setVisibility(View.VISIBLE);
+            binding.menuPopup.animate().alpha(1.0f).setDuration(200);
         });
 
         binding.yourPostsBtn.setOnClickListener(view1 -> {
@@ -83,7 +84,7 @@ public class MenuFragment extends Fragment {
             binding.menuPopupTitleText.setText(title);
             binding.menuPopupContentText.setText(R.string.your_posts_text_base_version);
             binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
-            binding.menuPopup.setVisibility(View.VISIBLE);
+            binding.menuPopup.animate().alpha(1.0f).setDuration(200);
         });
 
         binding.yourLocationsBtn.setOnClickListener(view1 -> {
@@ -92,7 +93,7 @@ public class MenuFragment extends Fragment {
             binding.menuPopupTitleText.setText(title);
             binding.menuPopupContentText.setText(R.string.your_locations_text_base_version);
             binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
-            binding.menuPopup.setVisibility(View.VISIBLE);
+            binding.menuPopup.animate().alpha(1.0f).setDuration(200);
         });
 
         binding.popupUpgradeBtn.setOnClickListener(view14 -> {
