@@ -1,11 +1,13 @@
 package com.example.finalproject;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -123,11 +125,14 @@ public class NewPostFragment extends Fragment {
                     binding.titleInput.setText("");
                     binding.contentInput.setText("");
 
+                    // hide keyboard
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+
                     //Closes new post fragment.
                     //NOTE: Fragment must be call addToBackStack() before commit() in main/
                     getActivity().getSupportFragmentManager().popBackStackImmediate();
 
-                    //TODO: automatically hide keyboard
                 }
             }
         });
