@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FeedFragment feedFragment;
     private NewPostFragment newPostFragment;
+    private MenuFragment menuFragment;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         feedFragment = new FeedFragment();
         newPostFragment = new NewPostFragment();
+        menuFragment = new MenuFragment();
 
         //To remove top app title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -60,17 +62,35 @@ public class MainActivity extends AppCompatActivity {
                             newPostFragment).addToBackStack("feed_frag").commit();
                     //binding.newPostBtn.setImageResource(R.drawable.ic_down_40);
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
-                            0, 45).setDuration(100).start();
+                            0, 135).setDuration(250).start();
 
                 }else if (fragmentInFrame instanceof NewPostFragment){
                     fragmentManager.popBackStackImmediate();
                     //binding.newPostBtn.setImageResource(R.drawable.ic_add);
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
-                            45, 0).setDuration(100).start();
+                            135, 0).setDuration(250).start();
 
                 }
 
                 // TODO: animate appearance of fragment
+            }
+        });
+
+        binding.menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+                // TODO: display menu fragment on button clickfinal Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+
+                if (fragmentInFrame instanceof FeedFragment){
+                    fragmentManager.beginTransaction().setTransition(FragmentTransaction
+                            .TRANSIT_FRAGMENT_FADE).add(binding.fragmentContainerView.getId(),
+                            menuFragment).addToBackStack("feed_frag").commit();
+                    binding.menuBtn.setImageResource(R.drawable.ic_down_40);
+                }else if (fragmentInFrame instanceof MenuFragment){
+                    fragmentManager.popBackStackImmediate();
+                    binding.menuBtn.setImageResource(R.drawable.ic_menu);
+                }
             }
         });
 
@@ -90,30 +110,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });*/
-
-        binding.menuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: display menu fragment on button click.
-                /*final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
-
-                if (fragmentInFrame instanceof FeedFragment){
-                    fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
-                            menuFragment).addToBackStack("feed_frag").commit();
-                    binding.newPostBtn.setImageResource(R.drawable.ic_down_40);
-                }else if (fragmentInFrame instanceof MenuFragment){
-                    fragmentManager.popBackStackImmediate();
-                    binding.newPostBtn.setImageResource(R.drawable.ic_menu);
-                }*/
-            }
-        });
     }
 
     public void onBackPressed(){
         super.onBackPressed();
-        ObjectAnimator.ofFloat(binding.newPostBtn, "rotation", 45, 0).setDuration(100).start();
+        if(binding.newPostBtn.getRotation() == 135){
+            ObjectAnimator.ofFloat(binding.newPostBtn, "rotation", 135, 0).setDuration(250).start();
+        }
+
         //binding.newPostBtn.setImageResource(R.drawable.ic_add);
         //binding.chatBtn.setImageResource(R.drawable.ic_chat);
-        //binding.menuBtn.setImageResource(R.drawable.ic_menu);
+        binding.menuBtn.setImageResource(R.drawable.ic_menu);
     }
 }

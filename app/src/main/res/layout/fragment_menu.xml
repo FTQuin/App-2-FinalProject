@@ -1,10 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B9000000"
+    android:clickable="true"
     tools:context=".MenuFragment">
 
 
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/layout_bg"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-</FrameLayout>
+
+        <Button
+            android:id="@+id/yourPostsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Posts" />
+
+        <Button
+            android:id="@+id/yourLocationsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Locations" />
+
+        <Button
+            android:id="@+id/upgradeBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upgrade" />
+
+        <Button
+            android:id="@+id/helpAndSupportBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Help and Support" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuPopup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp"
+        android:padding="6dp"
+        android:background="@drawable/layout_bg"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/menuPopupTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/menuPopupContentText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="TextView"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/popupUpgradeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upgrade now"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
