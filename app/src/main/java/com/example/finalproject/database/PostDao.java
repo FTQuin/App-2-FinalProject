@@ -20,7 +20,7 @@ public interface PostDao {
 
     // Update multiple entries with one call.
     @Update
-    public void updatePosts(Post... posts);
+    void updatePosts(Post... posts);
 
     // Simple query that does not take parameters and returns nothing.
     @Query("DELETE FROM post_table WHERE postId LIKE :post ")
@@ -35,5 +35,9 @@ public interface PostDao {
 
     // Query with parameter that returns a specific post or posts.
     @Query("SELECT * FROM post_table WHERE postId LIKE :post ")
-    public List<Post> findPost(String post);
+    List<Post> findPost(String post);
+
+    //Query to upvote post
+    @Query("UPDATE post_table SET numVotes = (numVotes + 1) WHERE postId LIKE :post_id")
+    void votePost(String post_id);
 }

@@ -87,6 +87,10 @@ public class DBRepository {
         deletePost(postId);
     }
 
+    public void votePost(String postId){
+        votePost(postId);
+    }
+
     private static class insertPostAsyncTask extends AsyncTask<Post, Void, Void> {
 
         private PostDao mAsyncTaskDao;

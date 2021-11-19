@@ -11,8 +11,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="6dp"
-        android:padding="4dp">
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp">
 
         <TextView
             android:id="@+id/postDateText"
@@ -43,9 +47,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/postTitleText" />
 
-        <!--<LinearLayout
+        <RelativeLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="35dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,78 +61,35 @@
                 android:id="@+id/commentBtn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_below="@+id/downVoteBtn"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_comment"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/numCommentsText"
                 android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/downVoteBtn"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="-48dp"
+                android:layout_height="match_parent"
+                android:paddingBottom="4dp"
                 android:background="@android:color/transparent"
+                android:gravity="center"
                 android:text="213 "
-                android:textAlignment="center"
                 android:textColor="@color/white" />
 
-            <ImageButton
-                android:id="@+id/upVoteBtn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="150dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_up"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <TextView
-                android:id="@+id/numVotesText"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/upVoteBtn"
-                android:layout_marginTop="-5dp"
-                android:gravity="center_vertical"
-                android:text="5290"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            <ImageButton
-                android:id="@+id/downVoteBtn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_below="@+id/numVotesText"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_down"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-        </LinearLayout>-->
-
-        <RelativeLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postContentText">
-
 
             <ImageButton
                 android:id="@+id/upVoteBtn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginBottom="-5dp"
+                android:layout_marginStart="26dp"
+                android:layout_toEndOf="@+id/commentBtn"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_arrow_up"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/numVotesText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="-5dp"
                 android:layout_toEndOf="@+id/upVoteBtn"
                 android:gravity="center_vertical"
                 android:text="5290"
@@ -140,40 +102,17 @@
                 android:layout_toEndOf="@+id/numVotesText"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_arrow_down"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <ImageButton
-                android:id="@+id/commentBtn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_toEndOf="@+id/downVoteBtn"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_comment"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <TextView
-                android:id="@+id/numCommentsText"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/downVoteBtn"
-                android:layout_marginTop="12dp"
-                android:background="@android:color/transparent"
-                android:text="213 "
-                android:textAlignment="center"
-                android:textColor="@color/white" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <ImageButton
                 android:id="@+id/postOptionsBtn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_toEndOf="@+id/commentBtn"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_options"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 
         </RelativeLayout>

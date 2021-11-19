@@ -5,7 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.finalproject.databinding.FragmentMenuBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,14 +18,7 @@ import androidx.fragment.app.Fragment;
  */
 public class MenuFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FragmentMenuBinding binding;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -31,33 +28,78 @@ public class MenuFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment MenuFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MenuFragment newInstance(String param1, String param2) {
+    public static MenuFragment newInstance() {
         MenuFragment fragment = new MenuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu, container, false);
+        binding = FragmentMenuBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        binding.menuPopup.animate().alpha(0.0f).setDuration(0);
+        //binding.menuPopup.setVisibility(View.INVISIBLE);
+        binding.popupUpgradeBtn.setVisibility(View.INVISIBLE);
+
+        //binding.yourLocationsBtn.setEnabled(false);
+        //binding.yourPostsBtn.setEnabled(false);
+
+        binding.upgradeBtn.setOnClickListener(view13 -> {
+            //TODO: if version == upgraded. hide or disable button.
+            String title = "Upgrade";
+            binding.menuPopupTitleText.setText(title);
+            binding.menuPopupContentText.setText(R.string.upgrade_text);
+            binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
+            binding.menuPopup.animate().alpha(1.0f).setDuration(200);
+        });
+
+        binding.helpAndSupportBtn.setOnClickListener(view12 -> {
+            String title = "Help and Support";
+            binding.menuPopupTitleText.setText(title);
+            binding.menuPopupContentText.setText(R.string.help_text);
+            binding.popupUpgradeBtn.setVisibility(View.INVISIBLE);
+            binding.menuPopup.animate().alpha(1.0f).setDuration(200);
+        });
+
+        binding.yourPostsBtn.setOnClickListener(view1 -> {
+            //TODO: if version == upgraded. show user's posts
+            //Note: would have to add user id's to posts so we may not do this.
+            String title = "Your Posts";
+            binding.menuPopupTitleText.setText(title);
+            binding.menuPopupContentText.setText(R.string.your_posts_text_base_version);
+            binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
+            binding.menuPopup.animate().alpha(1.0f).setDuration(200);
+        });
+
+        binding.yourLocationsBtn.setOnClickListener(view1 -> {
+            //TODO: if version == upgraded. open map fragment with list of saved locations.
+            String title = "Your Locations";
+            binding.menuPopupTitleText.setText(title);
+            binding.menuPopupContentText.setText(R.string.your_locations_text_base_version);
+            binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
+            binding.menuPopup.animate().alpha(1.0f).setDuration(200);
+        });
+
+        binding.popupUpgradeBtn.setOnClickListener(view14 -> {
+            //TODO: Add upgrade functionality.
+        });
+
+
     }
 }
