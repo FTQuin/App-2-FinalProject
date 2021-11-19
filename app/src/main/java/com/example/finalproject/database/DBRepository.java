@@ -84,11 +84,11 @@ public class DBRepository {
     }
 
     public void deletePost(String postId) {
-        deletePost(postId);
+        mPostDao.deletePost(postId);
     }
 
     public void votePost(String postId){
-        votePost(postId);
+        mPostDao.votePost(postId);
     }
 
     private static class insertPostAsyncTask extends AsyncTask<Post, Void, Void> {
