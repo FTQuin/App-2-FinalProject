@@ -3,10 +3,11 @@ package com.example.finalproject.feed;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.MainActivity;
@@ -32,12 +33,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        viewModel = new ViewModelProvider((FragmentActivity) parent.getContext()).get(DBViewModel.class);
         return new PostViewHolder(FragmentPostBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
         holder.bind(postList.get(position), position);
+
     }
 
     // getItemCount() is called many times, and when it is first called,
@@ -59,6 +62,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         }
 
         public void bind(Post post, int position){
+
 
             if (postList != null) {
                 binding.postTitleText.setText(post.getTitle());
@@ -87,61 +91,49 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                         .replace(R.id.fragmentContainerView, mFragment).addToBackStack(null).commit();
             });
 
-            binding.upVoteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //to update vote count in db only once.
-                    //up and down vote counts don't actually do anything yet.
-                    if(voted == false){
-                        //access database via votePost(post.getPostId()).
-                        voted = true;
-                    }
-                    if(!upvoted){
-                        Toast.makeText(binding.getRoot().getContext(), "Up Voted Post!", Toast.LENGTH_SHORT).show();
-                        //access database via votePost(post.getPostId()).
-                        upvoted = true;
-                        downvoted = false;
-                    }else{
-                        Toast.makeText(binding.getRoot().getContext(), "You cannot upvote twice.", Toast.LENGTH_SHORT).show();
-                    }
-                    //TODO: Update number of votes in database. Update text view with new number.
+            binding.upVoteBtn.setOnClickListener(view -> {
+                //to update vote count in db only once.
+                //up and down vote counts don't actually do anything yet.
+                if(voted == false){
+                    //access database via votePost(post.getPostId()).
+                    voted = true;
                 }
+                if(!upvoted){
+                    Toast.makeText(binding.getRoot().getContext(), "Up Voted Post!", Toast.LENGTH_SHORT).show();
+                    //access database via votePost(post.getPostId()).
+                    upvoted = true;
+                    downvoted = false;
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "You cannot upvote twice.", Toast.LENGTH_SHORT).show();
+                }
+                //TODO: Update number of votes in database. Update text view with new number.
             });
 
-            binding.downVoteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //to update vote count in db only once.
-                    //up and down vote counts don't actually do anything yet.
-                    if(voted == false){
-                        //access database via votePost(post.getPostId()).
-                        voted = true;
-                    }
-                    if(!downvoted){
-                        Toast.makeText(binding.getRoot().getContext(), "Down Voted Post!", Toast.LENGTH_SHORT).show();
-                        downvoted = true;
-                        upvoted = false;
-                    }else{
-                        Toast.makeText(binding.getRoot().getContext(), "You cannot down twice.", Toast.LENGTH_SHORT).show();
-                    }
-                    //TODO: Update number of votes in database. Update text view.
+            binding.downVoteBtn.setOnClickListener(view -> {
+                //to update vote count in db only once.
+                //up and down vote counts don't actually do anything yet.
+                if(voted == false){
+                    //access database via votePost(post.getPostId()).
+                    voted = true;
                 }
+                if(!downvoted){
+                    Toast.makeText(binding.getRoot().getContext(), "Down Voted Post!", Toast.LENGTH_SHORT).show();
+                    downvoted = true;
+                    upvoted = false;
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "You cannot down twice.", Toast.LENGTH_SHORT).show();
+                }
+                //TODO: Update number of votes in database. Update text view.
             });
 
-            binding.postOptionsBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("++Post Button", "Post options button clicked");
-                    //TODO: show options. (delete, edit, etc)
-                }
+            binding.postOptionsBtn.setOnClickListener(view -> {
+                Log.d("++Post Button", "Post options button clicked");
+                //TODO: show options. (delete, edit, etc)
             });
 
-            binding.commentBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("++Post Button", "Comment button clicked");
-                    //TODO: show view post fragment.
-                }
+            binding.commentBtn.setOnClickListener(view -> {
+                Log.d("++Post Button", "Comment button clicked");
+                //TODO: show view post fragment.
             });
         }
     }
