@@ -15,7 +15,7 @@ import com.example.finalproject.R;
 import com.example.finalproject.database.DBViewModel;
 import com.example.finalproject.database.Post;
 import com.example.finalproject.databinding.FragmentPostBinding;
-import com.example.finalproject.viewpost.CommentRecycler;
+import com.example.finalproject.viewpost.ViewPostFragment;
 
 import java.util.List;
 
@@ -78,7 +78,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             }
 
             binding.getRoot().setOnClickListener(view -> {
-                CommentRecycler mFragment = new CommentRecycler();
+                ViewPostFragment mFragment = new ViewPostFragment();
                 Bundle mBundle = new Bundle();
                 mBundle.putString("post_id", post.getPostId());
                 mFragment.setArguments(mBundle);
