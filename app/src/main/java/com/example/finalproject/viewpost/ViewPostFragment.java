@@ -88,5 +88,11 @@ public class ViewPostFragment extends Fragment {
                 correctPost = p;
 
         postFragment.setPostView(correctPost, viewModel);
+
+        if (postFragment.getBinding().postContentText.getText().length() > 360){
+            //TODO: Either set max lines higher or uncomment scrolling line.
+            postFragment.getBinding().postContentText.setMaxLines(12);
+            //postFragment.getBinding().postContentText.setMovementMethod(new ScrollingMovementMethod());
+        }
     }
 }
