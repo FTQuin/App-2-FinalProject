@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });*/
+        getDeviceLocation();
     }
 
     public void onBackPressed(){
@@ -171,31 +172,29 @@ public class MainActivity extends AppCompatActivity {
                 locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && lastKnownLocation != null) {
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.getResult();
-                            if (lastKnownLocation != null) {
-                                Log.d("cloc","=====LOCATION: Lat = " +
-                                        lastKnownLocation.getLatitude() + ", Long = " +
-                                        lastKnownLocation.getLongitude());
+                            Log.d("cloc","=====LOCATION: Lat = " +
+                                    lastKnownLocation.getLatitude() + ", Long = " +
+                                    lastKnownLocation.getLongitude());
 
-                                Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
+                            Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
 
-                                try {
-                                    List<Address> addresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(),
-                                            lastKnownLocation.getLongitude(), 1);
+                            try {
+                                List<Address> addresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(),
+                                        lastKnownLocation.getLongitude(), 1);
 
-                                    Address address = addresses.get(0);
+                                Address address = addresses.get(0);
 
-                                    Log.d("=====Location: ", "Sub admin area: " + address.getSubAdminArea());
-                                    Log.d("=====Location: ", "Locality: " + address.getLocality());
+                                Log.d("=====Location: ", "Sub admin area: " + address.getSubAdminArea());
+                                Log.d("=====Location: ", "Locality: " + address.getLocality());
 
-                                    binding.locationBtn.setText(address.getLocality());
+                                binding.locationBtn.setText(address.getLocality());
 
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Log.d("loc_app", "Current location is null. Using defaults.");
