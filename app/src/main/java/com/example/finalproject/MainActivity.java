@@ -3,14 +3,11 @@ package com.example.finalproject;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,13 +20,8 @@ import com.example.finalproject.databinding.ActivityMainBinding;
 import com.example.finalproject.feed.FeedFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean locationPermissionGranted = false;
     private Location lastKnownLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private final LatLng defaultLocation = new LatLng(50.6745, -120.3273);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +65,12 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
                 feedFragment).commit();
 
+        binding.chatBtn.setEnabled(false);
 
-        //Bottom bar button on click listeners
         binding.locationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: **If version == upgraded** display map fragment on button click.
-                getDeviceLocation();
             }
         });
 
@@ -143,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });*/
-        getDeviceLocation();
     }
 
     public void onBackPressed(){
@@ -158,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*==============================================================================================
-    * Location enabling/ permissions
+    * Location enabling/ permission
     ==============================================================================================*/
 
     private void getDeviceLocation() {
@@ -172,35 +161,23 @@ public class MainActivity extends AppCompatActivity {
                 locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful() && lastKnownLocation != null) {
+                        if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.getResult();
-                            Log.d("cloc","=====LOCATION: Lat = " +
-                                    lastKnownLocation.getLatitude() + ", Long = " +
-                                    lastKnownLocation.getLongitude());
-
-                            Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
-
-                            try {
-                                List<Address> addresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(),
-                                        lastKnownLocation.getLongitude(), 1);
-
-                                Address address = addresses.get(0);
-
-                                Log.d("=====Location: ", "Sub admin area: " + address.getSubAdminArea());
-                                Log.d("=====Location: ", "Locality: " + address.getLocality());
-
-                                binding.locationBtn.setText(address.getLocality());
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            if (lastKnownLocation != null) {
+                                /*mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(lastKnownLocation.getLatitude(),
+                                                lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                */
+                                Log.d("cloc","===== LOCATION: Lat = " + lastKnownLocation.getLatitude() + ", Long = " + lastKnownLocation.getLongitude());
                             }
                         } else {
                             Log.d("loc_app", "Current location is null. Using defaults.");
                             Log.e("loc_app", "Exception: %s", task.getException());
-                            Toast.makeText(getBaseContext(), "Error retrieving current location.", Toast.LENGTH_SHORT).show();
-
+                            /*mMap.moveCamera(CameraUpdateFactory
+                                    .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
+                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                            */
                         }
                     }
                 });
@@ -214,7 +191,11 @@ public class MainActivity extends AppCompatActivity {
         // [START maps_check_location_permission]
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true;
+            //if (mMap != null) {
+            //    mMap.setMyLocationEnabled(true);
+                locationPermissionGranted = true;
+
+            //}
         } else {
             // Permission to access the location is missing. Show rationale and request permission
             PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
@@ -263,4 +244,6 @@ public class MainActivity extends AppCompatActivity {
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
+
+
 }
