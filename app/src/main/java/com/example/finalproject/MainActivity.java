@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });*/
+        getDeviceLocation();
     }
 
     public void onBackPressed(){
@@ -161,16 +162,15 @@ public class MainActivity extends AppCompatActivity {
                 locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
+                        if (task.isSuccessful())
                             lastKnownLocation = task.getResult();
-                            if (lastKnownLocation != null) {
-                                /*mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(lastKnownLocation.getLatitude(),
-                                                lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-                                */
-                                Log.d("cloc","===== LOCATION: Lat = " + lastKnownLocation.getLatitude() + ", Long = " + lastKnownLocation.getLongitude());
-                            }
+                        // Set the map's camera position to the current location of the device.
+                        if (lastKnownLocation != null) {
+                            /*mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(lastKnownLocation.getLatitude(),
+                                            lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            */
+                            Log.d("cloc","===== LOCATION: Lat = " + lastKnownLocation.getLatitude() + ", Long = " + lastKnownLocation.getLongitude());
                         } else {
                             Log.d("loc_app", "Current location is null. Using defaults.");
                             Log.e("loc_app", "Exception: %s", task.getException());
