@@ -18,16 +18,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/locationBtn"
+        <TextView
+            android:id="@+id/locationText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".78"
-            android:paddingTop="-4dp"
             android:background="@android:color/transparent"
-            android:text="Kamloops"
-            android:textAlignment="viewStart"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:fadingEdge="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="6dp"
+            android:paddingTop="-4dp"
+            android:text="Location"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/white"
+
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:focusable="true"/>
 
         <ImageButton
             android:id="@+id/newPostBtn"

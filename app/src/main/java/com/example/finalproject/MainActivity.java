@@ -23,7 +23,6 @@ import com.example.finalproject.databinding.ActivityMainBinding;
 import com.example.finalproject.feed.FeedFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean locationPermissionGranted = false;
     private Location lastKnownLocation;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private final LatLng defaultLocation = new LatLng(50.6745, -120.3273);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,17 +68,19 @@ public class MainActivity extends AppCompatActivity {
         enableMyLocation();
         getDeviceLocation();
 
+        //TODO: move this to getDeviceLocation() and add location parameter.
         //Setting feed fragment to open when app launches.
         fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
                 feedFragment).commit();
 
+        //Used to allow location text to scroll if too long.
+        binding.locationText.setSelected(true);
 
         //Bottom bar button on click listeners
-        binding.locationBtn.setOnClickListener(new View.OnClickListener() {
+        binding.locationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: **If version == upgraded** display map fragment on button click.
-                getDeviceLocation();
             }
         });
 
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d("=====Location: ", "Sub admin area: " + address.getSubAdminArea());
                                     Log.d("=====Location: ", "Locality: " + address.getLocality());
 
-                                    binding.locationBtn.setText(address.getLocality());
+                                    binding.locationText.setText(address.getLocality());
 
                                 } catch (IOException e) {
                                     e.printStackTrace();
