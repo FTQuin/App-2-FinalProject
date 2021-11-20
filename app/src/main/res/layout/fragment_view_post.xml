@@ -11,19 +11,19 @@
         android:layout_height="match_parent">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView3"
+            android:id="@+id/fragmentContainerViewPost"
             android:name="com.example.finalproject.PostFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@color/background"
-            app:layout_constraintBottom_toTopOf="@+id/fragmentContainerView2"
+            app:layout_constraintBottom_toTopOf="@+id/fragmentContainerViewComments"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView2"
+            android:id="@+id/fragmentContainerViewComments"
             android:name="com.example.finalproject.viewpost.CommentRecycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -31,7 +31,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView3" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentContainerViewPost" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

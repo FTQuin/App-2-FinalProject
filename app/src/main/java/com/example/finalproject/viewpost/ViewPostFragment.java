@@ -5,9 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.finalproject.PostFragment;
 import com.example.finalproject.R;
+import com.example.finalproject.database.DBViewModel;
+import com.example.finalproject.database.Post;
+import com.example.finalproject.databinding.FragmentViewPostBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,14 +24,16 @@ import com.example.finalproject.R;
  */
 public class ViewPostFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    DBViewModel viewModel;
+    FragmentViewPostBinding binding;
+
+    PostFragment postFragment;
+    CommentRecycler commentRecycler;
+
+    private static final String ARG_POST_ID = "post_id";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String postID;
 
     public ViewPostFragment() {
         // Required empty public constructor
@@ -33,16 +43,13 @@ public class ViewPostFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ViewPostFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ViewPostFragment newInstance(String param1, String param2) {
+    public static ViewPostFragment newInstance(String postID) {
         ViewPostFragment fragment = new ViewPostFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_POST_ID, postID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,8 +58,7 @@ public class ViewPostFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            postID = getArguments().getString(ARG_POST_ID);
         }
     }
 
@@ -60,6 +66,27 @@ public class ViewPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_post, container, false);
+        binding = FragmentViewPostBinding.inflate(getLayoutInflater());
+        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        FragmentManager f = getChildFragmentManager();
+
+        commentRecycler = (CommentRecycler) f.findFragmentById(R.id.fragmentContainerViewComments);
+        postFragment = (PostFragment) f.findFragmentById(R.id.fragmentContainerViewPost);
+        postFragment.createBinding(getLayoutInflater(), binding.getRoot());
+
+        Post correctPost = null;
+        for(Post p : viewModel.getAllPosts().getValue())
+            if(p.getPostId().equals(postID))
+                correctPost = p;
+
+        postFragment.setPostView(correctPost, viewModel);
     }
 }

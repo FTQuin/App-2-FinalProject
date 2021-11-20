@@ -1,44 +1,45 @@
 package com.example.finalproject.feed;
 
-import android.os.Bundle;
-import android.util.Log;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalproject.MainActivity;
-import com.example.finalproject.R;
+import com.example.finalproject.PostFragment;
 import com.example.finalproject.database.DBViewModel;
 import com.example.finalproject.database.Post;
-import com.example.finalproject.databinding.FragmentPostBinding;
-import com.example.finalproject.viewpost.ViewPostFragment;
 
 import java.util.List;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
 
     private final List<Post> postList;
+    private final Context context;
+    FragmentManager fragmentManager;
     private DBViewModel viewModel;
-    private boolean upvoted = false;
-    private boolean downvoted = false;
-    private boolean voted = false;
-
-    public PostListAdapter(List<Post> posts){
+    public PostListAdapter(List<Post> posts, Context context){
         postList = posts;
+        this.context = context;
     }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         viewModel = new ViewModelProvider((FragmentActivity) parent.getContext()).get(DBViewModel.class);
-        return new PostViewHolder(FragmentPostBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+
+        PostFragment pFrag = new PostFragment();
+        pFrag.createBinding(LayoutInflater.from(parent.getContext()), parent);
+
+        return new PostViewHolder(pFrag);
     }
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
+
         holder.bind(postList.get(position), position);
 
     }
@@ -53,88 +54,15 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder {
-        private final FragmentPostBinding binding;
+        private final PostFragment postFragment;
 
-        public PostViewHolder(FragmentPostBinding binding) {
-            super(binding.getRoot());
-
-            this.binding = binding;
+        public PostViewHolder(PostFragment postFragment) {
+            super(postFragment.getBinding().getRoot());
+            this.postFragment = postFragment;
         }
 
         public void bind(Post post, int position){
-
-
-            if (postList != null) {
-                binding.postTitleText.setText(post.getTitle());
-                binding.postContentText.setText(post.getContent());
-                binding.postDateText.setText(post.getDate());
-                binding.numVotesText.setText(String.valueOf(post.getNumVotes()));
-                binding.numCommentsText.setText(String.valueOf(post.getNumComments()));
-
-            } else {
-                // Covers the case of data not being ready yet.
-                binding.postTitleText.setText(R.string.error_loading_posts);
-                binding.postContentText.setText(R.string.error_loading_posts_desc);
-            }
-
-            binding.getRoot().setOnClickListener(view -> {
-                ViewPostFragment mFragment = new ViewPostFragment();
-                Bundle mBundle = new Bundle();
-                mBundle.putString("post_id", post.getPostId());
-                mFragment.setArguments(mBundle);
-
-                int loc[] = new int[2];
-                view.getLocationInWindow(loc);
-                Toast.makeText(view.getContext(),"X "+loc[0] +"\nY "+loc[1],Toast.LENGTH_SHORT).show();
-
-                ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainerView, mFragment).addToBackStack(null).commit();
-            });
-
-            binding.upVoteBtn.setOnClickListener(view -> {
-                //to update vote count in db only once.
-                //up and down vote counts don't actually do anything yet.
-                if(voted == false){
-                    //access database via votePost(post.getPostId()).
-                    voted = true;
-                }
-                if(!upvoted){
-                    Toast.makeText(binding.getRoot().getContext(), "Up Voted Post!", Toast.LENGTH_SHORT).show();
-                    //access database via votePost(post.getPostId()).
-                    upvoted = true;
-                    downvoted = false;
-                }else{
-                    Toast.makeText(binding.getRoot().getContext(), "You cannot upvote twice.", Toast.LENGTH_SHORT).show();
-                }
-                //TODO: Update number of votes in database. Update text view with new number.
-            });
-
-            binding.downVoteBtn.setOnClickListener(view -> {
-                //to update vote count in db only once.
-                //up and down vote counts don't actually do anything yet.
-                if(voted == false){
-                    //access database via votePost(post.getPostId()).
-                    voted = true;
-                }
-                if(!downvoted){
-                    Toast.makeText(binding.getRoot().getContext(), "Down Voted Post!", Toast.LENGTH_SHORT).show();
-                    downvoted = true;
-                    upvoted = false;
-                }else{
-                    Toast.makeText(binding.getRoot().getContext(), "You cannot down twice.", Toast.LENGTH_SHORT).show();
-                }
-                //TODO: Update number of votes in database. Update text view.
-            });
-
-            binding.postOptionsBtn.setOnClickListener(view -> {
-                Log.d("++Post Button", "Post options button clicked");
-                //TODO: show options. (delete, edit, etc)
-            });
-
-            binding.commentBtn.setOnClickListener(view -> {
-                Log.d("++Post Button", "Comment button clicked");
-                //TODO: show view post fragment.
-            });
+            postFragment.setPostView(post, viewModel);
         }
     }
 }

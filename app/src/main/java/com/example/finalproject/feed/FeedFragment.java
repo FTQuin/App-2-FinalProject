@@ -67,7 +67,7 @@ public class FeedFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             viewModel.getAllPosts().observe(getViewLifecycleOwner(),
-                    posts -> recyclerView.setAdapter(new PostListAdapter(posts)));
+                    posts -> recyclerView.setAdapter(new PostListAdapter(posts, getContext())));
         }
         return view;
     }

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +19,7 @@ import com.example.finalproject.database.DBViewModel;
  */
 public class CommentRecycler extends Fragment {
 
-    private static final String ARG_POST_ID = "post-id";
-    private int mColumnCount;
+    private static final String ARG_POST_ID = "post_id";
 
     private DBViewModel viewModel;
 
@@ -32,10 +30,10 @@ public class CommentRecycler extends Fragment {
     public CommentRecycler() {
     }
 
-    public static CommentRecycler newInstance(int postID) {
+    public static CommentRecycler newInstance(String postID) {
         CommentRecycler fragment = new CommentRecycler();
         Bundle args = new Bundle();
-        args.putInt(ARG_POST_ID, postID);
+        args.putString(ARG_POST_ID, postID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,9 +42,9 @@ public class CommentRecycler extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_POST_ID);
-        }
+//        if (getArguments() != null) {
+//            mColumnCount = getArguments().getInt(ARG_POST_ID);
+//        }
     }
 
     //TODO: move to onViewCreated
@@ -61,11 +59,7 @@ public class CommentRecycler extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             //TODO: change this to get just comments for specific post
             viewModel.getAllComments().observe(getViewLifecycleOwner(),
                     comments -> recyclerView.setAdapter(new CommentAdapter(comments)));
