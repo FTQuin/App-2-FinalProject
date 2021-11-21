@@ -3,6 +3,7 @@ package com.example.finalproject;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -10,6 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -68,11 +73,6 @@ public class MainActivity extends AppCompatActivity {
         enableMyLocation();
         getDeviceLocation();
 
-        //TODO: move this to getDeviceLocation() and add location parameter.
-        //Setting feed fragment to open when app launches.
-        fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
-                feedFragment).commit();
-
         //Used to allow location text to scroll if too long.
         binding.locationText.setSelected(true);
 
@@ -90,10 +90,17 @@ public class MainActivity extends AppCompatActivity {
                 final Fragment fragmentInFrame = getSupportFragmentManager()
                         .findFragmentById(R.id.fragmentContainerView);
 
+                String locationTxt = binding.locationText.getText().toString();
+
+                NewPostFragment mFragment = new NewPostFragment();
+                Bundle mBundle = new Bundle();
+                mBundle.putString("device_location", locationTxt);
+                mFragment.setArguments(mBundle);
+
                 if (fragmentInFrame instanceof FeedFragment){
                     fragmentManager.beginTransaction().setTransition(FragmentTransaction
                             .TRANSIT_FRAGMENT_OPEN).add(binding.fragmentContainerView.getId(),
-                            newPostFragment).addToBackStack("feed_frag").commit();
+                            mFragment).addToBackStack("feed_frag").commit();
                     //binding.newPostBtn.setImageResource(R.drawable.ic_down_40);
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             0, 135).setDuration(250).start();
@@ -119,7 +126,18 @@ public class MainActivity extends AppCompatActivity {
                     fragmentManager.beginTransaction().setTransition(FragmentTransaction
                             .TRANSIT_FRAGMENT_FADE).add(binding.fragmentContainerView.getId(),
                             menuFragment).addToBackStack("feed_frag").commit();
-                    binding.menuBtn.setImageResource(R.drawable.ic_down_40);
+                    //binding.menuBtn.setImageResource(R.drawable.ic_down_40);
+
+                    Animation fadeOut = new AlphaAnimation(1, 0);
+                    fadeOut.setInterpolator(new AccelerateInterpolator());
+                    fadeOut.setDuration(300);
+
+                    ImageView menuIcn = binding.menuBtn;
+
+                    AnimatedVectorDrawable avd = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_menu_to_down);
+                    menuIcn.setImageDrawable(avd);
+                    avd.start();
+
                 }else if (fragmentInFrame instanceof MenuFragment){
                     fragmentManager.popBackStackImmediate();
                     binding.menuBtn.setImageResource(R.drawable.ic_menu);
@@ -191,6 +209,10 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d("=====Location: ", "Locality: " + address.getLocality());
 
                                     binding.locationText.setText(address.getLocality());
+
+                                    //Populates feed after location is confirmed
+                                    fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
+                                            feedFragment).commit();
 
                                 } catch (IOException e) {
                                     e.printStackTrace();
