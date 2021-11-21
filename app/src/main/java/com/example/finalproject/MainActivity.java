@@ -58,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
         feedFragment = new FeedFragment();
         newPostFragment = new NewPostFragment();
         menuFragment = new MenuFragment();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        //To remove top app title bar
+        //Remove top app title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
 
@@ -68,12 +69,20 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        //Prevents UI initialization until location permissions granted.
+        if (!locationPermissionGranted){
+            enableMyLocation();
+        } else{
+            initUI();
+        }
+    }
 
-        enableMyLocation();
+    //Initialize the UI after location permissions granted.
+    private void initUI(){
+
         getDeviceLocation();
 
-        //Used to allow location text to scroll if too long.
+        //Used to allow location text to scroll if too long for view
         binding.locationText.setSelected(true);
 
         //Bottom bar button on click listeners
@@ -161,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });*/
+
     }
 
     public void onBackPressed(){
@@ -258,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
             // Enable the my location layer if the permission has been granted.
             enableMyLocation();
             locationPermissionGranted = true;
+            initUI();
 
         } else {
             // Permission was denied. Display an error message
