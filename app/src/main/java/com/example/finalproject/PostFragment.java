@@ -1,7 +1,6 @@
 package com.example.finalproject;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +101,7 @@ public class PostFragment extends Fragment {
                 upvoted = true;
                 downvoted = false;
             }else{
-                Toast.makeText(binding.getRoot().getContext(), "You cannot upvote twice.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(binding.getRoot().getContext(), "You cannot up vote twice.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -119,12 +118,11 @@ public class PostFragment extends Fragment {
                 downvoted = true;
                 upvoted = false;
             }else{
-                Toast.makeText(binding.getRoot().getContext(), "You cannot down twice.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(binding.getRoot().getContext(), "You cannot down vote twice.", Toast.LENGTH_SHORT).show();
             }
         });
 
         binding.postOptionsBtn.setOnClickListener(view -> {
-            Log.d("++Post Button", "Post options button clicked");
             //TODO: show options. (delete, edit, etc)
         });
 
