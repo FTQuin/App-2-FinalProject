@@ -69,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        enableMyLocation();
+
         //Prevents UI initialization until location permissions granted.
-        if (!locationPermissionGranted){
-            enableMyLocation();
-        } else{
+        if (locationPermissionGranted){
             initUI();
         }
     }
