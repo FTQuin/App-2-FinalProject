@@ -25,6 +25,10 @@ public class PostFragment extends Fragment {
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mPostRef = mRootRef.child("posts");
 
+    private boolean upvoted = false;
+    private boolean downvoted = false;
+    private boolean voted = false;
+
     public PostFragment() {
         // Required empty public constructor
     }
@@ -81,24 +85,14 @@ public class PostFragment extends Fragment {
         }
 
         binding.getRoot().setOnClickListener(view -> {
-            ViewPostFragment mFragment = new ViewPostFragment();
-            Bundle mBundle = new Bundle();
-            mBundle.putString("post_id", post.getPostId());
-            mFragment.setArguments(mBundle);
-
-            //TODO: implement scroll or delete code
-            int loc[] = new int[2];
-            view.getLocationInWindow(loc);
-//            Toast.makeText(view.getContext(),"X "+loc[0] +"\nY "+loc[1],Toast.LENGTH_SHORT).show();
-
-            ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainerView, mFragment).addToBackStack(null).commit();
+            openPost(post, view);
         });
 
         binding.upVoteBtn.setOnClickListener(view -> {
             //to update vote count in db only once.
             //up and down vote counts don't actually do anything yet.
-            /*if(voted == false){
+            Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
+            if(!voted){
                 //access database via votePost(post.getPostId()).
                 voted = true;
             }
@@ -109,16 +103,15 @@ public class PostFragment extends Fragment {
                 downvoted = false;
             }else{
                 Toast.makeText(binding.getRoot().getContext(), "You cannot upvote twice.", Toast.LENGTH_SHORT).show();
-            }*/
-            Toast.makeText(binding.getRoot().getContext(), "Up voted.", Toast.LENGTH_SHORT).show();
-            //TODO: Update number of votes in database. Update text view with new number.
+            }
         });
 
         binding.downVoteBtn.setOnClickListener(view -> {
             //to update vote count in db only once.
             //up and down vote counts don't actually do anything yet.
-            /*if(voted == false){
-                //access database via votePost(post.getPostId()).
+            Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
+            if(!voted){
+                //TODO: access database via votePost(post.getPostId()).
                 voted = true;
             }
             if(!downvoted){
@@ -127,9 +120,7 @@ public class PostFragment extends Fragment {
                 upvoted = false;
             }else{
                 Toast.makeText(binding.getRoot().getContext(), "You cannot down twice.", Toast.LENGTH_SHORT).show();
-            }*/
-            Toast.makeText(binding.getRoot().getContext(), "Up voted.", Toast.LENGTH_SHORT).show();
-            //TODO: Update number of votes in database. Update text view.
+            }
         });
 
         binding.postOptionsBtn.setOnClickListener(view -> {
@@ -138,9 +129,24 @@ public class PostFragment extends Fragment {
         });
 
         binding.commentBtn.setOnClickListener(view -> {
-            Log.d("++Post Button", "Comment button clicked");
-            //TODO: show view post fragment.
+            openPost(post, view);
         });
+    }
+
+    //Opens specified ViewPostFragment.
+    private void openPost(Post post, View view){
+        ViewPostFragment mFragment = new ViewPostFragment();
+        Bundle mBundle = new Bundle();
+        mBundle.putString("post_id", post.getPostId());
+        mFragment.setArguments(mBundle);
+
+        //TODO: implement scroll or delete code
+        int loc[] = new int[2];
+        view.getLocationInWindow(loc);
+//            Toast.makeText(view.getContext(),"X "+loc[0] +"\nY "+loc[1],Toast.LENGTH_SHORT).show();
+
+        ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainerView, mFragment).addToBackStack(null).commit();
     }
     // TODO: make set post (post) and setPost(post, binding)
     // use sP(p, b) in PostListAdapter and sP(p) in ViewPostFragment
