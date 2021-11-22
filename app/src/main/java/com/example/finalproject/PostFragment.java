@@ -11,10 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 
 import com.example.finalproject.database.Post;
 import com.example.finalproject.databinding.FragmentPostBinding;
+import com.example.finalproject.feed.FeedFragment;
 import com.example.finalproject.viewpost.ViewPostFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -96,8 +98,6 @@ public class PostFragment extends Fragment {
                         binding.continueReadingTxt.setVisibility(View.VISIBLE);
                     }
                 }
-
-
             }
         });
 
@@ -161,8 +161,15 @@ public class PostFragment extends Fragment {
         view.getLocationInWindow(loc);
 //            Toast.makeText(view.getContext(),"X "+loc[0] +"\nY "+loc[1],Toast.LENGTH_SHORT).show();
 
-        ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainerView, mFragment).addToBackStack(null).commit();
+        final Fragment fragmentInFrame = ((MainActivity) view.getContext())
+                .getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+
+        //To prevent infinite adding to back stack when clicking post in ViewPostFragment.
+        if (fragmentInFrame instanceof FeedFragment){
+            ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .replace(R.id.fragmentContainerView, mFragment).addToBackStack(null).commit();
+        }
     }
     // TODO: make set post (post) and setPost(post, binding)
     // use sP(p, b) in PostListAdapter and sP(p) in ViewPostFragment
