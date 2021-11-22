@@ -105,6 +105,9 @@ public class DBRepository {
             mPostRef.push().setValue(params[0]).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     // then add to local database
+                    //TODO: Stop this from crashing app.
+                    /*Moving it to opPostExecute function below d.i.b may have fixed it but
+                     Apparently Async Task is depreciated. Switch to Java.util.concurrent? */
                     mAsyncTaskDao.insert(params[0]);
                     Log.d("===TESTING: NEW_POST===", "Publish successful.");
                 }
