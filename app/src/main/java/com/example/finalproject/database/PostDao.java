@@ -30,7 +30,7 @@ public interface PostDao {
     void deleteAllPosts();
 
     // Simple query without parameters that returns values.
-    @Query("SELECT * from post_table ORDER BY postId ASC")
+    @Query("SELECT * from post_table ORDER BY postId DESC")
     LiveData<List<Post>> getAllPosts();
 
     // Query with parameter that returns a specific post or posts.
