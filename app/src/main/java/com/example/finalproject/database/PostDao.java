@@ -33,6 +33,10 @@ public interface PostDao {
     @Query("SELECT * from post_table ORDER BY postId DESC")
     LiveData<List<Post>> getAllPosts();
 
+    //Query to return posts that were posted to specified area. Shoudl use instead of above getAllPosts()
+    @Query("SELECT * from post_table WHERE locality LIKE :loc AND subAdminArea LIKE :subAdmin ORDER BY postId DESC")
+    LiveData<List<Post>> getAllPosts(String loc, String subAdmin);
+
     // Query with parameter that returns a specific post or posts.
     @Query("SELECT * FROM post_table WHERE postId LIKE :post ")
     List<Post> findPost(String post);

@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.finalproject.database.DBViewModel;
 import com.example.finalproject.database.Post;
 import com.example.finalproject.databinding.FragmentNewPostBinding;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,17 +35,18 @@ public class NewPostFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     //private static final String ARG_DEVICE_LOC = "device_location";
-    private static final String ARG_DEVICE_LAT = "location_latitude";
-    private static final String ARG_DEVICE_LONG = "location_longitude";
+    //private static final String ARG_DEVICE_LAT = "location_latitude";
+    //private static final String ARG_DEVICE_LONG = "location_longitude";
+    private static final String ARG_LOCALITY = "locality";
+    private static final String ARG_SUB_ADMIN_AREA = "sub_admin_area";
 
     private FragmentNewPostBinding binding;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
     private DatabaseReference mPostRef = mRootRef.child("posts");
 
     private String editTitle, editContent, date, locationName;
-    private LatLng location;
 
-    private String deviceLocation, locationLat, locationLong;
+    private String locality, subAdminArea;
     private DBViewModel viewModel;
 
     public NewPostFragment() {
@@ -60,12 +60,12 @@ public class NewPostFragment extends Fragment {
      * @return A new instance of fragment NewPostFragment.
      */
     //public static NewPostFragment newInstance(String deviceLocation) {
-    public static NewPostFragment newInstance(String locationLat, String locationLong) {
+    public static NewPostFragment newInstance(String locality, String subAdminArea) {
         NewPostFragment fragment = new NewPostFragment();
         Bundle args = new Bundle();
         //args.putString(ARG_DEVICE_LOC, deviceLocation);
-        args.putString(ARG_DEVICE_LAT, locationLat);
-        args.putString(ARG_DEVICE_LONG, locationLong);
+        args.putString(ARG_LOCALITY, locality);
+        args.putString(ARG_SUB_ADMIN_AREA, subAdminArea);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +76,8 @@ public class NewPostFragment extends Fragment {
 
         if (getArguments() != null) {
             //deviceLocation = getArguments().getString(ARG_DEVICE_LOC);
-            locationLat = getArguments().getString(ARG_DEVICE_LAT);
-            locationLong = getArguments().getString(ARG_DEVICE_LONG);
+            locality = getArguments().getString(ARG_LOCALITY);
+            subAdminArea = getArguments().getString(ARG_SUB_ADMIN_AREA);
         }
     }
 
@@ -96,6 +96,11 @@ public class NewPostFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
+        String loc = locality;
+        String saa = subAdminArea;
+
+        Toast.makeText(getContext(), "Location:\n" + loc + "\n"+ saa, Toast.LENGTH_SHORT).show();
+
         binding.publishPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,20 +116,19 @@ public class NewPostFragment extends Fragment {
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
                     date = df.format(d);
 
-                    //locationName = deviceLocation;
-                    //double latitude = Double.parseDouble(locationLat);
-                    //double longitude = Double.parseDouble(locationLong);
+                    //String loc = locality;
+                    //String saa = subAdminArea;
 
-                    //TODO: delete these.
+                    //TODO: delete these and uncomment above.
                     /*Just had them hardcoded because location isn't fully working yet.*/
-                    double latitude = 50.6700;
-                    double longitude = -120.3274;
+                    String loc = "Kamloops";
+                    String saa = "Thompson-Nicola";
 
                     String postId = mRootRef.push().getKey();
 
                     Log.d("New PostId:", postId);
 
-                    Post post = new Post(postId, editTitle, editContent, date, latitude, longitude, 1, 0);
+                    Post post = new Post(postId, editTitle, editContent, date, loc, saa, 1, 0);
 
                     viewModel.insertPost(post);
 

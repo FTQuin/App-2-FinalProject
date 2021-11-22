@@ -21,11 +21,11 @@ public class Post {
     @ColumnInfo(name = "content")
     private String content;
     @NonNull
-    @ColumnInfo(name = "latitude")
-    private double latitude;
+    @ColumnInfo(name = "locality")
+    private String locality;
     @NonNull
-    @ColumnInfo(name = "longitude")
-    private double longitude;
+    @ColumnInfo(name = "subAdminArea")
+    private String subAdminArea;
     @NonNull
     @ColumnInfo(name = "numVotes")
     private long numVotes;
@@ -36,10 +36,9 @@ public class Post {
     @ColumnInfo(name = "date")
     private String date;
 
-    public Post(){};
-
+    public Post(){}
     public Post(@NonNull String postId, @NonNull String title, @NonNull String content,
-                @NonNull String date, @NonNull double lat, @NonNull double lon,
+                @NonNull String date, @NonNull String locality, @NonNull String subAdminArea,
                 @NonNull long numVotes, @NonNull long numComments){
         this.postId = postId;
         this.title = title;
@@ -47,9 +46,8 @@ public class Post {
         this.date = date;
         this.numVotes = numVotes;
         this.numComments = numComments;
-
-        this.latitude = lat;
-        this.longitude = lon;
+        this.locality = locality;
+        this.subAdminArea = subAdminArea;
     }
 
     public String getPostId(){
@@ -73,21 +71,19 @@ public class Post {
         this.content = content;
     }
 
-    public void setLocation(double lat, double lon){
-        this.latitude = lat;
-        this.longitude = lon;
+    public String getLocality(){
+        return locality;
     }
-    public double getLatitude() {
-        return latitude;
+    public void setLocality(@NonNull String locality) {
+        this.locality = locality;
     }
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+
+    @NonNull
+    public String getSubAdminArea() {
+        return subAdminArea;
     }
-    public double getLongitude() {
-        return longitude;
-    }
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setSubAdminArea(@NonNull String subAdminArea) {
+        this.subAdminArea = subAdminArea;
     }
 
     public long getNumVotes(){
@@ -117,8 +113,8 @@ public class Post {
                 "postId='" + postId + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", locality=" + locality +
+                ", subAdminArea=" + subAdminArea +
                 ", numVotes=" + numVotes +
                 ", numComments=" + numComments +
                 ", date='" + date + '\'' +
