@@ -19,21 +19,55 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="5dp"
             android:background="@color/background"
-            app:layout_constraintBottom_toTopOf="@+id/fragmentContainerViewComments"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/newCommentHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="-12dp"
+            app:layout_constraintTop_toBottomOf="@id/fragmentContainerViewPost"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:background="@color/white">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="0.30"
+                android:background="@color/background"
+                android:hint="Write a comment..."
+                android:padding="6dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <ImageButton
+                android:id="@+id/postCommentBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-3dp"
+                android:src="@drawable/ic_check_circle_40"
+                android:background="@android:color/transparent"/>
+
+        </LinearLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerViewComments"
             android:name="com.example.finalproject.viewpost.CommentRecycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="5dp"
             android:background="@color/background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentContainerViewPost" />
+            app:layout_constraintTop_toBottomOf="@+id/newCommentHolder" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
