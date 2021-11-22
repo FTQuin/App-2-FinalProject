@@ -112,10 +112,13 @@ public class NewPostFragment extends Fragment {
                     date = df.format(d);
 
                     //locationName = deviceLocation;
-                    double latitude = Double.parseDouble(locationLat);
-                    double longitude = Double.parseDouble(locationLong);
+                    //double latitude = Double.parseDouble(locationLat);
+                    //double longitude = Double.parseDouble(locationLong);
 
-                    location = new LatLng( 50.665493, -120.332842);
+                    //TODO: delete these.
+                    /*Just had them hardcoded because location isn't fully working yet.*/
+                    double latitude = 50.6700;
+                    double longitude = -120.3274;
 
                     String postId = mRootRef.push().getKey();
 
