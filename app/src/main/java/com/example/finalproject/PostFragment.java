@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
@@ -48,15 +50,6 @@ public class PostFragment extends Fragment {
         return createBinding(inflater, container).getRoot();
     }
 
-    // This event is triggered after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        //button onClick listeners located in PostListAdapter.java
-    }
-
     public FragmentPostBinding createBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container){
         // Inflate the layout for this fragment using view binding
         if(binding == null)
@@ -71,6 +64,7 @@ public class PostFragment extends Fragment {
 
     public void setPostView(Post post, ViewModel viewModel){
         if (post != null) {
+            binding.continueReadingTxt.setVisibility(View.INVISIBLE);
             binding.postTitleText.setText(post.getTitle());
             binding.postContentText.setText(post.getContent());
             binding.postDateText.setText(post.getDate());
@@ -82,6 +76,30 @@ public class PostFragment extends Fragment {
             binding.postTitleText.setText(R.string.error_loading_posts);
             binding.postContentText.setText(R.string.error_loading_posts_desc);
         }
+
+        //gets number of lines in post to add a "continue reading" prompt.
+        binding.postContentText.post(new Runnable() {
+            @Override
+            public void run() {
+                int lineCount = binding.postContentText.getLineCount();
+                int shownLines = binding.postContentText.getMaxLines();
+
+                if (shownLines <= 6) {
+                    if (lineCount > 6){
+                        ConstraintLayout constraintLayout = binding.container;
+                        ConstraintSet constraintSet = new ConstraintSet();
+
+                        constraintSet.clone(constraintLayout);
+                        constraintSet.connect(R.id.divider,ConstraintSet.TOP, R.id.continueReadingTxt,ConstraintSet.BOTTOM,0);
+                        constraintSet.applyTo(constraintLayout);
+
+                        binding.continueReadingTxt.setVisibility(View.VISIBLE);
+                    }
+                }
+
+
+            }
+        });
 
         binding.getRoot().setOnClickListener(view -> {
             openPost(post, view);
