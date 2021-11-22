@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     android:orientation="vertical"
-    app:cardCornerRadius="14dp">
+    app:cardCornerRadius="6dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
@@ -37,6 +37,7 @@
             android:id="@+id/postContentText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:padding="4dp"
             android:maxLines="6"
             android:text="@string/post_content_placeholder"
             android:textAlignment="viewStart"
@@ -44,6 +45,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/postTitleText" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="@color/theme_colour"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postContentText"
+            tools:layout_editor_absoluteY="4dp" />
 
         <RelativeLayout
             android:id="@+id/linearLayout"
@@ -53,7 +66,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postContentText">
+            app:layout_constraintTop_toBottomOf="@+id/divider">
 
             <ImageButton
                 android:id="@+id/commentBtn"
@@ -78,7 +91,7 @@
                 android:id="@+id/upVoteBtn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="26dp"
+                android:layout_marginStart="20dp"
                 android:layout_toEndOf="@+id/commentBtn"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_arrow_up"
