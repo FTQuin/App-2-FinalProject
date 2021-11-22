@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean permissionDenied = false;
     private boolean locationPermissionGranted = false;
     private Location lastKnownLocation;
+    private Bundle mBundle;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         feedFragment = new FeedFragment();
         newPostFragment = new NewPostFragment();
         menuFragment = new MenuFragment();
+        mBundle = new Bundle();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         //Remove top app title bar
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         //Prevents UI initialization until location permissions granted.
         if (locationPermissionGranted){
             initUI();
+        } else{
+            enableMyLocation();
         }
     }
 
@@ -101,22 +105,19 @@ public class MainActivity extends AppCompatActivity {
 
                 String locationTxt = binding.locationText.getText().toString();
 
-                NewPostFragment mFragment = new NewPostFragment();
-                Bundle mBundle = new Bundle();
-                mBundle.putString("device_location", locationTxt);
-                mFragment.setArguments(mBundle);
-
                 if (fragmentInFrame instanceof FeedFragment){
+                    NewPostFragment mFragment = new NewPostFragment();
+                    //mBundle.putString("device_location", locationTxt);
+                    mFragment.setArguments(mBundle);
+
                     fragmentManager.beginTransaction().setTransition(FragmentTransaction
                             .TRANSIT_FRAGMENT_OPEN).add(binding.fragmentContainerView.getId(),
                             mFragment).addToBackStack("feed_frag").commit();
-                    //binding.newPostBtn.setImageResource(R.drawable.ic_down_40);
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             0, 135).setDuration(250).start();
 
                 }else if (fragmentInFrame instanceof NewPostFragment){
                     fragmentManager.popBackStackImmediate();
-                    //binding.newPostBtn.setImageResource(R.drawable.ic_add);
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             135, 0).setDuration(250).start();
 
@@ -215,10 +216,35 @@ public class MainActivity extends AppCompatActivity {
 
                                     Address address = addresses.get(0);
 
+                                    Log.d("=====Location: ", "Full: " + address);
                                     Log.d("=====Location: ", "Sub admin area: " + address.getSubAdminArea());
                                     Log.d("=====Location: ", "Locality: " + address.getLocality());
 
-                                    binding.locationText.setText(address.getLocality());
+                                    String locality = address.getLocality();
+                                    String subAdmin = address.getSubAdminArea();
+                                    String admin = address.getAdminArea();
+
+                                    String locLat = String.valueOf(address.getLatitude());
+                                    String locLong = String.valueOf(address.getLongitude());
+
+                                    binding.locationText.setText(locality);
+
+                                    //TODO: Agree on how we want to use location.
+                                    /*Location can be either:
+                                    - Locality by default.
+                                        - If no posts exist in locality. Use sub admin area
+                                        - If no posts exist in sub admin. Use admin area.
+                                        - Etc
+                                        - Would have to add those fields to every post.
+                                    - Or Coordinates.
+                                        - If no posts exist in ___ area, expand lat/ long.
+                                        -
+                                     */
+
+                                    //TODO: Put into bundle whatever we decide on.
+                                    mBundle.putString("device_location", locality);
+                                    mBundle.putString("location_latitude", locLat);
+                                    mBundle.putString("location_longitude", locLong);
 
                                     //Populates feed after location is confirmed
                                     fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.finalproject.database.DBViewModel;
+import com.example.finalproject.database.Post;
 import com.example.finalproject.databinding.FragmentNewPostBinding;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
@@ -33,9 +34,10 @@ import java.util.Locale;
  */
 public class NewPostFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_DEVICE_LOC = "device_location";
+    //private static final String ARG_DEVICE_LOC = "device_location";
+    private static final String ARG_DEVICE_LAT = "location_latitude";
+    private static final String ARG_DEVICE_LONG = "location_longitude";
 
     private FragmentNewPostBinding binding;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
@@ -44,8 +46,7 @@ public class NewPostFragment extends Fragment {
     private String editTitle, editContent, date, locationName;
     private LatLng location;
 
-    // TODO: Rename and change types of parameters
-    private String deviceLocation;
+    private String deviceLocation, locationLat, locationLong;
     private DBViewModel viewModel;
 
     public NewPostFragment() {
@@ -58,11 +59,13 @@ public class NewPostFragment extends Fragment {
      *
      * @return A new instance of fragment NewPostFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static NewPostFragment newInstance(String deviceLocation) {
+    //public static NewPostFragment newInstance(String deviceLocation) {
+    public static NewPostFragment newInstance(String locationLat, String locationLong) {
         NewPostFragment fragment = new NewPostFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_DEVICE_LOC, deviceLocation);
+        //args.putString(ARG_DEVICE_LOC, deviceLocation);
+        args.putString(ARG_DEVICE_LAT, locationLat);
+        args.putString(ARG_DEVICE_LONG, locationLong);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,7 +75,9 @@ public class NewPostFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            deviceLocation = getArguments().getString(ARG_DEVICE_LOC);
+            //deviceLocation = getArguments().getString(ARG_DEVICE_LOC);
+            locationLat = getArguments().getString(ARG_DEVICE_LAT);
+            locationLong = getArguments().getString(ARG_DEVICE_LONG);
         }
     }
 
@@ -106,17 +111,19 @@ public class NewPostFragment extends Fragment {
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
                     date = df.format(d);
 
-                    locationName = deviceLocation;
+                    //locationName = deviceLocation;
+                    double latitude = Double.parseDouble(locationLat);
+                    double longitude = Double.parseDouble(locationLong);
 
-                    location = new LatLng( 50.665493, -120.332842); //TODO: Get proper location.
+                    location = new LatLng( 50.665493, -120.332842);
 
                     String postId = mRootRef.push().getKey();
 
                     Log.d("New PostId:", postId);
 
-                    //Post post = new Post(postId, editTitle, editContent, date, location.latitude, location.longitude, 1, 0);
+                    Post post = new Post(postId, editTitle, editContent, date, latitude, longitude, 1, 0);
 
-                    //viewModel.insertPost(post);
+                    viewModel.insertPost(post);
 
                     binding.titleInput.setText("");
                     binding.contentInput.setText("");
@@ -126,7 +133,7 @@ public class NewPostFragment extends Fragment {
                     imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
 
                     //Closes new post fragment.
-                    //NOTE: Fragment must be call addToBackStack() before commit() in main/
+                    //NOTE: Fragment must be call addToBackStack() before commit() in main
                     getActivity().getSupportFragmentManager().popBackStackImmediate();
 
                 }
