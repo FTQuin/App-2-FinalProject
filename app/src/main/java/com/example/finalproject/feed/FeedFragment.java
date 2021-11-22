@@ -34,6 +34,10 @@ public class FeedFragment extends Fragment {
     private PostListAdapter postListAdapter;
     private RecyclerView recyclerView;
 
+    private static final String ARG_LOCALITY = "locality";
+    private static final String ARG_SUB_ADMIN_AREA = "sub_admin_area";
+    private String locality, subAdminArea;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -41,13 +45,23 @@ public class FeedFragment extends Fragment {
     public FeedFragment() {
     }
 
-    public static FeedFragment newInstance() {
-        return new FeedFragment();
+    public static FeedFragment newInstance(String locality, String subAdminArea) {
+        FeedFragment fragment = new FeedFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_LOCALITY, locality);
+        args.putString(ARG_SUB_ADMIN_AREA, subAdminArea);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            locality = getArguments().getString(ARG_LOCALITY);
+            subAdminArea = getArguments().getString(ARG_SUB_ADMIN_AREA);
+        }
     }
 
     @Override
@@ -56,6 +70,9 @@ public class FeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.feed_recycler, container, false);
 
         viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
+
+        String loc = locality;
+        String saa = subAdminArea;
 
         // Set the adapter
         if (view instanceof RecyclerView) {
