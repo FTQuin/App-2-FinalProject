@@ -217,34 +217,14 @@ public class MainActivity extends AppCompatActivity {
                                     Address address = addresses.get(0);
 
                                     Log.d("=====Location: ", "Full: " + address);
-                                    Log.d("=====Location: ", "Sub admin area: " + address.getSubAdminArea());
-                                    Log.d("=====Location: ", "Locality: " + address.getLocality());
 
                                     String locality = address.getLocality();
                                     String subAdmin = address.getSubAdminArea();
-                                    String admin = address.getAdminArea();
-
-                                    String locLat = String.valueOf(address.getLatitude());
-                                    String locLong = String.valueOf(address.getLongitude());
 
                                     binding.locationText.setText(locality);
 
-                                    //TODO: Agree on how we want to use location.
-                                    /*Location can be either:
-                                    - Locality by default.
-                                        - If no posts exist in locality. Use sub admin area
-                                        - If no posts exist in sub admin. Use admin area.
-                                        - Etc
-                                        - Would have to add those fields to every post.
-                                    - Or Coordinates.
-                                        - If no posts exist in ___ area, expand lat/ long.
-                                        -
-                                     */
-
-                                    //TODO: Put into bundle whatever we decide on.
-                                    mBundle.putString("device_location", locality);
-                                    mBundle.putString("location_latitude", locLat);
-                                    mBundle.putString("location_longitude", locLong);
+                                    mBundle.putString("locality", locality);
+                                    mBundle.putString("sub_admin_area", subAdmin);
 
                                     //Populates feed after location is confirmed
                                     fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
