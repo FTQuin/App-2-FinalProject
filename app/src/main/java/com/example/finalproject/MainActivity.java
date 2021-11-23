@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.finalproject.databinding.ActivityMainBinding;
 import com.example.finalproject.feed.FeedFragment;
@@ -166,6 +167,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        SwipeRefreshLayout swipeRefreshContainer = binding.swipeRefreshContainer;
+
+        swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Async task here to refresh feed.
+                getDeviceLocation();
+                swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
+            }
+        });
+
+        swipeRefreshContainer.setColorSchemeResources(R.color.theme_colour);
+
     }
 
     public void onBackPressed(){
@@ -223,8 +237,15 @@ public class MainActivity extends AppCompatActivity {
                                     //feedFragment.setArguments(mBundle);
 
                                     //Populates feed after location is confirmed
-                                    fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
-                                            feedFragment).commit();
+                                    final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+
+                                    if (fragmentInFrame instanceof FeedFragment) {
+                                        fragmentManager.beginTransaction().replace(binding.fragmentContainerView.getId(),
+                                                feedFragment).commit();
+                                    } else {
+                                        fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
+                                                feedFragment).commit();
+                                    }
 
                                 } catch (IOException e) {
                                     e.printStackTrace();
