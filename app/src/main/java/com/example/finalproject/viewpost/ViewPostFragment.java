@@ -32,7 +32,6 @@ public class ViewPostFragment extends Fragment {
 
     private static final String ARG_POST_ID = "post_id";
 
-    // TODO: Rename and change types of parameters
     private String postID;
 
     public ViewPostFragment() {

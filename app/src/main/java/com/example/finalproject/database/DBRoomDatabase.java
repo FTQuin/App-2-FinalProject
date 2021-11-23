@@ -22,7 +22,7 @@ public abstract class DBRoomDatabase extends RoomDatabase {
             synchronized (DBRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            DBRoomDatabase.class, "post_database")
+                            DBRoomDatabase.class, "database")
                             // Wipes and rebuilds instead of migrating if no Migration object.
                             .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)
@@ -53,17 +53,20 @@ public abstract class DBRoomDatabase extends RoomDatabase {
      */
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
-        private final PostDao mDao;
+        private final PostDao pDao;
+        private final CommentDao cDao;
 
         PopulateDbAsync(DBRoomDatabase db) {
-            mDao = db.postDao();
+            pDao = db.postDao();
+            cDao = db.commentDao();
         }
 
         @Override
         protected Void doInBackground(final Void... params) {
             // Start the app with a clean database every time.
             // Not needed if you only populate on creation.
-            mDao.deleteAllPosts();
+            pDao.deleteAllPosts();
+            cDao.deleteAllComments();
 
             return null;
         }

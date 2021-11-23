@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private FeedFragment feedFragment;
-    private NewPostFragment newPostFragment;
     private MenuFragment menuFragment;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         feedFragment = new FeedFragment();
-        newPostFragment = new NewPostFragment();
         menuFragment = new MenuFragment();
         mBundle = new Bundle();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -76,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
         //Prevents UI initialization until location permissions granted.
         if (locationPermissionGranted){
             initUI();
-        } else{
-            enableMyLocation();
         }
     }
 
@@ -102,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final Fragment fragmentInFrame = getSupportFragmentManager()
                         .findFragmentById(R.id.fragmentContainerView);
-
-                String locationTxt = binding.locationText.getText().toString();
 
                 if (fragmentInFrame instanceof FeedFragment){
                     NewPostFragment mFragment = new NewPostFragment();
@@ -225,6 +219,8 @@ public class MainActivity extends AppCompatActivity {
 
                                     mBundle.putString("locality", locality);
                                     mBundle.putString("sub_admin_area", subAdmin);
+
+                                    //feedFragment.setArguments(mBundle);
 
                                     //Populates feed after location is confirmed
                                     fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),

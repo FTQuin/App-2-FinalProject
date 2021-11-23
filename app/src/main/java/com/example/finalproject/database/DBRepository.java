@@ -21,9 +21,10 @@ public class DBRepository {
     private CommentDao mCommentDao;
     private LiveData<List<Post>> mAllPosts;
     private LiveData<List<Comment>> mAllComments;
+    private String locality, subAdminArea;
 
     private static DatabaseReference mRootRef;
-    private static DatabaseReference mPostRef;
+    private static DatabaseReference mFeedRef;
     private static DatabaseReference mComRef;
 
     public DBRepository(Application application) {
@@ -33,16 +34,42 @@ public class DBRepository {
         mAllPosts = mPostDao.getAllPosts();
         mAllComments = mCommentDao.getAllComments();
 
-        mRootRef = FirebaseDatabase.getInstance().getReference();;
-        mPostRef = mRootRef.child("posts");
+        //TODO: Set these as actual values from main activity
+        //String loc = locality;
+        //String subAdmin = subAdminArea;
+
+        //Hard coded until we figure out how to retrieve actual values.
+        String locality = "Kamloops";
+        String subAdmin = "Thompson-Nicola";
+
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mFeedRef = mRootRef.child("feeds").child(subAdmin).child(locality);
         mComRef = mRootRef.child("comments");
 
-        // add data listener for firebase
-        // posts
-        mPostRef.addValueEventListener(new ValueEventListener() {
+        //TODO: set mFeedRef to subAdmin if no posts in locality
+        /*mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild(locality)){
+                    mFeedRef = mRootRef.child("feeds").child(subAdmin).child(locality);
+                }else{
+                    mFeedRef = mRootRef.child("feeds").child(subAdmin);
+                    //Need to then access all locality children to get posts from them.
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("repo-error", "Failed to retrieve posts.", error.toException());
+            }
+        });*/
+
+        //Old post data listener:
+        mFeedRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data : snapshot.getChildren()){
+
                     Post p = data.getValue(Post.class);
                     new initPostsAsyncTask(mPostDao).execute(p);
                 }
@@ -50,11 +77,15 @@ public class DBRepository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.w("repo-error", "Failed to retrieve posts.", error.toException());
             }
         });
+    }
 
-        // comments
+    //Initializes comments. Not called until post is clicked.
+    //TODO: change this to initialize comments based off post ID.
+    //Currently initialized ALL comments, but only loads post id based ones into room db.
+    public void commentInit(){
         mComRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -66,7 +97,7 @@ public class DBRepository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.w("repo-error", "Failed to retrieve comments.", error.toException());
             }
         });
     }
@@ -91,6 +122,7 @@ public class DBRepository {
         mPostDao.votePost(postId);
     }
 
+    //Async tasks
     private static class insertPostAsyncTask extends AsyncTask<Post, Void, Void> {
 
         private PostDao mAsyncTaskDao;
@@ -102,11 +134,11 @@ public class DBRepository {
         @Override
         protected Void doInBackground(final Post... params) {
             // add to firebase first
-            mPostRef.push().setValue(params[0]).addOnCompleteListener(task -> {
+            mFeedRef.push().setValue(params[0]).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     // then add to local database
                     //TODO: Stop this from crashing app.
-                    /*Moving it to opPostExecute function below d.i.b may have fixed it but
+                    /*Moving it to onPostExecute function below d.i.b may have fixed it but
                      Apparently Async Task is depreciated. Switch to Java.util.concurrent? */
                     mAsyncTaskDao.insert(params[0]);
                     Log.d("===TESTING: NEW_POST===", "Publish successful.");
@@ -140,6 +172,11 @@ public class DBRepository {
         return mAllComments;
     }
 
+    public LiveData<List<Comment>> getCommentsForPost(String postID) {
+        commentInit();
+        return mCommentDao.getCommentsForPost(postID);
+    }
+
     public void insertComment(Comment comment) {
         new insertCommentAsyncTask(mCommentDao).execute(comment);
     }
@@ -148,6 +185,7 @@ public class DBRepository {
         deleteComment(commentId);
     }
 
+    //Async tasks
     private static class insertCommentAsyncTask extends AsyncTask<Comment, Void, Void> {
 
         private CommentDao mAsyncTaskDao;
@@ -184,6 +222,8 @@ public class DBRepository {
         @Override
         protected Void doInBackground(final Comment... params) {
             mAsyncTaskDao.insert(params[0]);
+
+            Log.d("commentinit", "Comments" + params[0]);
 
             return null;
         }

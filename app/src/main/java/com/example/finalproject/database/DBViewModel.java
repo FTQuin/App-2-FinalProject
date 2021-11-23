@@ -18,11 +18,15 @@ public class DBViewModel extends AndroidViewModel {
         super(application);
         mRepository = new DBRepository(application);
         mAllPosts = mRepository.getAllPosts();
-        mAllComments = mRepository.getAllComments();
+        //mAllComments = mRepository.getAllComments();
     }
 
     public LiveData<List<Post>> getAllPosts() { return mAllPosts; }
     public LiveData<List<Comment>> getAllComments() { return mAllComments; }
+
+    public LiveData<List<Comment>> getCommentsForPost(String postID){
+        return mRepository.getCommentsForPost(postID);
+    }
 
     public void votePost(String postId) {mRepository.votePost(postId);}
 

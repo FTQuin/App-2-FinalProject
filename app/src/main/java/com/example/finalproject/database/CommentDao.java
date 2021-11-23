@@ -21,6 +21,9 @@ public interface CommentDao {
     @Update
     public void updateComments(Comment... comments);
 
+    @Query("DELETE FROM comment_table ")
+    void deleteAllComments();
+
     // Simple query that does not take parameters and returns nothing.
     @Query("DELETE FROM comment_table WHERE id LIKE :com_id")
     void deleteComment(String com_id);
@@ -28,6 +31,9 @@ public interface CommentDao {
     // Simple query without parameters that returns values.
     @Query("SELECT * from comment_table ORDER BY id ASC")
     LiveData<List<Comment>> getAllComments();
+
+    @Query("SELECT * FROM comment_table WHERE postId LIKE :post_id ORDER BY id ASC")
+    LiveData<List<Comment>> getCommentsForPost(String post_id);
 
     // Query with parameter that returns a specific comment or comments.
     @Query("SELECT * FROM comment_table WHERE id LIKE :search_id ")

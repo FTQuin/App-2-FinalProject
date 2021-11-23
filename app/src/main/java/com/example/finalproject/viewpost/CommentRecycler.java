@@ -2,6 +2,7 @@ package com.example.finalproject.viewpost;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class CommentRecycler extends Fragment {
 
     private DBViewModel viewModel;
 
+    private String postID;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -42,9 +45,9 @@ public class CommentRecycler extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        if (getArguments() != null) {
-//            mColumnCount = getArguments().getInt(ARG_POST_ID);
-//        }
+        if (getArguments() != null) {
+            postID = getArguments().getString(ARG_POST_ID);
+        }
     }
 
     //TODO: move to onViewCreated
@@ -55,13 +58,15 @@ public class CommentRecycler extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
+        Log.d("postidtest", "post id received in Comment Recycler: " + postID);
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            //TODO: change this to get just comments for specific post
-            viewModel.getAllComments().observe(getViewLifecycleOwner(),
+            //TODO: get clicked post id from post fragment
+            viewModel.getCommentsForPost("-Mny-YIDGwEfaESAqsUO").observe(getViewLifecycleOwner(),
                     comments -> recyclerView.setAdapter(new CommentAdapter(comments)));
         }
         return view;
