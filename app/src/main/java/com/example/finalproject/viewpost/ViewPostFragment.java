@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.finalproject.PostFragment;
 import com.example.finalproject.R;
@@ -93,5 +94,18 @@ public class ViewPostFragment extends Fragment {
             postFragment.getBinding().postContentText.setMaxLines(12);
             //postFragment.getBinding().postContentText.setMovementMethod(new ScrollingMovementMethod());
         }
+
+        SwipeRefreshLayout swipeRefreshContainer = binding.swipeRefreshContainer;
+
+        swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Async task here to refresh comments.
+                viewModel.getCommentsForPost(postID);
+                swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
+            }
+        });
+
+        swipeRefreshContainer.setColorSchemeResources(R.color.theme_colour);
     }
 }
