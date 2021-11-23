@@ -119,7 +119,8 @@ public class DBRepository {
     }
 
     public void votePost(String postId){
-        mPostDao.votePost(postId);
+        //mPostDao.votePost(postId);
+        new votePostAsyncTask(mPostDao).execute(postId);
     }
 
     //Async tasks
@@ -134,7 +135,8 @@ public class DBRepository {
         @Override
         protected Void doInBackground(final Post... params) {
             // add to firebase first
-            mFeedRef.push().setValue(params[0]).addOnCompleteListener(task -> {
+            String id = params[0].getPostId();
+            mFeedRef.child(id).setValue(params[0]).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     // then add to local database
                     //TODO: Stop this from crashing app.
@@ -144,7 +146,6 @@ public class DBRepository {
                     Log.d("===TESTING: NEW_POST===", "Publish successful.");
                 }
             });
-
             return null;
         }
     }
