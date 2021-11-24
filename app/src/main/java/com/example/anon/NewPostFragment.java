@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.anon;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,9 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.finalproject.database.DBViewModel;
-import com.example.finalproject.database.Post;
-import com.example.finalproject.databinding.FragmentNewPostBinding;
+import com.example.anon.database.DBViewModel;
+import com.example.anon.database.Post;
+import com.example.anon.databinding.FragmentNewPostBinding;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

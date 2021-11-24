@@ -1,4 +1,4 @@
-package com.example.finalproject.feed;
+package com.example.anon.feed;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +9,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalproject.PostFragment;
-import com.example.finalproject.database.DBViewModel;
-import com.example.finalproject.database.Post;
+import com.example.anon.PostFragment;
+import com.example.anon.database.DBViewModel;
+import com.example.anon.database.Post;
 
 import java.util.List;
 

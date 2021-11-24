@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.anon;
 
 import android.Manifest;
 import android.app.AlertDialog;

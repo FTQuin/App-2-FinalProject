@@ -1,4 +1,4 @@
-package com.example.finalproject.viewpost;
+package com.example.anon.viewpost;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalproject.R;
-import com.example.finalproject.database.DBViewModel;
+import com.example.anon.R;
+import com.example.anon.database.DBViewModel;
 
 /**
  * A fragment representing a list of Items.

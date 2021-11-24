@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.anon;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -25,8 +25,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.finalproject.databinding.ActivityMainBinding;
-import com.example.finalproject.feed.FeedFragment;
+import com.example.anon.databinding.ActivityMainBinding;
+import com.example.anon.feed.FeedFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        //TODO: Move swipe refresh for feed somewhere else. Interferes with view post when here.
         SwipeRefreshLayout swipeRefreshContainer = binding.swipeRefreshContainer;
 
         swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.anon;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,12 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 
-import com.example.finalproject.database.Post;
-import com.example.finalproject.databinding.FragmentPostBinding;
-import com.example.finalproject.feed.FeedFragment;
-import com.example.finalproject.viewpost.ViewPostFragment;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.anon.database.DBViewModel;
+import com.example.anon.database.Post;
+import com.example.anon.databinding.FragmentPostBinding;
+import com.example.anon.feed.FeedFragment;
+import com.example.anon.viewpost.ViewPostFragment;
 
 public class PostFragment extends Fragment {
 
@@ -72,7 +71,6 @@ public class PostFragment extends Fragment {
             binding.postDateText.setText(post.getDate());
             binding.numVotesText.setText(String.valueOf(post.getNumVotes()));
             binding.numCommentsText.setText(String.valueOf(post.getNumComments()));
-
         } else {
             // Covers the case of data not being ready yet.
             binding.postTitleText.setText(R.string.error_loading_posts);

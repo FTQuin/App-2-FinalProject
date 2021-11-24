@@ -1,4 +1,4 @@
-package com.example.finalproject.viewpost;
+package com.example.anon.viewpost;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,11 +13,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.finalproject.PostFragment;
-import com.example.finalproject.R;
-import com.example.finalproject.database.DBViewModel;
-import com.example.finalproject.database.Post;
-import com.example.finalproject.databinding.FragmentViewPostBinding;
+import com.example.anon.PostFragment;
+import com.example.anon.R;
+import com.example.anon.database.DBViewModel;
+import com.example.anon.database.Post;
+import com.example.anon.databinding.FragmentViewPostBinding;
 
 /**
  * A simple {@link Fragment} subclass.

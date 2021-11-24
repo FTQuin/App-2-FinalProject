@@ -1,19 +1,17 @@
-package com.example.finalproject;
+package com.example.anon;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
-import com.example.finalproject.database.Comment;
-import com.example.finalproject.databinding.FragmentCommentBinding;
+import com.example.anon.database.Comment;
+import com.example.anon.databinding.FragmentCommentBinding;
 
 public class CommentFragment extends Fragment {
 

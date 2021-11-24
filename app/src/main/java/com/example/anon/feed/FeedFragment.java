@@ -1,4 +1,4 @@
-package com.example.finalproject.feed;
+package com.example.anon.feed;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalproject.R;
-import com.example.finalproject.database.DBRepository;
-import com.example.finalproject.database.DBViewModel;
-import com.example.finalproject.database.Post;
-import com.example.finalproject.databinding.FeedRecyclerBinding;
+import com.example.anon.R;
+import com.example.anon.database.DBRepository;
+import com.example.anon.database.DBViewModel;
+import com.example.anon.database.Post;
+import com.example.anon.databinding.FeedRecyclerBinding;
 
 import java.util.List;
 

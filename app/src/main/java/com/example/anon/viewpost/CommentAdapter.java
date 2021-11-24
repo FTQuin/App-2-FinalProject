@@ -1,4 +1,4 @@
-package com.example.finalproject.viewpost;
+package com.example.anon.viewpost;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalproject.database.Comment;
-import com.example.finalproject.databinding.FragmentCommentBinding;
+import com.example.anon.database.Comment;
+import com.example.anon.databinding.FragmentCommentBinding;
 
 import java.util.List;
 
