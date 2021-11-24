@@ -1,6 +1,7 @@
 package com.example.finalproject.viewpost;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +92,7 @@ public class ViewPostFragment extends Fragment {
 
         if (postFragment.getBinding().postContentText.getText().length() > 360){
             //TODO: Either set max lines higher or uncomment scrolling line.
-            postFragment.getBinding().postContentText.setMaxLines(12);
+            postFragment.getBinding().postContentText.setMaxLines(Integer.MAX_VALUE);
             //postFragment.getBinding().postContentText.setMovementMethod(new ScrollingMovementMethod());
         }
 
@@ -101,7 +102,8 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onRefresh() {
                 //Async task here to refresh comments.
-                viewModel.getCommentsForPost(postID);
+                //viewModel.getCommentsForPost(postID);
+                Log.d("refresh", "Refreshing comments");
                 swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
             }
         });
