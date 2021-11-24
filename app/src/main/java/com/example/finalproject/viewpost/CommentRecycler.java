@@ -66,7 +66,7 @@ public class CommentRecycler extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             //TODO: get clicked post id from post fragment
-            viewModel.getCommentsForPost("-Mny-YIDGwEfaESAqsUO").observe(getViewLifecycleOwner(),
+            viewModel.getCommentsForPost("-Mny-YICkvJ2p-rXRLus").observe(getViewLifecycleOwner(),
                     comments -> recyclerView.setAdapter(new CommentAdapter(comments)));
         }
         return view;
