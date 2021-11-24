@@ -160,8 +160,26 @@ public class DBRepository {
 
         @Override
         protected Void doInBackground(final Post... params) {
+            //mFeedRef.child()
+
             mAsyncTaskDao.insert(params[0]);
 
+            return null;
+        }
+    }
+
+    private static class votePostAsyncTask extends AsyncTask<String, Void, Void> {
+
+        private PostDao mAsyncTaskDao;
+
+        votePostAsyncTask(PostDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(String... postid) {
+            Log.d("repo-test", "VotePostAsyncTask id: " + postid[0]);
+            mAsyncTaskDao.votePost(postid[0]);
             return null;
         }
     }
