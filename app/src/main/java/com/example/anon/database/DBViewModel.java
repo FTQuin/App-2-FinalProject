@@ -19,19 +19,20 @@ public class DBViewModel extends AndroidViewModel {
 
     public DBViewModel(Application application) {
         super(application);
+        mRepository = new DBRepository(getApplication());
+        mAllPosts = mRepository.getAllPosts();
     }
 
     //Initializes repository with received locality and subAdminArea.
     public void initRepository(){
-        mRepository = new DBRepository(getApplication(), locality, subAdmin);
-        mAllPosts = mRepository.getAllPosts();
 
         Log.d("viewModel", "Locations in view model: " + locality + subAdmin);
     }
 
     //Refreshes repository. Used after new post is inserted.
     public void refreshRepository(){
-        mRepository = new DBRepository(getApplication(), locality, subAdmin);
+        //TODO: dont make new repo, add a method in repo to refresh it
+        mRepository.refreshFeed();
     }
 
     public String getLocality(){
@@ -46,6 +47,8 @@ public class DBViewModel extends AndroidViewModel {
     public void passLocation(String loc, String saa){
         this.locality = loc;
         this.subAdmin = saa;
+
+        mRepository.passLocation(loc, saa);
     }
 
     public LiveData<List<Post>> getAllPosts() { return mAllPosts; }

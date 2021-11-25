@@ -77,8 +77,6 @@ public class FeedFragment extends Fragment {
             //viewModel.passLocation(locality, subAdminArea);
         }
 
-        viewModel.initRepository();
-
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();

@@ -28,17 +28,15 @@ public class DBRepository {
     private static DatabaseReference mComRef;
     private static DatabaseReference mPostsRef;
 
-    public DBRepository(Application application, String loc, String saa) {
+    public DBRepository(Application application) {
         DBRoomDatabase db = DBRoomDatabase.getDatabase(application);
         mPostDao = db.postDao();
         mCommentDao = db.commentDao();
         mAllPosts = mPostDao.getAllPosts();
         mAllComments = mCommentDao.getAllComments();
 
-        Log.d("repo", "Location in repository: " + loc + saa);
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
-        mFeedRef = mRootRef.child("feeds").child(saa).child(loc);
         mComRef = mRootRef.child("comments");
         mPostsRef = mRootRef.child("posts");
 
@@ -60,6 +58,16 @@ public class DBRepository {
             }
         });*/
 
+    }
+
+    public void passLocation(String loc, String saa){
+        mFeedRef = mRootRef.child("feeds").child(saa).child(loc);
+
+        Log.d("repo", "Location in repository: " + loc + saa);
+        refreshFeed();
+    }
+
+    public void refreshFeed(){
         mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
