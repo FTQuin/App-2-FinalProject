@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -103,6 +104,7 @@ public class ViewPostFragment extends Fragment {
             public void onRefresh() {
                 //Async task here to refresh comments.
                 //viewModel.getCommentsForPost(postID);
+                Toast.makeText(binding.getRoot().getContext(), "Refreshing comments", Toast.LENGTH_SHORT).show();
                 Log.d("refresh", "Refreshing comments");
                 swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
             }

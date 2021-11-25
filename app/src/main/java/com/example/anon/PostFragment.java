@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.anon.database.DBViewModel;
 import com.example.anon.database.Post;
 import com.example.anon.databinding.FragmentPostBinding;
-import com.example.anon.feed.FeedFragment;
+import com.example.anon.feed.FeedHolder;
 import com.example.anon.viewpost.ViewPostFragment;
 
 public class PostFragment extends Fragment {
@@ -174,7 +174,7 @@ public class PostFragment extends Fragment {
                 .getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
 
         //To prevent infinite adding to back stack when clicking post in ViewPostFragment.
-        if (fragmentInFrame instanceof FeedFragment){
+        if (fragmentInFrame instanceof FeedHolder){
             ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .replace(R.id.mainFragmentContainerView, mFragment).addToBackStack(null).commit();

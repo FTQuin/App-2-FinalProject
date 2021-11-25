@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  */
-public class FeedFragment extends Fragment {
+public class FeedRecycler extends Fragment {
 
     private int mColumnCount = 1;
     private FeedRecyclerBinding binding;
@@ -42,11 +42,11 @@ public class FeedFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public FeedFragment() {
+    public FeedRecycler() {
     }
 
-    public static FeedFragment newInstance(String locality, String subAdminArea) {
-        FeedFragment fragment = new FeedFragment();
+    public static FeedRecycler newInstance(String locality, String subAdminArea) {
+        FeedRecycler fragment = new FeedRecycler();
         Bundle args = new Bundle();
         args.putString(ARG_LOCALITY, locality);
         args.putString(ARG_SUB_ADMIN_AREA, subAdminArea);
