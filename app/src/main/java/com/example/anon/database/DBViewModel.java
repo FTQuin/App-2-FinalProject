@@ -1,7 +1,6 @@
 package com.example.anon.database;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -21,12 +20,6 @@ public class DBViewModel extends AndroidViewModel {
         super(application);
         mRepository = new DBRepository(getApplication());
         mAllPosts = mRepository.getAllPosts();
-    }
-
-    //Initializes repository with received locality and subAdminArea.
-    public void initRepository(){
-
-        Log.d("viewModel", "Locations in view model: " + locality + subAdmin);
     }
 
     //Refreshes repository. Used after new post is inserted.
