@@ -21,12 +21,10 @@ public class DBRepository {
     private CommentDao mCommentDao;
     private LiveData<List<Post>> mAllPosts;
     private LiveData<List<Comment>> mAllComments;
-    private String locality, subAdminArea;
 
     private static DatabaseReference mRootRef;
     private static DatabaseReference mFeedRef;
     private static DatabaseReference mComRef;
-    private static DatabaseReference mPostsRef;
 
     public DBRepository(Application application) {
         DBRoomDatabase db = DBRoomDatabase.getDatabase(application);
@@ -38,7 +36,6 @@ public class DBRepository {
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mComRef = mRootRef.child("comments");
-        mPostsRef = mRootRef.child("posts");
 
         //TODO: set mFeedRef to subAdmin if no posts in locality
         /*mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
