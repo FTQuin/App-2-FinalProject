@@ -5,9 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:orientation="vertical"
-    app:cardCornerRadius="6dp">
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
@@ -21,16 +20,43 @@
             android:id="@+id/postDateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="11/07/2021. 8:30pm"
+            android:text="Date. Time"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/postOptionsBtn"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-7dp"
+            android:paddingEnd="-12dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_options"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <View
+            android:id="@+id/dividerTop"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="@color/theme_colour"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postDateText"
+            tools:layout_editor_absoluteY="4dp" />
 
         <TextView
             android:id="@+id/postTitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/post_title_placeholder"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/postDateText" />
 
@@ -38,8 +64,8 @@
             android:id="@+id/postContentText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="4dp"
             android:maxLines="6"
+            android:padding="4dp"
             android:text="@string/post_content_placeholder"
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -53,17 +79,18 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="-4dp"
-            android:layout_marginEnd="4dp"
             android:text="Continue Reading..."
             android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/black"
+            android:textStyle="italic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/postContentText" />
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="2px"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@color/theme_colour"
@@ -76,6 +103,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="35dp"
+            android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +116,7 @@
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_comment"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/numCommentsText"
@@ -98,6 +126,7 @@
                 android:gravity="center"
                 android:paddingBottom="4dp"
                 android:text="213 "
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/white" />
 
 
@@ -108,7 +137,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_toEndOf="@+id/commentBtn"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_up"
+                android:src="@drawable/ic_thumb_up"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
@@ -126,19 +155,8 @@
                 android:layout_height="48dp"
                 android:layout_toEndOf="@+id/numVotesText"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_down"
+                android:src="@drawable/ic_thumb_down"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-            <ImageButton
-                android:id="@+id/postOptionsBtn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="0dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_options"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
 
         </RelativeLayout>
 

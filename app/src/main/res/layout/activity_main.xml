@@ -9,9 +9,9 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/mainBottomBar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:background="@color/theme_colour"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +67,7 @@
         android:id="@+id/mainFragmentContainerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@id/mainBottomBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
