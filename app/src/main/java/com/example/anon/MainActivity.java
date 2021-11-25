@@ -105,7 +105,11 @@ public class MainActivity extends AppCompatActivity {
                 final Fragment fragmentInFrame = getSupportFragmentManager()
                         .findFragmentById(R.id.mainFragmentContainerView);
 
-                if (fragmentInFrame instanceof FeedRecycler){
+                if (fragmentInFrame instanceof NewPostFragment){
+                    fragmentManager.popBackStackImmediate();
+                    ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
+                            135, 0).setDuration(250).start();
+                }else {
                     NewPostFragment mFragment = new NewPostFragment();
                     //mBundle.putString("device_location", locationTxt);
                     mFragment.setArguments(mBundle);
@@ -115,12 +119,6 @@ public class MainActivity extends AppCompatActivity {
                             mFragment).addToBackStack("feed_frag").commit();
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             0, 135).setDuration(250).start();
-
-                }else if (fragmentInFrame instanceof NewPostFragment){
-                    fragmentManager.popBackStackImmediate();
-                    ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
-                            135, 0).setDuration(250).start();
-
                 }
 
                 // TODO: animate appearance of fragment
@@ -132,7 +130,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
 
-                if (fragmentInFrame instanceof FeedRecycler){
+                if (fragmentInFrame instanceof MenuFragment){
+                    fragmentManager.popBackStackImmediate();
+                    binding.menuBtn.setImageResource(R.drawable.ic_menu);
+                } else {
                     fragmentManager.beginTransaction().setTransition(FragmentTransaction
                             .TRANSIT_FRAGMENT_FADE).add(binding.mainFragmentContainerView.getId(),
                             menuFragment).addToBackStack("feed_frag").commit();
@@ -147,10 +148,6 @@ public class MainActivity extends AppCompatActivity {
                     AnimatedVectorDrawable avd = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_menu_to_down);
                     menuIcn.setImageDrawable(avd);
                     avd.start();
-
-                }else if (fragmentInFrame instanceof MenuFragment){
-                    fragmentManager.popBackStackImmediate();
-                    binding.menuBtn.setImageResource(R.drawable.ic_menu);
                 }
             }
         });
@@ -161,13 +158,13 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: display chat fragment on button click.
                 final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
 
-                if (fragmentInFrame instanceof FeedRecycler){
+                if (fragmentInFrame instanceof ChatFragment){
+                    fragmentManager.popBackStackImmediate();
+                    binding.newPostBtn.setImageResource(R.drawable.ic_chat);
+                }else {
                     fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
                             chatFragment).addToBackStack("chat_frag").commit();
                     binding.newPostBtn.setImageResource(R.drawable.ic_down_40);
-                }else if (fragmentInFrame instanceof ChatFragment){
-                    fragmentManager.popBackStackImmediate();
-                    binding.newPostBtn.setImageResource(R.drawable.ic_chat);
                 }
             }
         });*/
