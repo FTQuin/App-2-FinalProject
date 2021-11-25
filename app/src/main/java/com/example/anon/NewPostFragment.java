@@ -39,26 +39,17 @@ public class NewPostFragment extends Fragment {
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
     private DatabaseReference mPostRef = mRootRef.child("posts");
 
-    private String editTitle, editContent, date, locationName;
+    private String editTitle, editContent, date;
 
     private String locality, subAdminArea;
     private DBViewModel viewModel;
 
     public NewPostFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment NewPostFragment.
-     */
-    //public static NewPostFragment newInstance(String deviceLocation) {
     public static NewPostFragment newInstance(String locality, String subAdminArea) {
         NewPostFragment fragment = new NewPostFragment();
         Bundle args = new Bundle();
-        //args.putString(ARG_DEVICE_LOC, deviceLocation);
         args.putString(ARG_LOCALITY, locality);
         args.putString(ARG_SUB_ADMIN_AREA, subAdminArea);
         fragment.setArguments(args);
@@ -70,7 +61,6 @@ public class NewPostFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            //deviceLocation = getArguments().getString(ARG_DEVICE_LOC);
             locality = getArguments().getString(ARG_LOCALITY);
             subAdminArea = getArguments().getString(ARG_SUB_ADMIN_AREA);
         }
@@ -79,7 +69,6 @@ public class NewPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentNewPostBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
@@ -97,32 +86,22 @@ public class NewPostFragment extends Fragment {
                 editTitle = binding.titleInput.getText().toString();
                 editContent = binding.contentInput.getText().toString();
 
-                //Ensures title and content are not blank before attempting to write to DB.
+                //Checks if title and content are blank before attempting to write to DB.
                 if(TextUtils.isEmpty(editTitle) || TextUtils.isEmpty(editContent) ){
-                    Toast.makeText(getContext(), "ERROR: All fields must not be blank.", Toast.LENGTH_SHORT).show();
-                    Log.d("===TESTING: NEW_POST===", "Publish unsuccessful: Blank field.");
+                    Toast.makeText(getContext(), "All fields must be filled in", Toast.LENGTH_SHORT).show();
                 }else{
                     Date d = Calendar.getInstance().getTime();
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
                     date = df.format(d);
 
-                    //String loc = locality;
-                    //String saa = subAdminArea;
-
-                    //TODO: delete these and uncomment above.
-                    /*Just had them hardcoded because location isn't fully working yet.*/
-                    String loc = "Kamloops";
-                    String saa = "Thompson-Nicola";
+                    String loc = locality;
+                    String saa = subAdminArea;
 
                     String postId = mRootRef.push().getKey();
-
-                    Log.d("New PostId:", postId);
 
                     Post post = new Post(postId, editTitle, editContent, date, loc, saa, 1, 0);
 
                     viewModel.insertPost(post);
-
-                    //TODO: This should probably just refresh room DB?
                     viewModel.refreshRepository();
 
                     binding.titleInput.setText("");

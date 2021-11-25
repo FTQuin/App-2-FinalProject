@@ -215,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
                                     mBundle.putString("sub_admin_area", subAdmin);
 
                                     newPostFragment.setArguments(mBundle);
+                                    feedHolder.setArguments(mBundle);
 
                                     //Populates feed after location is confirmed
                                     final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
