@@ -31,7 +31,6 @@ public class DBViewModel extends AndroidViewModel {
 
     //Refreshes repository. Used after new post is inserted.
     public void refreshRepository(){
-        //TODO: dont make new repo, add a method in repo to refresh it
         mRepository.refreshFeed();
     }
 
