@@ -1,15 +1,16 @@
 package com.example.anon.ui.login;
 
+import android.os.AsyncTask;
+import android.util.Patterns;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Patterns;
-
+import com.example.anon.R;
 import com.example.anon.data.LoginRepository;
 import com.example.anon.data.Result;
 import com.example.anon.data.model.LoggedInUser;
-import com.example.anon.R;
 
 public class LoginViewModel extends ViewModel {
 
@@ -29,15 +30,43 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
 
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
+
+    public void login(String username, String password) {
+        new loginAsyncTask(loginRepository, loginResult).execute(username, password);
+    }
+
+    private static class loginAsyncTask extends AsyncTask<String, Void, Void> {
+
+        private LoginRepository loginRepository;
+        private MutableLiveData<LoginResult> loginResult;
+        Result<LoggedInUser> result;
+
+        loginAsyncTask(LoginRepository loginRepository, MutableLiveData<LoginResult> loginResult) {
+            this.loginRepository = loginRepository;
+            this.loginResult = loginResult;
+        }
+
+        @Override
+        protected Void doInBackground(final String... params) {
+            String username = params[0];
+            String password = params[1];
+
+            result = loginRepository.login(username, password);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+
+            if (result instanceof Result.Success) {
+                LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+                loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+            } else {
+                loginResult.setValue(new LoginResult(R.string.login_failed));
+            }
         }
     }
 
