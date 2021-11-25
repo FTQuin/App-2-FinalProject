@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final Fragment fragmentInFrame = getSupportFragmentManager()
-                        .findFragmentById(R.id.fragmentContainerView);
+                        .findFragmentById(R.id.mainFragmentContainerView);
 
                 if (fragmentInFrame instanceof FeedFragment){
                     NewPostFragment mFragment = new NewPostFragment();
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     mFragment.setArguments(mBundle);
 
                     fragmentManager.beginTransaction().setTransition(FragmentTransaction
-                            .TRANSIT_FRAGMENT_OPEN).add(binding.fragmentContainerView.getId(),
+                            .TRANSIT_FRAGMENT_OPEN).add(binding.mainFragmentContainerView.getId(),
                             mFragment).addToBackStack("feed_frag").commit();
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             0, 135).setDuration(250).start();
@@ -125,11 +125,11 @@ public class MainActivity extends AppCompatActivity {
         binding.menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+                final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
 
                 if (fragmentInFrame instanceof FeedFragment){
                     fragmentManager.beginTransaction().setTransition(FragmentTransaction
-                            .TRANSIT_FRAGMENT_FADE).add(binding.fragmentContainerView.getId(),
+                            .TRANSIT_FRAGMENT_FADE).add(binding.mainFragmentContainerView.getId(),
                             menuFragment).addToBackStack("feed_frag").commit();
                     //binding.menuBtn.setImageResource(R.drawable.ic_down_40);
 
@@ -173,9 +173,17 @@ public class MainActivity extends AppCompatActivity {
         swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //Async task here to refresh feed.
-                getDeviceLocation();
-                swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
+                final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
+
+                if(fragmentInFrame instanceof FeedFragment){
+                    //Async task here to refresh feed.
+                    getDeviceLocation();
+                    Log.d("refresh", "Refreshing feed.");
+                    swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
+                }else {
+                    swipeRefreshContainer.setOnRefreshListener(null);
+                }
+
             }
         });
 
@@ -213,10 +221,6 @@ public class MainActivity extends AppCompatActivity {
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.getResult();
                             if (lastKnownLocation != null) {
-                                Log.d("cloc","=====LOCATION: Lat = " +
-                                        lastKnownLocation.getLatitude() + ", Long = " +
-                                        lastKnownLocation.getLongitude());
-
                                 Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
 
                                 try {
@@ -235,16 +239,16 @@ public class MainActivity extends AppCompatActivity {
                                     mBundle.putString("locality", locality);
                                     mBundle.putString("sub_admin_area", subAdmin);
 
-                                    //feedFragment.setArguments(mBundle);
+                                    feedFragment.setArguments(mBundle);
 
                                     //Populates feed after location is confirmed
-                                    final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+                                    final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
 
                                     if (fragmentInFrame instanceof FeedFragment) {
-                                        fragmentManager.beginTransaction().replace(binding.fragmentContainerView.getId(),
+                                        fragmentManager.beginTransaction().replace(binding.mainFragmentContainerView.getId(),
                                                 feedFragment).commit();
                                     } else {
-                                        fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
+                                        fragmentManager.beginTransaction().add(binding.mainFragmentContainerView.getId(),
                                                 feedFragment).commit();
                                     }
 

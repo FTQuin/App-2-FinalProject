@@ -26,25 +26,21 @@ public class DBRepository {
     private static DatabaseReference mRootRef;
     private static DatabaseReference mFeedRef;
     private static DatabaseReference mComRef;
+    private static DatabaseReference mPostsRef;
 
-    public DBRepository(Application application) {
+    public DBRepository(Application application, String loc, String saa) {
         DBRoomDatabase db = DBRoomDatabase.getDatabase(application);
         mPostDao = db.postDao();
         mCommentDao = db.commentDao();
         mAllPosts = mPostDao.getAllPosts();
         mAllComments = mCommentDao.getAllComments();
 
-        //TODO: Set these as actual values from main activity
-        //String loc = locality;
-        //String subAdmin = subAdminArea;
-
-        //Hard coded until we figure out how to retrieve actual values.
-        String locality = "Kamloops";
-        String subAdmin = "Thompson-Nicola";
+        Log.d("repo", "Location in repository: " + loc + saa);
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
-        mFeedRef = mRootRef.child("feeds").child(subAdmin).child(locality);
+        mFeedRef = mRootRef.child("feeds").child(saa).child(loc);
         mComRef = mRootRef.child("comments");
+        mPostsRef = mRootRef.child("posts");
 
         //TODO: set mFeedRef to subAdmin if no posts in locality
         /*mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -64,13 +60,13 @@ public class DBRepository {
             }
         });*/
 
-        //Old post data listener:
-        mFeedRef.addValueEventListener(new ValueEventListener() {
+        mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data : snapshot.getChildren()){
 
                     Post p = data.getValue(Post.class);
+
                     new initPostsAsyncTask(mPostDao).execute(p);
                 }
             }
@@ -136,13 +132,18 @@ public class DBRepository {
         protected Void doInBackground(final Post... params) {
             // add to firebase first
             String id = params[0].getPostId();
+
+            /*
+            * if we create seperate "posts" child under root and store just id's under locality:
+            * - change this to mRootRef.child("posts").child(id).....*/
             mFeedRef.child(id).setValue(params[0]).addOnCompleteListener(task -> {
+            //mPostsRef.child(id).setValue(params[0]).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     // then add to local database
                     //TODO: Stop this from crashing app.
                     /*Moving it to onPostExecute function below d.i.b may have fixed it but
                      Apparently Async Task is depreciated. Switch to Java.util.concurrent? */
-                    mAsyncTaskDao.insert(params[0]);
+                    //mAsyncTaskDao.insert(params[0]);
                     Log.d("===TESTING: NEW_POST===", "Publish successful.");
                 }
             });
@@ -158,6 +159,9 @@ public class DBRepository {
             mAsyncTaskDao = dao;
         }
 
+        /*
+         * if we create seperate "posts" child under root and store just id's under locality:
+         * - mPostsRef.child(id).setValue(params[0]).addOnCompleteListener(task -> {....*/
         @Override
         protected Void doInBackground(final Post... params) {
             //mFeedRef.child()

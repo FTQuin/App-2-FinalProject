@@ -50,6 +50,7 @@ public class Post {
         this.subAdminArea = subAdminArea;
     }
 
+    @NonNull
     public String getPostId(){
         return postId;
     }
@@ -57,6 +58,7 @@ public class Post {
         this.postId = postId;
     }
 
+    @NonNull
     public String getTitle(){
         return title;
     }
@@ -64,6 +66,7 @@ public class Post {
         this.title = title;
     }
 
+    @NonNull
     public String getContent(){
         return content;
     }
@@ -71,6 +74,7 @@ public class Post {
         this.content = content;
     }
 
+    @NonNull
     public String getLocality(){
         return locality;
     }
@@ -100,6 +104,7 @@ public class Post {
         this.numComments = numComments;
     }
 
+    @NonNull
     public String getDate(){
         return date;
     }

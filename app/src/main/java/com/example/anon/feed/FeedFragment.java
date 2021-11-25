@@ -71,8 +71,13 @@ public class FeedFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
-        String loc = locality;
-        String saa = subAdminArea;
+        //Checks if view model currently has location data before initializing.
+        if (viewModel.getLocality() == null || viewModel.getSubAdmin() == null) {
+            viewModel.passLocation("Kamloops", "Thompson-Nicola");
+            //viewModel.passLocation(locality, subAdminArea);
+        }
+
+        viewModel.initRepository();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -88,11 +93,4 @@ public class FeedFragment extends Fragment {
         }
         return view;
     }
-
-    /*@Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-     */
-
 }

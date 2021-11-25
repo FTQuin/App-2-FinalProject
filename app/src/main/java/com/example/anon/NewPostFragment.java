@@ -32,11 +32,6 @@ import java.util.Locale;
  * create an instance of this fragment.
  */
 public class NewPostFragment extends Fragment {
-
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_DEVICE_LOC = "device_location";
-    //private static final String ARG_DEVICE_LAT = "location_latitude";
-    //private static final String ARG_DEVICE_LONG = "location_longitude";
     private static final String ARG_LOCALITY = "locality";
     private static final String ARG_SUB_ADMIN_AREA = "sub_admin_area";
 
@@ -96,11 +91,6 @@ public class NewPostFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
-        String loc = locality;
-        String saa = subAdminArea;
-
-        Toast.makeText(getContext(), "Location:\n" + loc + "\n"+ saa, Toast.LENGTH_SHORT).show();
-
         binding.publishPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,6 +121,9 @@ public class NewPostFragment extends Fragment {
                     Post post = new Post(postId, editTitle, editContent, date, loc, saa, 1, 0);
 
                     viewModel.insertPost(post);
+
+                    //TODO: This should probably just refresh room DB?
+                    viewModel.refreshRepository();
 
                     binding.titleInput.setText("");
                     binding.contentInput.setText("");

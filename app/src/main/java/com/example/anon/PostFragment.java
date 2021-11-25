@@ -1,6 +1,7 @@
 package com.example.anon;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,7 @@ import com.example.anon.viewpost.ViewPostFragment;
 public class PostFragment extends Fragment {
 
     private FragmentPostBinding binding;
-
-    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mPostRef = mRootRef.child("posts");
+    private DBViewModel viewModel;
 
     private boolean upvoted = false;
     private boolean downvoted = false;
@@ -63,7 +62,7 @@ public class PostFragment extends Fragment {
         return binding;
     }
 
-    public void setPostView(Post post, ViewModel viewModel){
+    public void setPostView(Post post, ViewModel vm){
         if (post != null) {
             binding.continueReadingTxt.setVisibility(View.INVISIBLE);
             binding.postTitleText.setText(post.getTitle());
@@ -109,6 +108,7 @@ public class PostFragment extends Fragment {
             Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
             if(!voted){
                 //access database via votePost(post.getPostId()).
+                //votePost(post);
                 voted = true;
             }
             if(!upvoted){
@@ -147,6 +147,17 @@ public class PostFragment extends Fragment {
         });
     }
 
+    private void votePost(Post post, View view){
+        String postID = post.getPostId();
+
+        if(postID != null){
+            Log.d("postFrag", "Post ID" + postID);
+            viewModel.votePost(postID);
+        }else{
+            Log.d("postFrag", "ERROR: post id null.");
+        }
+    }
+
     //Opens specified ViewPostFragment.
     private void openPost(Post post, View view){
         ViewPostFragment mFragment = new ViewPostFragment();
@@ -160,13 +171,13 @@ public class PostFragment extends Fragment {
 //            Toast.makeText(view.getContext(),"X "+loc[0] +"\nY "+loc[1],Toast.LENGTH_SHORT).show();
 
         final Fragment fragmentInFrame = ((MainActivity) view.getContext())
-                .getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+                .getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
 
         //To prevent infinite adding to back stack when clicking post in ViewPostFragment.
         if (fragmentInFrame instanceof FeedFragment){
             ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .replace(R.id.fragmentContainerView, mFragment).addToBackStack(null).commit();
+                    .replace(R.id.mainFragmentContainerView, mFragment).addToBackStack(null).commit();
         }
     }
     // TODO: make set post (post) and setPost(post, binding)
