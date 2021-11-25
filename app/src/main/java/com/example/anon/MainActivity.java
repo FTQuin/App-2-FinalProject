@@ -39,9 +39,9 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private FeedRecycler feedFragment;
     private MenuFragment menuFragment;
     private FeedHolder feedHolder;
+    private NewPostFragment newPostFragment;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -58,11 +58,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        feedFragment = new FeedRecycler();
-
         feedHolder = new FeedHolder();
-
         menuFragment = new MenuFragment();
+        newPostFragment = new NewPostFragment();
         mBundle = new Bundle();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -110,13 +108,10 @@ public class MainActivity extends AppCompatActivity {
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             135, 0).setDuration(250).start();
                 }else {
-                    NewPostFragment mFragment = new NewPostFragment();
-                    //mBundle.putString("device_location", locationTxt);
-                    mFragment.setArguments(mBundle);
-
+                    fragmentManager.popBackStackImmediate();
                     fragmentManager.beginTransaction().setTransition(FragmentTransaction
                             .TRANSIT_FRAGMENT_OPEN).add(binding.mainFragmentContainerView.getId(),
-                            mFragment).addToBackStack("feed_frag").commit();
+                            newPostFragment).addToBackStack(null).commit();
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             0, 135).setDuration(250).start();
                 }
@@ -134,10 +129,10 @@ public class MainActivity extends AppCompatActivity {
                     fragmentManager.popBackStackImmediate();
                     binding.menuBtn.setImageResource(R.drawable.ic_menu);
                 } else {
+                    fragmentManager.popBackStackImmediate();
                     fragmentManager.beginTransaction().setTransition(FragmentTransaction
                             .TRANSIT_FRAGMENT_FADE).add(binding.mainFragmentContainerView.getId(),
                             menuFragment).addToBackStack("feed_frag").commit();
-                    //binding.menuBtn.setImageResource(R.drawable.ic_down_40);
 
                     Animation fadeOut = new AlphaAnimation(1, 0);
                     fadeOut.setInterpolator(new AccelerateInterpolator());
@@ -168,20 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });*/
-
-        /*SwipeRefreshLayout swipeRefreshContainer = binding.swipeRefreshContainer;
-
-        swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //Async task here to refresh comments.
-                //viewModel.getCommentsForPost(postID);
-                Log.d("refresh", "Refreshing comments");
-                swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
-            }
-        });
-
-        swipeRefreshContainer.setColorSchemeResources(R.color.theme_colour);*/
     }
 
     public void onBackPressed(){
@@ -200,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
     ==============================================================================================*/
 
     private void getDeviceLocation() {
+        //TODO: Add single location request.
         /*
          * Get the best and most recent location of the device, which may be null in rare
          * cases when a location is not available.
@@ -232,8 +214,7 @@ public class MainActivity extends AppCompatActivity {
                                     mBundle.putString("locality", locality);
                                     mBundle.putString("sub_admin_area", subAdmin);
 
-                                    feedFragment.setArguments(mBundle);
-                                    feedHolder.setArguments(mBundle);
+                                    newPostFragment.setArguments(mBundle);
 
                                     //Populates feed after location is confirmed
                                     final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
