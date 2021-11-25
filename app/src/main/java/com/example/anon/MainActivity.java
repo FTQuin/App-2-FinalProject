@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.anon.databinding.ActivityMainBinding;
 import com.example.anon.feed.FeedHolder;
@@ -109,9 +108,12 @@ public class MainActivity extends AppCompatActivity {
                             135, 0).setDuration(250).start();
                 }else {
                     fragmentManager.popBackStackImmediate();
-                    fragmentManager.beginTransaction().setTransition(FragmentTransaction
-                            .TRANSIT_FRAGMENT_OPEN).add(binding.mainFragmentContainerView.getId(),
-                            newPostFragment).addToBackStack(null).commit();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
+                                    R.anim.genie_up, R.anim.genie_down)
+                            .add(binding.mainFragmentContainerView.getId(), newPostFragment)
+                            .addToBackStack(null).commit();
+
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             0, 135).setDuration(250).start();
                 }
@@ -123,16 +125,19 @@ public class MainActivity extends AppCompatActivity {
         binding.menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
+                final Fragment fragmentInFrame = getSupportFragmentManager()
+                        .findFragmentById(R.id.mainFragmentContainerView);
 
                 if (fragmentInFrame instanceof MenuFragment){
                     fragmentManager.popBackStackImmediate();
                     binding.menuBtn.setImageResource(R.drawable.ic_menu);
                 } else {
                     fragmentManager.popBackStackImmediate();
-                    fragmentManager.beginTransaction().setTransition(FragmentTransaction
-                            .TRANSIT_FRAGMENT_FADE).add(binding.mainFragmentContainerView.getId(),
-                            menuFragment).addToBackStack("feed_frag").commit();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right,
+                                    R.anim.slide_in_right, R.anim.slide_out_right)
+                            .add(binding.mainFragmentContainerView.getId(), menuFragment)
+                            .addToBackStack("feed_frag").commit();
 
                     Animation fadeOut = new AlphaAnimation(1, 0);
                     fadeOut.setInterpolator(new AccelerateInterpolator());
@@ -151,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // TODO: display chat fragment on button click.
-                final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+                final Fragment fragmentInFrame = getSupportFragmentManager()
+                    .findFragmentById(R.id.fragmentContainerView);
 
                 if (fragmentInFrame instanceof ChatFragment){
                     fragmentManager.popBackStackImmediate();
@@ -168,7 +174,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed(){
         super.onBackPressed();
         if(binding.newPostBtn.getRotation() == 135){
-            ObjectAnimator.ofFloat(binding.newPostBtn, "rotation", 135, 0).setDuration(250).start();
+            ObjectAnimator.ofFloat(binding.newPostBtn, "rotation", 135, 0)
+                    .setDuration(250).start();
         }
 
         //binding.newPostBtn.setImageResource(R.drawable.ic_add);
@@ -199,7 +206,8 @@ public class MainActivity extends AppCompatActivity {
                                 Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
 
                                 try {
-                                    List<Address> addresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(),
+                                    List<Address> addresses = geocoder
+                                            .getFromLocation(lastKnownLocation.getLatitude(),
                                             lastKnownLocation.getLongitude(), 1);
 
                                     Address address = addresses.get(0);
@@ -218,13 +226,16 @@ public class MainActivity extends AppCompatActivity {
                                     feedHolder.setArguments(mBundle);
 
                                     //Populates feed after location is confirmed
-                                    final Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
+                                    final Fragment fragmentInFrame = getSupportFragmentManager()
+                                            .findFragmentById(R.id.mainFragmentContainerView);
 
                                     if (fragmentInFrame instanceof FeedRecycler) {
-                                        fragmentManager.beginTransaction().replace(binding.mainFragmentContainerView.getId(),
+                                        fragmentManager.beginTransaction()
+                                                .replace(binding.mainFragmentContainerView.getId(),
                                                 feedHolder).commit();
                                     } else {
-                                        fragmentManager.beginTransaction().add(binding.mainFragmentContainerView.getId(),
+                                        fragmentManager.beginTransaction()
+                                                .add(binding.mainFragmentContainerView.getId(),
                                                 feedHolder).commit();
                                     }
 
