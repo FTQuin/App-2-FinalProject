@@ -26,6 +26,11 @@ import androidx.fragment.app.FragmentManager;
 import com.example.anon.databinding.ActivityMainBinding;
 import com.example.anon.feed.FeedHolder;
 import com.example.anon.feed.FeedRecycler;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private MenuFragment menuFragment;
     private FeedHolder feedHolder;
     private NewPostFragment newPostFragment;
+    private AdView mAdView;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -71,6 +77,16 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        //Banner ad
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = binding.adView;
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         enableMyLocation();
 
