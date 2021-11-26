@@ -3,10 +3,10 @@ package com.example.anon;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -36,7 +36,8 @@ public class NewPostFragment extends Fragment {
     private static final String ARG_SUB_ADMIN_AREA = "sub_admin_area";
 
     private FragmentNewPostBinding binding;
-    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();;
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    ;
     private DatabaseReference mPostRef = mRootRef.child("posts");
 
     private String editTitle, editContent, date;
@@ -78,6 +79,8 @@ public class NewPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.background.animate().alpha(1.0f).setStartDelay(150).setDuration(150).setInterpolator(new LinearInterpolator());
+
         viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
         binding.publishPostBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,9 +90,9 @@ public class NewPostFragment extends Fragment {
                 editContent = binding.contentInput.getText().toString();
 
                 //Checks if title and content are blank before attempting to write to DB.
-                if(TextUtils.isEmpty(editTitle) || TextUtils.isEmpty(editContent) ){
+                if (TextUtils.isEmpty(editTitle) || TextUtils.isEmpty(editContent)) {
                     Toast.makeText(getContext(), "All fields must be filled in", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Date d = Calendar.getInstance().getTime();
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
                     date = df.format(d);
@@ -102,7 +105,7 @@ public class NewPostFragment extends Fragment {
                     Post post = new Post(postId, editTitle, editContent, date, loc, saa, 1, 0);
 
                     viewModel.insertPost(post);
-                    viewModel.refreshRepository();
+                    viewModel.refreshFeed();
 
                     binding.titleInput.setText("");
                     binding.contentInput.setText("");

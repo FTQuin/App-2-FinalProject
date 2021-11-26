@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layoutBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B9000000"
     android:clickable="true"
-    android:padding="5dp"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp"
     tools:context=".NewPostFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="5dp"
         android:background="@drawable/layout_bg"
         android:orientation="vertical">
 
@@ -26,7 +23,7 @@
             android:ems="10"
             android:hint="Title (Required)"
             android:inputType="textPersonName"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <EditText
             android:id="@+id/contentInput"
@@ -39,17 +36,23 @@
 
         <Button
             android:id="@+id/publishPostBtn"
+            style="@style/Widget.AppCompat.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="2dp"
             android:layout_marginTop="-8dp"
+            android:layout_marginBottom="2dp"
             android:paddingStart="30dp"
             android:paddingEnd="30dp"
-            android:text="Publish" />
-
-
+            android:text="Done"
+            app:cornerRadius="0dp" />
     </LinearLayout>
 
-
+    <View
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/shadow"
+        android:translationZ="-1dp"
+        android:alpha="0"/>
 </FrameLayout>

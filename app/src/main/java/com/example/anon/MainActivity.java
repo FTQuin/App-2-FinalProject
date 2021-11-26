@@ -117,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             0, 135).setDuration(250).start();
                 }
-
-                // TODO: animate appearance of fragment
             }
         });
 

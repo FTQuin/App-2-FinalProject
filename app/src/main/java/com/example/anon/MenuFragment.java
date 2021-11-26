@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +54,8 @@ public class MenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.background.animate().alpha(1.0f).setStartDelay(150).setDuration(150).setInterpolator(new LinearInterpolator());
+
         binding.menuPopup.animate().alpha(0.0f).setDuration(0);
         //binding.menuPopup.setVisibility(View.INVISIBLE);
         binding.popupUpgradeBtn.setVisibility(View.INVISIBLE);
@@ -99,7 +102,5 @@ public class MenuFragment extends Fragment {
         binding.popupUpgradeBtn.setOnClickListener(view14 -> {
             //TODO: Add upgrade functionality.
         });
-
-
     }
 }

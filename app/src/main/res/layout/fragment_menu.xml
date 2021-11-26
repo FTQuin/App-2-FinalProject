@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B9000000"
-    android:clickable="true"
     tools:context=".MenuFragment">
 
 
@@ -13,39 +11,63 @@
         android:id="@+id/menuButtonContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:background="@drawable/layout_bg"
         android:gravity="end"
         android:orientation="vertical"
-        android:padding="8dp"
+        android:padding="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-
-        <Button
+        <TextView
             android:id="@+id/yourPostsBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your Posts" />
+            android:padding="5dp"
+            android:text="Your Posts"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-        <Button
+        <View
+            android:layout_width="140dp"
+            android:layout_height="2px"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="@color/theme_colour"/>
+
+        <TextView
             android:id="@+id/yourLocationsBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your Locations" />
+            android:padding="5dp"
+            android:text="Your Locations"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+        <View
+            android:layout_width="140dp"
+            android:layout_height="2px"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="@color/theme_colour"/>
 
-        <Button
+        <TextView
             android:id="@+id/upgradeBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Upgrade" />
+            android:padding="5dp"
+            android:text="Upgrade"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+        <View
+            android:layout_width="140dp"
+            android:layout_height="2px"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="@color/theme_colour"/>
 
-        <Button
+        <TextView
             android:id="@+id/helpAndSupportBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Help and Support" />
-
+            android:padding="5dp"
+            android:text="Help and Support"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
     </LinearLayout>
 
     <LinearLayout
@@ -86,4 +108,16 @@
             android:text="Upgrade now" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0"
+        android:background="@color/shadow"
+        android:translationZ="-1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
