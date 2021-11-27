@@ -37,8 +37,6 @@ public class NewPostFragment extends Fragment {
 
     private FragmentNewPostBinding binding;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    ;
-    private DatabaseReference mPostRef = mRootRef.child("posts");
 
     private String editTitle, editContent, date;
 
