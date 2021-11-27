@@ -1,10 +1,15 @@
 package com.example.anon.viewpost;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,9 +21,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.anon.PostFragment;
 import com.example.anon.R;
+import com.example.anon.database.Comment;
 import com.example.anon.database.DBViewModel;
 import com.example.anon.database.Post;
 import com.example.anon.databinding.FragmentViewPostBinding;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,24 +43,22 @@ public class ViewPostFragment extends Fragment {
     DBViewModel viewModel;
     FragmentViewPostBinding binding;
 
+    SwipeRefreshLayout swipeRefreshContainer;
+    ImageButton btnPostComment;
+    TextView txtComment;
+
     PostFragment postFragment;
     CommentRecycler commentRecycler;
 
     private static final String ARG_POST_ID = "post_id";
-
     private String postID;
+
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
     public ViewPostFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ViewPostFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ViewPostFragment newInstance(String postID) {
         ViewPostFragment fragment = new ViewPostFragment();
         Bundle args = new Bundle();
@@ -100,7 +111,7 @@ public class ViewPostFragment extends Fragment {
             //postFragment.getBinding().postContentText.setMovementMethod(new ScrollingMovementMethod());
         }
 
-        SwipeRefreshLayout swipeRefreshContainer = binding.swipeRefreshContainer;
+        swipeRefreshContainer = binding.swipeRefreshContainer;
 
         swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -114,5 +125,34 @@ public class ViewPostFragment extends Fragment {
         });
 
         swipeRefreshContainer.setColorSchemeResources(R.color.theme_colour);
+
+        txtComment = binding.txtComment;
+        btnPostComment = binding.postCommentBtn;
+        btnPostComment.setOnClickListener(v -> {
+
+            String commentContent = txtComment.getText().toString();
+
+            //Checks if title and content are blank before attempting to write to DB.
+            if (TextUtils.isEmpty(commentContent)){
+                Toast.makeText(getContext(), "Comment cannot be empty", Toast.LENGTH_SHORT).show();
+            } else {
+                Date d = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
+                String dateStr = df.format(d);
+
+                String id = mRootRef.push().getKey();
+
+                Comment comment = new Comment(id, postID, commentContent, 1, dateStr);
+
+                viewModel.insertComment(comment);
+                viewModel.refreshComments();
+
+                // hide keyboard and clear text view
+                txtComment.setText("");
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+            }
+        }
+        );
     }
 }

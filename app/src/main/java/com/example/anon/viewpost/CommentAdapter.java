@@ -29,6 +29,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.mItem = commentList.get(position);
         holder.mContentView.setText(commentList.get(position).getContent());
         holder.mNumVotesView.setText(String.valueOf(commentList.get(position).getNumVotes()));
+        holder.mDateTimeView.setText(commentList.get(position).getDate());
     }
 
     @Override
@@ -39,12 +40,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;
         public final TextView mNumVotesView;
+        public final TextView mDateTimeView;
         public Comment mItem;
 
         public ViewHolder(FragmentCommentBinding binding) {
             super(binding.getRoot());
             mContentView = binding.content;
             mNumVotesView = binding.numVotesText;
+            mDateTimeView = binding.commentDateText;
         }
 
         @Override
