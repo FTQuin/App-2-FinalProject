@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private MenuFragment menuFragment;
     private FeedHolder feedHolder;
     private NewPostFragment newPostFragment;
+    private MapsFragment mapsFragment;
     private AdView mAdView;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean permissionDenied = false;
     private boolean locationPermissionGranted = false;
     private Location lastKnownLocation;
-    private Bundle mBundle;
+    private Bundle mBundle, mapBundle;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
 
@@ -66,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
         feedHolder = new FeedHolder();
         menuFragment = new MenuFragment();
         newPostFragment = new NewPostFragment();
+        mapsFragment = new MapsFragment();
         mBundle = new Bundle();
+        mapBundle = new Bundle();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         //Remove top app title bar
@@ -104,11 +107,24 @@ public class MainActivity extends AppCompatActivity {
         //Used to allow location text to scroll if too long for view
         binding.locationText.setSelected(true);
 
-        //Bottom bar button on click listeners
+        //===Bottom bar button onClick listeners===
         binding.locationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: **If version == upgraded** display map fragment on button click.
+                final Fragment fragmentInFrame = getSupportFragmentManager()
+                        .findFragmentById(R.id.mainFragmentContainerView);
+
+                if (fragmentInFrame instanceof MapsFragment){
+                    fragmentManager.popBackStackImmediate();
+                }else {
+                    fragmentManager.popBackStackImmediate();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
+                                    R.anim.genie_up, R.anim.genie_down)
+                            .add(binding.mainFragmentContainerView.getId(), mapsFragment)
+                            .addToBackStack(null).commit();
+                }
             }
         });
 
@@ -166,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.chatBtn.setEnabled(false);
+        binding.chatBtn.getDrawable().setTint(getResources().getColor(R.color.background));
         /*binding.chatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -230,6 +248,8 @@ public class MainActivity extends AppCompatActivity {
 
                                     String locality = address.getLocality();
                                     String subAdmin = address.getSubAdminArea();
+                                    double lat = address.getLatitude();
+                                    double lon = address.getLongitude();
 
                                     binding.locationText.setText(locality);
 
@@ -253,9 +273,13 @@ public class MainActivity extends AppCompatActivity {
                                                 feedHolder).commit();
                                     }
 
+                                    mapBundle.putDouble("latitude", lat);
+                                    mapBundle.putDouble("longitude", lon);
+                                    mapsFragment.setArguments(mapBundle);
+
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                    Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getBaseContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         } else {
