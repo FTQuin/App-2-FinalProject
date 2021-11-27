@@ -1,16 +1,21 @@
 <resources>
+    <!--    General Strings -->
     <string name="app_name">Anon.</string>
     <string name="post_title_placeholder">Post Title</string>
     <string name="post_content_placeholder">Post text content.</string>
     <string name="post_date_placeholder">Date. Time</string>
     <string name="error_loading_posts">Error. See Below.</string>
     <string name="error_loading_posts_desc">An internal error occurred. Please try again later.</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
-    <!--  Menu Strings -->
-    <string name="upgrade_text">You are currently using the free version of \"App Name\". Upgrading to \"App Name+\" unlocks the following benefits: \n\n  - Removes all ads. \n  - Allows you to change your forum location. \n  - Allows you to adjust the distance from your set location you receive posts from. \n  - Allows you to save multiple locations, and easily switch between them. \n  - Allows you to view and edit all of your past posts.</string>
+    <!--    Menu Strings -->
+    <string name="upgrade_text">You are currently using the free version of \"App Name\". Upgrading to \"App Name+\" unlocks the following benefits: \n\n  - Removes all ads. \n  - Allows you to change your forum location. \n  - Allows you to adjust the distance from your set location you receive content from. \n  - Allows you to save multiple locations, and easily switch between them. \n  - Allows you to view and edit all of your past posts.</string>
     <string name="help_text">We are constantly working to improve our user experience, and apologize for any issues you are experiencing while using \"App Name\". \n\nPlease send your help/ support request to support@appname.com. We will be in touch within 1–3 business days.</string>
     <string name="your_posts_text_base_version">Sorry, you cannot view your previous posts in the base version of \'App Name\". Please upgrade to \"App name+\" to unlock this feature.</string>
     <string name="your_locations_text_base_version">Sorry, you cannot view or change your location in the base version of \'App Name\". Please upgrade to \"App name+\" to unlock this feature.</string>
+
+    <!--    Map Strings-->
+    <string name="map_upgrade_text">Sorry, you need to upgrade to use with the map. You are currently using the free version of Anon. Upgrading to Anon+ unlocks the following benefits: \n\n  - Removes all ads. \n  - Allows you to change your forum location. \n  - Allows you to adjust the distance you receive content from. \n  - Allows you to save multiple locations, and easily switch between them. \n  - Allows you to view and edit all of your past posts.</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to retrieve and display the proper content.</string>
