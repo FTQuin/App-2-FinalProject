@@ -86,8 +86,8 @@ public class DBRepository {
     //Initializes comments. Not called until post is clicked.
     //TODO: change this to initialize comments based off post ID.
     //Currently initialized ALL comments, but only loads post id based ones into room db.
-    public void commentInit(){
-        mComRef.addValueEventListener(new ValueEventListener() {
+    public void refreshComments(){
+        mComRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data : snapshot.getChildren()){
@@ -201,7 +201,6 @@ public class DBRepository {
     }
 
     public LiveData<List<Comment>> getCommentsForPost(String postID) {
-        commentInit();
         return mCommentDao.getCommentsForPost(postID);
     }
 

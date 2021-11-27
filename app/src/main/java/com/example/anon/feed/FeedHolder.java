@@ -74,7 +74,7 @@ public class FeedHolder extends Fragment {
             @Override
             public void onRefresh() {
                 //Refresh repository
-                viewModel.refreshRepository();
+                viewModel.refreshFeed();
 
                 final Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(new Runnable() {

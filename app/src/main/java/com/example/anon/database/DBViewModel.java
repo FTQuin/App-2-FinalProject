@@ -23,8 +23,12 @@ public class DBViewModel extends AndroidViewModel {
     }
 
     //Refreshes repository. Used after new post is inserted.
-    public void refreshRepository(){
+    public void refreshFeed(){
         mRepository.refreshFeed();
+    }
+
+    public void refreshComments(){
+        mRepository.refreshComments();
     }
 
     public String getLocality(){

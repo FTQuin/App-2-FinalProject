@@ -80,7 +80,11 @@ public class ViewPostFragment extends Fragment {
 
         FragmentManager f = getChildFragmentManager();
 
-        commentRecycler = (CommentRecycler) f.findFragmentById(R.id.fragmentContainerViewComments);
+        commentRecycler = new CommentRecycler();
+        commentRecycler = CommentRecycler.newInstance(postID);
+
+        f.beginTransaction().replace(R.id.fragmentContainerViewComments, commentRecycler).commit();
+
         postFragment = (PostFragment) f.findFragmentById(R.id.fragmentContainerViewPost);
         postFragment.createBinding(getLayoutInflater(), binding.getRoot());
 
@@ -89,10 +93,9 @@ public class ViewPostFragment extends Fragment {
             if(p.getPostId().equals(postID))
                 correctPost = p;
 
-        postFragment.setPostView(correctPost, viewModel);
+        postFragment.setPostView(correctPost);
 
         if (postFragment.getBinding().postContentText.getText().length() > 360){
-            //TODO: Either set max lines higher or uncomment scrolling line.
             postFragment.getBinding().postContentText.setMaxLines(Integer.MAX_VALUE);
             //postFragment.getBinding().postContentText.setMovementMethod(new ScrollingMovementMethod());
         }
