@@ -117,7 +117,7 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onRefresh() {
                 //Async task here to refresh comments.
-                //viewModel.getCommentsForPost(postID);
+                viewModel.refreshComments();
                 Toast.makeText(binding.getRoot().getContext(), "Refreshing comments", Toast.LENGTH_SHORT).show();
                 Log.d("refresh", "Refreshing comments");
                 swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
