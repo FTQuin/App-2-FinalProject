@@ -69,7 +69,6 @@ public class DBRepository {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data : snapshot.getChildren()){
-
                     Post p = data.getValue(Post.class);
 
                     new insertPostAsyncTask(mPostDao).execute(p);
@@ -101,6 +100,10 @@ public class DBRepository {
                 Log.w("repo-error", "Failed to retrieve comments.", error.toException());
             }
         });
+    }
+
+    public String getNewKey(){
+        return mRootRef.push().getKey();
     }
 
     /*===================================================================
@@ -143,6 +146,13 @@ public class DBRepository {
         protected Void doInBackground(final Post... params) {
             mAsyncTaskDao.insert(params[0]);
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            Log.d("repository", "Init successful.");
+            return;
         }
     }
 

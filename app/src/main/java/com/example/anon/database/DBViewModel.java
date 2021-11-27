@@ -22,11 +22,6 @@ public class DBViewModel extends AndroidViewModel {
         mAllPosts = mRepository.getAllPosts();
     }
 
-    //Refreshes repository. Used after new post is inserted.
-    public void refreshFeed(){
-        mRepository.refreshFeed();
-    }
-
     public void refreshComments(){
         mRepository.refreshComments();
     }
@@ -39,7 +34,7 @@ public class DBViewModel extends AndroidViewModel {
         return subAdmin;
     }
 
-    //Receives location names.
+    //Receives location data
     public void passLocation(String loc, String saa){
         this.locality = loc;
         this.subAdmin = saa;
@@ -47,15 +42,35 @@ public class DBViewModel extends AndroidViewModel {
         mRepository.passLocation(loc, saa);
     }
 
-    public LiveData<List<Post>> getAllPosts() { return mAllPosts; }
+    public String getNewKey(){
+        return mRepository.getNewKey();
+    }
+
+    /*=========================================================================
+    * Feed & Post Functions
+    =========================================================================*/
+    //Refreshes feed. Used after new post is inserted.
+    public void refreshFeed(){
+        mRepository.refreshFeed();
+        //mRepository.loadPosts();
+    }
+
+    public LiveData<List<Post>> getAllPosts() {
+        return mAllPosts;
+    }
+
+    public void votePost(String postId) {mRepository.votePost(postId);}
+
+    public void insertPost(Post post) { mRepository.insertPost(post); }
+
+    /*=========================================================================
+    * Comment Functions
+    =========================================================================*/
     public LiveData<List<Comment>> getAllComments() { return mAllComments; }
 
     public LiveData<List<Comment>> getCommentsForPost(String postID){
         return mRepository.getCommentsForPost(postID);
     }
 
-    public void votePost(String postId) {mRepository.votePost(postId);}
-
-    public void insertPost(Post post) { mRepository.insertPost(post); }
     public void insertComment(Comment comment) { mRepository.insertComment(comment); }
 }

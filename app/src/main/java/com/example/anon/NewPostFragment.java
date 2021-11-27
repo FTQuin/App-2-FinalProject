@@ -18,8 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.anon.database.DBViewModel;
 import com.example.anon.database.Post;
 import com.example.anon.databinding.FragmentNewPostBinding;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,11 +34,8 @@ public class NewPostFragment extends Fragment {
     private static final String ARG_SUB_ADMIN_AREA = "sub_admin_area";
 
     private FragmentNewPostBinding binding;
-    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    ;
-    private DatabaseReference mPostRef = mRootRef.child("posts");
 
-    private String editTitle, editContent, date;
+    private String editTitle, editContent, date, key;
 
     private String locality, subAdminArea;
     private DBViewModel viewModel;
@@ -96,13 +91,11 @@ public class NewPostFragment extends Fragment {
                     Date d = Calendar.getInstance().getTime();
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
                     date = df.format(d);
-
                     String loc = locality;
                     String saa = subAdminArea;
+                    key = viewModel.getNewKey();
 
-                    String postId = mRootRef.push().getKey();
-
-                    Post post = new Post(postId, editTitle, editContent, date, loc, saa, 1, 0);
+                    Post post = new Post(key, editTitle, editContent, date, loc, saa, 1, 0);
 
                     viewModel.insertPost(post);
                     viewModel.refreshFeed();
