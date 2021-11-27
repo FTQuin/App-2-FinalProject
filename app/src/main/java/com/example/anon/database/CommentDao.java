@@ -32,7 +32,7 @@ public interface CommentDao {
     @Query("SELECT * from comment_table ORDER BY id ASC")
     LiveData<List<Comment>> getAllComments();
 
-    @Query("SELECT * FROM comment_table WHERE postId LIKE :post_id ORDER BY id ASC")
+    @Query("SELECT * FROM comment_table WHERE postId LIKE :post_id ORDER BY id DESC")
     LiveData<List<Comment>> getCommentsForPost(String post_id);
 
     // Query with parameter that returns a specific comment or comments.
