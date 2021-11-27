@@ -13,7 +13,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModel;
 
 import com.example.anon.database.DBViewModel;
 import com.example.anon.database.Post;
@@ -62,7 +61,7 @@ public class PostFragment extends Fragment {
         return binding;
     }
 
-    public void setPostView(Post post, ViewModel vm){
+    public void setPostView(Post post){
         if (post != null) {
             binding.continueReadingTxt.setVisibility(View.INVISIBLE);
             binding.postTitleText.setText(post.getTitle());

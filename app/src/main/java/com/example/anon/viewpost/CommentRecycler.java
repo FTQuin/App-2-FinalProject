@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -58,6 +60,13 @@ public class CommentRecycler extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         Log.d("postidtest", "post id received in Comment Recycler: " + postID);
 
         // Set the adapter
@@ -66,9 +75,9 @@ public class CommentRecycler extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             //TODO: get clicked post id from post fragment
-            viewModel.getCommentsForPost("-Mny-YICkvJ2p-rXRLus").observe(getViewLifecycleOwner(),
+            viewModel.refreshComments();
+            viewModel.getCommentsForPost(postID).observe(getViewLifecycleOwner(),
                     comments -> recyclerView.setAdapter(new CommentAdapter(comments)));
         }
-        return view;
     }
 }

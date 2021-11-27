@@ -27,7 +27,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = commentList.get(position);
-        holder.mIdView.setText(commentList.get(position).getId());
         holder.mContentView.setText(commentList.get(position).getContent());
         holder.mNumVotesView.setText(String.valueOf(commentList.get(position).getNumVotes()));
     }
@@ -38,14 +37,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mIdView;
         public final TextView mContentView;
         public final TextView mNumVotesView;
         public Comment mItem;
 
         public ViewHolder(FragmentCommentBinding binding) {
             super(binding.getRoot());
-            mIdView = binding.itemNumber;
             mContentView = binding.content;
             mNumVotesView = binding.numVotesText;
         }
