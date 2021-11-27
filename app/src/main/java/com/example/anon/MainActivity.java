@@ -2,6 +2,7 @@ package com.example.anon;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -64,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     // vars for login
-    GoogleSignInClient mGoogleSignInClient;
-    int RC_SIGN_IN = 123;
+    //GoogleSignInClient mGoogleSignInClient;
+    //int RC_SIGN_IN = 123;
 
 
     @Override
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //login
-        GoogleSignInOptions gso = new GoogleSignInOptions
+        /*GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, RC_SIGN_IN);*/
         //end login
 
         feedHolder = new FeedHolder();
@@ -110,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
         });
         mAdView = binding.adView;
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        //TODO: Uncomment loadAd line. Got tired of the logcat spam lol.
+        //mAdView.loadAd(adRequest);
 
         enableMyLocation();
 
@@ -160,7 +162,9 @@ public class MainActivity extends AppCompatActivity {
                     ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
                             135, 0).setDuration(250).start();
                 }else {
-                    fragmentManager.popBackStackImmediate();
+                    if (fragmentInFrame instanceof MenuFragment){
+                        onBackPressed();
+                    }
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
                                     R.anim.genie_up, R.anim.genie_down)
@@ -183,7 +187,9 @@ public class MainActivity extends AppCompatActivity {
                     fragmentManager.popBackStackImmediate();
                     binding.menuBtn.setImageResource(R.drawable.ic_menu);
                 } else {
-                    fragmentManager.popBackStackImmediate();
+                    if (fragmentInFrame instanceof NewPostFragment){
+                        onBackPressed();
+                    }
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right,
                                     R.anim.slide_in_right, R.anim.slide_out_right)
