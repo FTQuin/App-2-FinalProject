@@ -72,7 +72,7 @@ public class DBRepository {
 
                     Post p = data.getValue(Post.class);
 
-                    new initPostsAsyncTask(mPostDao).execute(p);
+                    new insertPostAsyncTask(mPostDao).execute(p);
                 }
             }
 
@@ -111,7 +111,13 @@ public class DBRepository {
     }
 
     public void insertPost(Post post) {
-        new insertPostAsyncTask(mPostDao).execute(post);
+        mFeedRef.child(post.getPostId()).setValue(post).addOnCompleteListener(task -> {
+            //mPostsRef.child(id).setValue(params[0]).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                new insertPostAsyncTask(mPostDao).execute(post);
+                Log.d("===TESTING: NEW_POST===", "Publish successful.");
+            }
+        });
 
     }
 
@@ -135,44 +141,7 @@ public class DBRepository {
 
         @Override
         protected Void doInBackground(final Post... params) {
-            // add to firebase first
-            String id = params[0].getPostId();
-
-            /*
-            * if we create seperate "posts" child under root and store just id's under locality:
-            * - change this to mRootRef.child("posts").child(id).....*/
-            mFeedRef.child(id).setValue(params[0]).addOnCompleteListener(task -> {
-            //mPostsRef.child(id).setValue(params[0]).addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    // then add to local database
-                    //TODO: Stop this from crashing app.
-                    /*Moving it to onPostExecute function below d.i.b may have fixed it but
-                     Apparently Async Task is depreciated. Switch to Java.util.concurrent? */
-                    //mAsyncTaskDao.insert(params[0]);
-                    Log.d("===TESTING: NEW_POST===", "Publish successful.");
-                }
-            });
-            return null;
-        }
-    }
-
-    private static class initPostsAsyncTask extends AsyncTask<Post, Void, Void> {
-
-        private PostDao mAsyncTaskDao;
-
-        initPostsAsyncTask(PostDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        /*
-         * if we create seperate "posts" child under root and store just id's under locality:
-         * - mPostsRef.child(id).setValue(params[0]).addOnCompleteListener(task -> {....*/
-        @Override
-        protected Void doInBackground(final Post... params) {
-            //mFeedRef.child()
-
             mAsyncTaskDao.insert(params[0]);
-
             return null;
         }
     }
