@@ -2,13 +2,15 @@ package com.example.anon;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,9 +35,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     //int RC_SIGN_IN = 123;
 
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
         binding.locationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: **If version == upgraded** display map fragment on button click.
                 final Fragment fragmentInFrame = getSupportFragmentManager()
                         .findFragmentById(R.id.mainFragmentContainerView);
 
@@ -246,15 +245,23 @@ public class MainActivity extends AppCompatActivity {
     * Location enabling/ permissions
     ==============================================================================================*/
 
+    @SuppressLint("MissingPermission")
     private void getDeviceLocation() {
-        //TODO: Add single location request.
         /*
          * Get the best and most recent location of the device, which may be null in rare
          * cases when a location is not available.
          */
         try {
             if (locationPermissionGranted) {
-                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+
+                //Requests single location update
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    LocationListener listener = location -> { };
+                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
+                }
+
+                @SuppressLint("MissingPermission") Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
