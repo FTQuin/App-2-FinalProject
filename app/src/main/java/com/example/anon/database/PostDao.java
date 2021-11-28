@@ -43,5 +43,9 @@ public interface PostDao {
 
     //Query to upvote post
     @Query("UPDATE post_table SET numVotes = (numVotes + 1) WHERE postId LIKE :post_id")
-    void votePost(String post_id);
+    void upVotePost(String post_id);
+
+    //Query to upvote post
+    @Query("UPDATE post_table SET numVotes = (numVotes - 1) WHERE postId LIKE :post_id")
+    void downVotePost(String post_id);
 }

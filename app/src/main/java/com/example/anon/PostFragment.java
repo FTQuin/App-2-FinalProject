@@ -125,15 +125,11 @@ public class PostFragment extends Fragment {
 
     private void votePost(Post post, int vote){
         //TODO: Fix voted, upvoted, and downvoted. currently not updating.
-        Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
-        if (!voted) {
-            viewModel.votePost(post);
-            voted = true;
-        }
         switch (vote){
             //Upvote
             case 0:
                 if(!upvoted){
+                    viewModel.upVotePost(post);
                     Toast.makeText(binding.getRoot().getContext(), "Up Voted Post!", Toast.LENGTH_SHORT).show();
                     upvoted = true;
                     downvoted = false;
@@ -145,6 +141,7 @@ public class PostFragment extends Fragment {
             //Downvote
             case 1:
                 if(!downvoted){
+                    viewModel.downVotePost(post);
                     Toast.makeText(binding.getRoot().getContext(), "Down Voted Post!", Toast.LENGTH_SHORT).show();
                     downvoted = true;
                     upvoted = false;

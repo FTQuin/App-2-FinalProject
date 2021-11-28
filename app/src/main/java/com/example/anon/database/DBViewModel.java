@@ -62,10 +62,12 @@ public class DBViewModel extends AndroidViewModel {
         return null;
     }
 
-    public void votePost(Post post) {
-        mRepository.votePost(post);
+    public void upVotePost(Post post) {
+        mRepository.upVotePost(post);
     }
-
+    public void downVotePost(Post post) {
+        mRepository.downVotePost(post);
+    }
     public void insertPost(Post post) { mRepository.insertPost(post); }
 
     /*=========================================================================
@@ -87,7 +89,6 @@ public class DBViewModel extends AndroidViewModel {
     public void upVoteComment(Comment comment) {
         mRepository.upVoteComment(comment);
     }
-
     public void downVoteComment(Comment comment) {
         mRepository.downVoteComment(comment);
     }

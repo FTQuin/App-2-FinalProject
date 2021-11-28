@@ -33,30 +33,11 @@ public class DBRepository {
         mAllPosts = mPostDao.getAllPosts();
         mAllComments = mCommentDao.getAllComments();
 
-
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mComRef = mRootRef.child("comments");
-
-        //TODO: set mFeedRef to subAdmin if no posts in locality
-        /*mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild(locality)){
-                    mFeedRef = mRootRef.child("feeds").child(subAdmin).child(locality);
-                }else{
-                    mFeedRef = mRootRef.child("feeds").child(subAdmin);
-                    //Need to then access all locality children to get posts from them.
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("repo-error", "Failed to retrieve posts.", error.toException());
-            }
-        });*/
-
     }
 
+    //Receive location data from view model to use in database
     public void passLocation(String loc, String saa){
         if(loc==null) loc = "null";
         if(saa==null) saa = "null";
@@ -67,7 +48,7 @@ public class DBRepository {
         refreshFeed();
     }
 
-    //Provides new key for adding posts or comments to database.
+    //Provides new key for adding posts or comments to database
     public String getNewKey(){
         return mRootRef.push().getKey();
     }
@@ -79,6 +60,7 @@ public class DBRepository {
         return mAllPosts;
     }
 
+    //Refreshes posts
     public void refreshFeed(){
         mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -96,6 +78,7 @@ public class DBRepository {
         });
     }
 
+    //Inserts new post into database
     public void insertPost(Post post) {
         mFeedRef.child(post.getPostId()).setValue(post).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -106,50 +89,37 @@ public class DBRepository {
 
     }
 
+    //Deletes post from database
     public void deletePost(String postId) {
         mPostDao.deletePost(postId);
     }
 
-    public void downVoteComment(Comment comment) {
-        comment.setNumVotes(comment.getNumVotes()-1);
-        mComRef.child(comment.getId()).setValue(comment);
-    }
-
-    public void upVoteComment(Comment comment) {
-        comment.setNumVotes(comment.getNumVotes()+1);
-        mComRef.child(comment.getId()).setValue(comment);
-    }
-
-    private static class deleteAllPostAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        private PostDao mAsyncTaskDao;
-
-        deleteAllPostAsyncTask(PostDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Void... params) {
-            mAsyncTaskDao.deleteAllPosts();
-            return null;
-        }
-    }
-
-    public void votePost(Post post){
+    //Update number of votes on post
+    public void upVotePost(Post post){
         post.setNumVotes(post.getNumVotes() + 1);
-        //TODO: uncast
-        int votes = (int) post.getNumVotes();
+        int votes = post.getNumVotes();
         mFeedRef.child(post.getPostId()).child("numVotes").setValue(votes).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                new votePostAsyncTask(mPostDao).execute(post.getPostId());
+                new votePostAsyncTask(mPostDao, 0).execute(post.getPostId());
                 Log.d("repository", "===TESTING: VOTE_POST=== Vote successful.");
             }
         });
     }
 
-    //Async tasks
-    private static class insertPostAsyncTask extends AsyncTask<Post, Void, Void> {
+    //Update number of votes on post
+    public void downVotePost(Post post){
+        post.setNumVotes(post.getNumVotes() - 1);
+        int votes = post.getNumVotes();
+        mFeedRef.child(post.getPostId()).child("numVotes").setValue(votes).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                new votePostAsyncTask(mPostDao, 1).execute(post.getPostId());
+                Log.d("repository", "===TESTING: VOTE_POST=== Vote successful.");
+            }
+        });
+    }
 
+    //Post Async tasks
+    private static class insertPostAsyncTask extends AsyncTask<Post, Void, Void> {
         private PostDao mAsyncTaskDao;
 
         insertPostAsyncTask(PostDao dao) {
@@ -170,17 +140,34 @@ public class DBRepository {
     }
 
     private static class votePostAsyncTask extends AsyncTask<String, Void, Void> {
-
         private PostDao mAsyncTaskDao;
+        private int vote;
 
-        votePostAsyncTask(PostDao dao){
+        votePostAsyncTask(PostDao dao, int vote){
             mAsyncTaskDao = dao;
+            this.vote = vote;
         }
 
         @Override
         protected Void doInBackground(String... postid) {
-            Log.d("repo-test", "VotePostAsyncTask id: " + postid[0]);
-            mAsyncTaskDao.votePost(postid[0]);
+            if(vote == 0)
+                mAsyncTaskDao.upVotePost(postid[0]);
+            if (vote == 1)
+                mAsyncTaskDao.downVotePost(postid[0]);
+            return null;
+        }
+    }
+
+    private static class deleteAllPostAsyncTask extends AsyncTask<Void, Void, Void> {
+        private PostDao mAsyncTaskDao;
+
+        deleteAllPostAsyncTask(PostDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Void... params) {
+            mAsyncTaskDao.deleteAllPosts();
             return null;
         }
     }
@@ -188,17 +175,12 @@ public class DBRepository {
     /*==============================================================================================
     * Comment Functionality
     ==============================================================================================*/
-    public LiveData<List<Comment>> getAllComments() {
-        return mAllComments;
-    }
-
+    //Retrieve comments based on post id
     public LiveData<List<Comment>> getCommentsForPost(String postID) {
         return mCommentDao.getCommentsForPost(postID);
     }
 
     //Initializes comments. Not called until post is clicked.
-    //TODO: change this to initialize comments based off post ID.
-    //Currently initialized ALL comments, but only loads post id based ones into room db.
     public void refreshComments(){
         mComRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -216,10 +198,7 @@ public class DBRepository {
         });
     }
 
-    public void insertComment(Comment comment) {
-        new insertCommentAsyncTask(mCommentDao).execute(comment);
-    }
-
+    //Add new comment to database
     public void insertComment(Comment comment, Post post) {
         post.setNumComments(post.getNumComments() + 1);
 
@@ -232,13 +211,24 @@ public class DBRepository {
         });
     }
 
+    //Updates number of comment votes
+    public void upVoteComment(Comment comment) {
+        comment.setNumVotes(comment.getNumVotes() + 1);
+        mComRef.child(comment.getId()).setValue(comment);
+    }
+
+    public void downVoteComment(Comment comment) {
+        comment.setNumVotes(comment.getNumVotes() - 1);
+        mComRef.child(comment.getId()).setValue(comment);
+    }
+
+    //Delete comment from database
     public void deleteComment(String commentId) {
         deleteComment(commentId);
     }
 
-    //Async tasks
+    //Comment Async tasks
     private static class insertCommentAsyncTask extends AsyncTask<Comment, Void, Void> {
-
         private CommentDao mAsyncTaskDao;
 
         insertCommentAsyncTask(CommentDao dao) {
@@ -253,7 +243,6 @@ public class DBRepository {
     }
 
     private static class initCommentsAsyncTask extends AsyncTask<Comment, Void, Void> {
-
         private CommentDao mAsyncTaskDao;
 
         initCommentsAsyncTask(CommentDao dao) {
