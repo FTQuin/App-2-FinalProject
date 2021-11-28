@@ -66,13 +66,13 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_add" />
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/chatBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.30"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_chat" />
+            android:src="@drawable/ic_chat" />-->
 
         <ImageButton
             android:id="@+id/menuBtn"

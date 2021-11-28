@@ -97,14 +97,14 @@
             android:contentDescription="Button to create new post"
             android:src="@drawable/ic_add" />
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/chatBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.10"
             android:background="@android:color/transparent"
             android:contentDescription="Button to chat with other users"
-            android:src="@drawable/ic_chat" />
+            android:src="@drawable/ic_chat" />-->
 
         <ImageButton
             android:id="@+id/menuBtn"

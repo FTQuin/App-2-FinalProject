@@ -112,8 +112,7 @@ public class MainActivity extends AppCompatActivity {
         });
         mAdView = binding.adView;
         AdRequest adRequest = new AdRequest.Builder().build();
-        //TODO: Uncomment loadAd line. Got tired of the logcat spam lol.
-        //mAdView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);
 
         enableMyLocation();
 
@@ -212,26 +211,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        binding.chatBtn.setEnabled(false);
-        binding.chatBtn.getDrawable().setTint(getResources().getColor(R.color.background));
-        /*binding.chatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: display chat fragment on button click.
-                final Fragment fragmentInFrame = getSupportFragmentManager()
-                    .findFragmentById(R.id.fragmentContainerView);
-
-                if (fragmentInFrame instanceof ChatFragment){
-                    fragmentManager.popBackStackImmediate();
-                    binding.newPostBtn.setImageResource(R.drawable.ic_chat);
-                }else {
-                    fragmentManager.beginTransaction().add(binding.fragmentContainerView.getId(),
-                            chatFragment).addToBackStack("chat_frag").commit();
-                    binding.newPostBtn.setImageResource(R.drawable.ic_down_40);
-                }
-            }
-        });*/
     }
 
     public void onBackPressed(){
@@ -240,9 +219,6 @@ public class MainActivity extends AppCompatActivity {
             ObjectAnimator.ofFloat(binding.newPostBtn, "rotation", 135, 0)
                     .setDuration(250).start();
         }
-
-        //binding.newPostBtn.setImageResource(R.drawable.ic_add);
-        //binding.chatBtn.setImageResource(R.drawable.ic_chat);
         binding.menuBtn.setImageResource(R.drawable.ic_menu);
     }
 
