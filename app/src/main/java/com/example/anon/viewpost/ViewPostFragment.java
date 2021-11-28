@@ -101,10 +101,11 @@ public class ViewPostFragment extends Fragment {
 
         viewModel.getAllPosts().observe(getViewLifecycleOwner(), postList -> {
             currentPost = viewModel.getPost(postID);
-            if(currentPost != null)
+            if(currentPost != null) {
                 postFragment.setPostView(currentPost, viewModel);
-            if(getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                postFragment.getView().setVisibility(View.GONE);
+                if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    binding.postTitleTextLandscape.setText(currentPost.getTitle());
+            }
         });
 
         postFragment.getBinding().postContentText.setMaxLines(Integer.MAX_VALUE);
@@ -151,5 +152,6 @@ public class ViewPostFragment extends Fragment {
                 imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
             }
         });
+
     }
 }
