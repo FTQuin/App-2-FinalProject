@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class DBViewModel extends AndroidViewModel {
@@ -30,7 +31,9 @@ public class DBViewModel extends AndroidViewModel {
 
     //Receives location data
     public void passLocation(String loc, String saa){
-        if(!loc.equals(this.locality) || !saa.equals(this.subAdmin)) {
+        if(!Arrays.asList(new String[]{loc, saa}).contains(null) &&
+            (!loc.equals(this.locality) || !saa.equals(this.subAdmin))
+        ) {
             this.locality = loc;
             this.subAdmin = saa;
 
