@@ -83,4 +83,12 @@ public class DBViewModel extends AndroidViewModel {
     public void insertComment(Comment comment, Post post) {
         mRepository.insertComment(comment, post);
     }
+
+    public void upVoteComment(Comment comment) {
+        mRepository.upVoteComment(comment);
+    }
+
+    public void downVoteComment(Comment comment) {
+        mRepository.downVoteComment(comment);
+    }
 }

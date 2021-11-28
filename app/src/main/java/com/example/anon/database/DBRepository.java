@@ -110,6 +110,16 @@ public class DBRepository {
         mPostDao.deletePost(postId);
     }
 
+    public void downVoteComment(Comment comment) {
+        comment.setNumVotes(comment.getNumVotes()-1);
+        mComRef.child(comment.getId()).setValue(comment);
+    }
+
+    public void upVoteComment(Comment comment) {
+        comment.setNumVotes(comment.getNumVotes()+1);
+        mComRef.child(comment.getId()).setValue(comment);
+    }
+
     private static class deleteAllPostAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private PostDao mAsyncTaskDao;
