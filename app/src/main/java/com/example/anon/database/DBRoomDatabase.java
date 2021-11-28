@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: DBRoomDatabase.java
+* Description: ROOM database class to create new instance & populate device's local memory.
+* Authors: Shea Holden, Quin Adam
+* Date: November 26, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon.database;
 
 import android.content.Context;
