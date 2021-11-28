@@ -29,7 +29,7 @@ public interface CommentDao {
     void deleteComment(String com_id);
 
     // Simple query without parameters that returns values.
-    @Query("SELECT * from comment_table ORDER BY id ASC")
+    @Query("SELECT * from comment_table ORDER BY numVotes ASC")
     LiveData<List<Comment>> getAllComments();
 
     @Query("SELECT * FROM comment_table WHERE postId LIKE :post_id ORDER BY id DESC")
