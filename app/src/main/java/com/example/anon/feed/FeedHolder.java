@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,8 +81,8 @@ public class FeedHolder extends Fragment {
                     @Override
                     public void run() {
                         //Refresh repository
-                        ((MainActivity) requireActivity()).getDeviceLocation();
-                        Toast.makeText(getContext(), "Location: " + locality, Toast.LENGTH_SHORT).show();
+                        if(getActivity()!=null)
+                            ((MainActivity) getActivity()).getDeviceLocation();
                     }
                 }, 500);
                 //Stop refreshing animation when repository refresh is complete.
