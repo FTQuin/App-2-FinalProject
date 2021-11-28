@@ -82,6 +82,7 @@ public class DBRepository {
         mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                new deleteAllPostAsyncTask(mPostDao).execute();
                 for(DataSnapshot data : snapshot.getChildren()){
                     Post p = data.getValue(Post.class);
                     new insertPostAsyncTask(mPostDao).execute(p);
@@ -107,6 +108,21 @@ public class DBRepository {
 
     public void deletePost(String postId) {
         mPostDao.deletePost(postId);
+    }
+
+    private static class deleteAllPostAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private PostDao mAsyncTaskDao;
+
+        deleteAllPostAsyncTask(PostDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Void... params) {
+            mAsyncTaskDao.deleteAllPosts();
+            return null;
+        }
     }
 
     public void votePost(Post post){
