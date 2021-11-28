@@ -179,7 +179,4 @@ public class PostFragment extends Fragment {
                     .replace(R.id.mainFragmentContainerView, mFragment).addToBackStack(null).commit();
         }
     }
-    // TODO: make set post (post) and setPost(post, binding)
-    // use sP(p, b) in PostListAdapter and sP(p) in ViewPostFragment
-    // TODO: add CommentFragment class and create setComment function like above.
 }

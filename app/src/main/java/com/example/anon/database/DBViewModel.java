@@ -11,7 +11,6 @@ public class DBViewModel extends AndroidViewModel {
 
     private DBRepository mRepository;
 
-    private LiveData<List<Post>> mAllPosts;
     private LiveData<List<Comment>> mAllComments;
 
     private String locality, subAdmin;
@@ -19,7 +18,6 @@ public class DBViewModel extends AndroidViewModel {
     public DBViewModel(Application application) {
         super(application);
         mRepository = new DBRepository(getApplication());
-        mAllPosts = mRepository.getAllPosts();
     }
 
     public void refreshComments(){
@@ -56,7 +54,14 @@ public class DBViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Post>> getAllPosts() {
-        return mAllPosts;
+        return mRepository.getAllPosts();
+    }
+
+    public Post getPost(String postID){
+        for(Post p : getAllPosts().getValue())
+            if(p.getPostId().equals(postID))
+                 return p;
+        return null;
     }
 
     public void votePost(String postId) {mRepository.votePost(postId);}
@@ -72,5 +77,5 @@ public class DBViewModel extends AndroidViewModel {
         return mRepository.getCommentsForPost(postID);
     }
 
-    public void insertComment(Comment comment) { mRepository.insertComment(comment); }
+    public void insertComment(Comment comment, Post post) { mRepository.insertComment(comment, post); }
 }

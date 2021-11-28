@@ -52,6 +52,7 @@ public class ViewPostFragment extends Fragment {
 
     private static final String ARG_POST_ID = "post_id";
     private String postID;
+    Post currentPost;
 
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
@@ -99,12 +100,12 @@ public class ViewPostFragment extends Fragment {
         postFragment = (PostFragment) f.findFragmentById(R.id.fragmentContainerViewPost);
         postFragment.createBinding(getLayoutInflater(), binding.getRoot());
 
-        Post correctPost = null;
-        for(Post p : viewModel.getAllPosts().getValue())
-            if(p.getPostId().equals(postID))
-                correctPost = p;
-
-        postFragment.setPostView(correctPost);
+        currentPost = viewModel.getPost(postID);
+        postFragment.setPostView(currentPost);
+        viewModel.getAllPosts().observe(getViewLifecycleOwner(), postList -> {
+            currentPost = viewModel.getPost(postID);
+            postFragment.setPostView(currentPost);
+        });
 
         if (postFragment.getBinding().postContentText.getText().length() > 360){
             postFragment.getBinding().postContentText.setMaxLines(Integer.MAX_VALUE);
@@ -117,7 +118,9 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onRefresh() {
                 //Async task here to refresh comments.
+                viewModel.refreshFeed();
                 viewModel.refreshComments();
+
                 Toast.makeText(binding.getRoot().getContext(), "Refreshing comments", Toast.LENGTH_SHORT).show();
                 Log.d("refresh", "Refreshing comments");
                 swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
@@ -144,7 +147,8 @@ public class ViewPostFragment extends Fragment {
 
                 Comment comment = new Comment(id, postID, commentContent, 1, dateStr);
 
-                viewModel.insertComment(comment);
+                viewModel.insertComment(comment, currentPost);
+                postFragment.setPostView(currentPost);
                 viewModel.refreshComments();
 
                 // hide keyboard and clear text view
@@ -152,7 +156,6 @@ public class ViewPostFragment extends Fragment {
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
             }
-        }
-        );
+        });
     }
 }

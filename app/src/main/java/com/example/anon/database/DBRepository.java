@@ -183,8 +183,16 @@ public class DBRepository {
         return mCommentDao.getCommentsForPost(postID);
     }
 
-    public void insertComment(Comment comment) {
-        new insertCommentAsyncTask(mCommentDao).execute(comment);
+    public void insertComment(Comment comment, Post post) {
+        post.setNumComments(post.getNumComments() + 1);
+
+        mComRef.child(comment.getId()).setValue(comment).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                new insertCommentAsyncTask(mCommentDao).execute(comment);
+
+                mFeedRef.child(post.getPostId()).child("numComments").setValue(post.getNumComments());
+            }
+        });
     }
 
     public void deleteComment(String commentId) {
@@ -202,17 +210,7 @@ public class DBRepository {
 
         @Override
         protected Void doInBackground(final Comment... params) {
-            // add to firebase first
-            Log.d("=TESTING: NEW_COMMENT=", "Trying to publish Comment.");
-            mComRef.push().setValue(params[0]).addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    // then add to local database
-//                    mAsyncTaskDao.insert(params[0]);
-                    Log.d("=TESTING: NEW_COMMENT=", "Publish successful.");
-                }
-                else Log.d("=TESTING: NEW_COMMENT=", "Publish not successful.");
-            });
-            Log.d("=TESTING: NEW_COMMENT=", "Publish done.");
+            mAsyncTaskDao.insert(params[0]);
             return null;
         }
     }
