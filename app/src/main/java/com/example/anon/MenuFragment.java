@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.anon.databinding.FragmentMenuBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -118,6 +119,10 @@ public class MenuFragment extends Fragment {
             } else if (btnOption == 1) {
                 //TODO: sign out of google. Show sign in screen.
                 Toast.makeText(getContext(), "Signing Out", Toast.LENGTH_SHORT).show();
+
+                FirebaseAuth.getInstance().signOut();
+                getActivity().moveTaskToBack(true);
+                getActivity().finish();
             }
         });
 
