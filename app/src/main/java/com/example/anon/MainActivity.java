@@ -138,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (fragmentInFrame instanceof MapsFragment){
                     fragmentManager.popBackStackImmediate();
+                    if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                        binding.mainFragmentContainerViewLeft.setVisibility(View.VISIBLE);
                 }else {
                     fragmentManager.popBackStackImmediate();
                     fragmentManager.beginTransaction()
