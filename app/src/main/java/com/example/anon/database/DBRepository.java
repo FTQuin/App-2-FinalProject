@@ -58,6 +58,8 @@ public class DBRepository {
     }
 
     public void passLocation(String loc, String saa){
+        if(loc==null) loc = "null";
+        if(saa==null) saa = "null";
         mFeedRef = mRootRef.child("feeds").child(saa).child(loc);
 
         Log.d("repo", "Location in repository: " + loc + saa);

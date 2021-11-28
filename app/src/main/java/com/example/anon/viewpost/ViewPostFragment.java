@@ -1,6 +1,7 @@
 package com.example.anon.viewpost;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -49,7 +50,7 @@ public class ViewPostFragment extends Fragment {
     CommentRecycler commentRecycler;
 
     private static final String ARG_POST_ID = "post_id";
-    private String postID;
+    private String postID = "0";
     Post currentPost;
 
     public ViewPostFragment() {}
@@ -88,7 +89,7 @@ public class ViewPostFragment extends Fragment {
         commentRecycler = new CommentRecycler();
         commentRecycler = CommentRecycler.newInstance(postID);
         swipeRefreshContainer = binding.swipeRefreshContainer;
-        currentPost = viewModel.getPost(postID);
+//        currentPost = viewModel.getPost(postID);
 
         swipeRefreshContainer.setColorSchemeResources(R.color.theme_colour);
         swipeRefreshContainer.setRefreshing(true);
@@ -100,7 +101,10 @@ public class ViewPostFragment extends Fragment {
 
         viewModel.getAllPosts().observe(getViewLifecycleOwner(), postList -> {
             currentPost = viewModel.getPost(postID);
-            postFragment.setPostView(currentPost, viewModel);
+            if(currentPost != null)
+                postFragment.setPostView(currentPost, viewModel);
+            if(getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                postFragment.getView().setVisibility(View.GONE);
         });
 
         postFragment.getBinding().postContentText.setMaxLines(Integer.MAX_VALUE);

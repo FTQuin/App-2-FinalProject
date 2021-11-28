@@ -1,5 +1,7 @@
 package com.example.anon;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.anon.database.DBViewModel;
 import com.example.anon.database.Post;
@@ -28,6 +32,7 @@ public class PostFragment extends Fragment {
     private boolean upvoted = false;
     private boolean downvoted = false;
     private boolean voted = false;
+    private Context context;
 
     public PostFragment() {}
 
@@ -48,6 +53,8 @@ public class PostFragment extends Fragment {
     }
 
     public FragmentPostBinding createBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container){
+        context = container.getContext();
+        viewModel = new ViewModelProvider((FragmentActivity) context).get(DBViewModel.class);
         // Inflate the layout for this fragment using view binding
         if(binding == null)
             binding = FragmentPostBinding.inflate(inflater, container, false);
@@ -61,7 +68,7 @@ public class PostFragment extends Fragment {
 
     public void setPostView(Post post, DBViewModel vm){
         //Sets view model from calling fragment.
-        viewModel = vm;
+//        viewModel = vm;
 
         if (post != null) {
             binding.continueReadingTxt.setVisibility(View.INVISIBLE);
@@ -155,19 +162,18 @@ public class PostFragment extends Fragment {
         mBundle.putString("post_id", post.getPostId());
         mFragment.setArguments(mBundle);
 
-        //TODO: implement scroll or delete code
-        int loc[] = new int[2];
-        view.getLocationInWindow(loc);
-//            Toast.makeText(view.getContext(),"X "+loc[0] +"\nY "+loc[1],Toast.LENGTH_SHORT).show();
-
         final Fragment fragmentInFrame = ((MainActivity) view.getContext())
                 .getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
+
+        int replaceID = R.id.mainFragmentContainerView;
+        if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            replaceID = R.id.mainFragmentContainerViewLeft;
 
         //To prevent infinite adding to back stack when clicking post in ViewPostFragment.
         if (fragmentInFrame instanceof FeedHolder){
             ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .replace(R.id.mainFragmentContainerView, mFragment).addToBackStack(null).commit();
+                    .replace(replaceID, mFragment).addToBackStack(null).commit();
         }
     }
 }

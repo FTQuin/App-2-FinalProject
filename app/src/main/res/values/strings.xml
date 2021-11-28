@@ -1,9 +1,11 @@
 <resources>
     <!--    General Strings -->
     <string name="app_name">Anon.</string>
-    <string name="post_title_placeholder">Post Title</string>
-    <string name="post_content_placeholder">Post text content.</string>
-    <string name="post_date_placeholder">Date. Time</string>
+
+    <string name="post_title_placeholder">Please choose a post</string>
+    <string name="post_content_placeholder"></string>
+    <string name="post_date_placeholder"></string>
+
     <string name="error_loading_posts">Error. See Below.</string>
     <string name="error_loading_posts_desc">An internal error occurred. Please try again later.</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>

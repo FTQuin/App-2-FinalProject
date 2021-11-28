@@ -26,7 +26,8 @@
                 android:background="@color/background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout="@layout/fragment_post" />
 
             <LinearLayout
                 android:id="@+id/newCommentHolder"
@@ -67,12 +68,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:background="@color/background"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/newCommentHolder" />
+                app:layout_constraintTop_toBottomOf="@+id/newCommentHolder"
+                tools:layout="@layout/comment_recycler" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
