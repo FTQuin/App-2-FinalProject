@@ -10,88 +10,85 @@
     app:layout_scrollFlags="scroll"
     tools:context=".viewpost.ViewPostFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/postTitleTextLandscape"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="@string/post_title_placeholder"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerViewPost"
+            android:name="com.example.anon.PostFragment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout="@layout/fragment_post" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerViewComments"
+            android:name="com.example.anon.viewpost.CommentRecycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/background"
+            app:layout_constraintBottom_toTopOf="@id/newCommentHolder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/postTitleTextLandscape"
+            tools:layout="@layout/comment_recycler" />
+
+        <LinearLayout
+            android:id="@+id/newCommentHolder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingEnd="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
-                android:id="@+id/postTitleTextLandscape"
+            <EditText
+                android:id="@+id/txtComment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@color/white"
-                android:text="@string/post_title_placeholder"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/postDateText" />
+                android:layout_marginStart="4dp"
+                android:layout_weight="0.30"
+                android:background="@drawable/new_comment_et"
+                android:hint="Write a comment..."
+                android:padding="6dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragmentContainerViewPost"
-                android:name="com.example.anon.PostFragment"
-                android:layout_width="0dp"
+            <ImageButton
+                android:id="@+id/postCommentBtn"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/background"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout="@layout/fragment_post" />
+                android:layout_marginTop="0dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_add_comment_40" />
+        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/newCommentHolder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingTop="4dp"
-                android:paddingEnd="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/postTitleTextLandscape">
-
-                <EditText
-                    android:id="@+id/txtComment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_weight="0.30"
-                    android:background="@drawable/new_comment_et"
-                    android:hint="Write a comment..."
-                    android:padding="6dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                <ImageButton
-                    android:id="@+id/postCommentBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_add_comment_40" />
-
-            </LinearLayout>
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragmentContainerViewComments"
-                android:name="com.example.anon.viewpost.CommentRecycler"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@color/background"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/newCommentHolder"
-                tools:layout="@layout/comment_recycler" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

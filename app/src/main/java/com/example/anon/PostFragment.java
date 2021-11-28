@@ -163,6 +163,18 @@ public class PostFragment extends Fragment {
         mFragment.setArguments(mBundle);
         boolean isLandscape = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
+        if(isLandscape) {
+            int lineCount = binding.postContentText.getLineCount();
+            int shownLines = binding.postContentText.getMaxLines();
+            //To prevent "continue reading" from being shown in viewPostFragment
+            if (shownLines <= 6) {
+                if (lineCount > 6){
+                    binding.postContentText.setMaxLines(Integer.MAX_VALUE);
+                    binding.continueReadingTxt.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+
         final Fragment fragmentInFrame = ((MainActivity) view.getContext())
                 .getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
 
