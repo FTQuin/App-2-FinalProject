@@ -191,6 +191,8 @@ public class DBRepository {
 
     public void insertComment(Comment comment) {
         new insertCommentAsyncTask(mCommentDao).execute(comment);
+    }
+
     public void insertComment(Comment comment, Post post) {
         post.setNumComments(post.getNumComments() + 1);
 

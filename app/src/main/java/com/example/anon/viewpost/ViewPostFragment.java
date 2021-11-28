@@ -107,6 +107,13 @@ public class ViewPostFragment extends Fragment {
             postFragment.setPostView(currentPost);
         });
 
+        Post correctPost = null;
+        for(Post p : viewModel.getAllPosts().getValue())
+            if(p.getPostId().equals(postID))
+                correctPost = p;
+
+        postFragment.setPostView(correctPost);
+
         if (postFragment.getBinding().postContentText.getText().length() > 360){
             postFragment.getBinding().postContentText.setMaxLines(Integer.MAX_VALUE);
             //postFragment.getBinding().postContentText.setMovementMethod(new ScrollingMovementMethod());

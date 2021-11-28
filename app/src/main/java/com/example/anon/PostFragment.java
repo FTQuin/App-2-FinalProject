@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.anon.database.DBViewModel;
 import com.example.anon.database.Post;
@@ -45,6 +46,8 @@ public class PostFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
         return createBinding(inflater, container).getRoot();
     }
 
@@ -60,10 +63,10 @@ public class PostFragment extends Fragment {
         return binding;
     }
 
-    public void setPostView(Post post, DBViewModel vm){
+    public void setPostView(Post post){
 
         //Sets viewmodel from calling fragment.
-        viewModel = vm;
+//        viewModel = vm;
 
         if (post != null) {
             binding.continueReadingTxt.setVisibility(View.INVISIBLE);
