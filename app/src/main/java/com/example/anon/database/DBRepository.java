@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: DBRepository.java
+* Description: Repository class to pass data/ commands between firebase, view model, and ROOM database
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon.database;
 
 import android.app.Application;
@@ -94,7 +101,7 @@ public class DBRepository {
         mPostDao.deletePost(postId);
     }
 
-    //Update number of votes on post
+    //Update number of votes on post + 1
     public void upVotePost(Post post){
         post.setNumVotes(post.getNumVotes() + 1);
         int votes = post.getNumVotes();
@@ -106,7 +113,7 @@ public class DBRepository {
         });
     }
 
-    //Update number of votes on post
+    //Update number of votes on post - 1
     public void downVotePost(Post post){
         post.setNumVotes(post.getNumVotes() - 1);
         int votes = post.getNumVotes();
@@ -211,12 +218,13 @@ public class DBRepository {
         });
     }
 
-    //Updates number of comment votes
+    //Updates number of comment votes + 1
     public void upVoteComment(Comment comment) {
         comment.setNumVotes(comment.getNumVotes() + 1);
         mComRef.child(comment.getId()).setValue(comment);
     }
 
+    //Updates number of comment votes - 1
     public void downVoteComment(Comment comment) {
         comment.setNumVotes(comment.getNumVotes() - 1);
         mComRef.child(comment.getId()).setValue(comment);
