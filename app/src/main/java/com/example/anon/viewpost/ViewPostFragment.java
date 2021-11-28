@@ -2,6 +2,8 @@ package com.example.anon.viewpost;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,8 +27,6 @@ import com.example.anon.database.Comment;
 import com.example.anon.database.DBViewModel;
 import com.example.anon.database.Post;
 import com.example.anon.databinding.FragmentViewPostBinding;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,11 +42,9 @@ public class ViewPostFragment extends Fragment {
 
     DBViewModel viewModel;
     FragmentViewPostBinding binding;
-
     SwipeRefreshLayout swipeRefreshContainer;
     ImageButton btnPostComment;
     TextView txtComment;
-
     PostFragment postFragment;
     CommentRecycler commentRecycler;
 
@@ -54,11 +52,7 @@ public class ViewPostFragment extends Fragment {
     private String postID;
     Post currentPost;
 
-    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-
-    public ViewPostFragment() {
-        // Required empty public constructor
-    }
+    public ViewPostFragment() {}
 
     public static ViewPostFragment newInstance(String postID) {
         ViewPostFragment fragment = new ViewPostFragment();
@@ -91,55 +85,44 @@ public class ViewPostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentManager f = getChildFragmentManager();
-
         commentRecycler = new CommentRecycler();
         commentRecycler = CommentRecycler.newInstance(postID);
+        swipeRefreshContainer = binding.swipeRefreshContainer;
+        currentPost = viewModel.getPost(postID);
+
+        swipeRefreshContainer.setColorSchemeResources(R.color.theme_colour);
+        swipeRefreshContainer.setRefreshing(true);
 
         f.beginTransaction().replace(R.id.fragmentContainerViewComments, commentRecycler).commit();
 
         postFragment = (PostFragment) f.findFragmentById(R.id.fragmentContainerViewPost);
         postFragment.createBinding(getLayoutInflater(), binding.getRoot());
 
-        currentPost = viewModel.getPost(postID);
-        postFragment.setPostView(currentPost);
         viewModel.getAllPosts().observe(getViewLifecycleOwner(), postList -> {
             currentPost = viewModel.getPost(postID);
-            postFragment.setPostView(currentPost);
+            postFragment.setPostView(currentPost, viewModel);
         });
 
-        Post correctPost = null;
-        for(Post p : viewModel.getAllPosts().getValue())
-            if(p.getPostId().equals(postID))
-                correctPost = p;
+        postFragment.getBinding().postContentText.setMaxLines(Integer.MAX_VALUE);
 
-        postFragment.setPostView(correctPost);
+        swipeRefreshContainer.setRefreshing(false);
 
-        if (postFragment.getBinding().postContentText.getText().length() > 360){
-            postFragment.getBinding().postContentText.setMaxLines(Integer.MAX_VALUE);
-            //postFragment.getBinding().postContentText.setMovementMethod(new ScrollingMovementMethod());
-        }
+        swipeRefreshContainer.setOnRefreshListener(() -> {
+            swipeRefreshContainer.setRefreshing(true);
+            viewModel.refreshFeed();
+            viewModel.refreshComments();
 
-        swipeRefreshContainer = binding.swipeRefreshContainer;
-
-        swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //Async task here to refresh comments.
-                viewModel.refreshFeed();
-                viewModel.refreshComments();
-
-                Toast.makeText(binding.getRoot().getContext(), "Refreshing comments", Toast.LENGTH_SHORT).show();
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> {
+                //Stop refreshing animation when repository refresh is complete.
+                swipeRefreshContainer.setRefreshing(false);
                 Log.d("refresh", "Refreshing comments");
-                swipeRefreshContainer.setRefreshing(false); //uncomment this in onSuccess.
-            }
+            }, 100);
         });
-
-        swipeRefreshContainer.setColorSchemeResources(R.color.theme_colour);
 
         txtComment = binding.txtComment;
         btnPostComment = binding.postCommentBtn;
         btnPostComment.setOnClickListener(v -> {
-
             String commentContent = txtComment.getText().toString();
 
             //Checks if title and content are blank before attempting to write to DB.
@@ -150,12 +133,12 @@ public class ViewPostFragment extends Fragment {
                 SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
                 String dateStr = df.format(d);
 
-                String id = mRootRef.push().getKey();
+                String id = viewModel.getNewKey();
 
                 Comment comment = new Comment(id, postID, commentContent, 1, dateStr);
 
                 viewModel.insertComment(comment, currentPost);
-                postFragment.setPostView(currentPost);
+                postFragment.setPostView(currentPost, viewModel);
                 viewModel.refreshComments();
 
                 // hide keyboard and clear text view
