@@ -138,7 +138,6 @@ public class DBRepository {
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
             Log.d("repository", "Init successful.");
-            return;
         }
     }
 

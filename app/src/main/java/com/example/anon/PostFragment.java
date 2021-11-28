@@ -12,7 +12,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.anon.database.DBViewModel;
 import com.example.anon.database.Post;
@@ -24,14 +23,11 @@ public class PostFragment extends Fragment {
 
     private FragmentPostBinding binding;
     private DBViewModel viewModel;
-
     private boolean upvoted = false;
     private boolean downvoted = false;
     private boolean voted = false;
 
-    public PostFragment() {
-        // Required empty public constructor
-    }
+    public PostFragment() {}
 
     public static PostFragment newInstance() {
         PostFragment fragment = new PostFragment();
@@ -46,8 +42,6 @@ public class PostFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
         return createBinding(inflater, container).getRoot();
     }
 
@@ -63,17 +57,15 @@ public class PostFragment extends Fragment {
         return binding;
     }
 
-    public void setPostView(Post post){
-
-        //Sets viewmodel from calling fragment.
-//        viewModel = vm;
+    public void setPostView(Post post, DBViewModel vm){
+        //Sets view model from calling fragment.
+        viewModel = vm;
 
         if (post != null) {
             binding.continueReadingTxt.setVisibility(View.INVISIBLE);
             binding.postTitleText.setText(post.getTitle());
             binding.postContentText.setText(post.getContent());
             binding.postDateText.setText(post.getDate());
-            //binding.numVotesText.setText(String.valueOf(post.getNumVotes()));
             binding.numVotesText.setText(String.valueOf(post.getNumVotes()));
             binding.numCommentsText.setText(String.valueOf(post.getNumComments()));
         } else {
@@ -83,23 +75,21 @@ public class PostFragment extends Fragment {
         }
 
         //gets number of lines in post to add a "continue reading" prompt.
-        binding.postContentText.post(new Runnable() {
-            @Override
-            public void run() {
-                int lineCount = binding.postContentText.getLineCount();
-                int shownLines = binding.postContentText.getMaxLines();
+        binding.postContentText.post(() -> {
+            int lineCount = binding.postContentText.getLineCount();
+            int shownLines = binding.postContentText.getMaxLines();
 
-                if (shownLines <= 6) {
-                    if (lineCount > 6){
-                        ConstraintLayout constraintLayout = binding.container;
-                        ConstraintSet constraintSet = new ConstraintSet();
+            //To prevent "continue reading" from being shown in viewPostFragment
+            if (shownLines <= 6) {
+                if (lineCount > 6){
+                    ConstraintLayout constraintLayout = binding.container;
+                    ConstraintSet constraintSet = new ConstraintSet();
 
-                        constraintSet.clone(constraintLayout);
-                        constraintSet.connect(R.id.divider,ConstraintSet.TOP, R.id.continueReadingTxt,ConstraintSet.BOTTOM,0);
-                        constraintSet.applyTo(constraintLayout);
+                    constraintSet.clone(constraintLayout);
+                    constraintSet.connect(R.id.divider,ConstraintSet.TOP, R.id.continueReadingTxt,ConstraintSet.BOTTOM,0);
+                    constraintSet.applyTo(constraintLayout);
 
-                        binding.continueReadingTxt.setVisibility(View.VISIBLE);
-                    }
+                    binding.continueReadingTxt.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -118,14 +108,15 @@ public class PostFragment extends Fragment {
     }
 
     private void votePost(Post post, int vote){
+        //TODO: Fix voted, upvoted, and downvoted. currently not updating.
+        Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
+        if (!voted) {
+            viewModel.votePost(post);
+            voted = true;
+        }
         switch (vote){
             //Upvote
             case 0:
-                Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
-                if(!voted){
-                    voted = true;
-                    viewModel.votePost(post);
-                }
                 if(!upvoted){
                     Toast.makeText(binding.getRoot().getContext(), "Up Voted Post!", Toast.LENGTH_SHORT).show();
                     upvoted = true;
@@ -137,11 +128,6 @@ public class PostFragment extends Fragment {
 
             //Downvote
             case 1:
-                Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
-                if(!voted){
-                    voted = true;
-                    viewModel.votePost(post);
-                }
                 if(!downvoted){
                     Toast.makeText(binding.getRoot().getContext(), "Down Voted Post!", Toast.LENGTH_SHORT).show();
                     downvoted = true;

@@ -52,7 +52,6 @@ public class CommentRecycler extends Fragment {
         }
     }
 
-    //TODO: move to onViewCreated
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,7 +73,6 @@ public class CommentRecycler extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            //TODO: get clicked post id from post fragment
             viewModel.refreshComments();
             viewModel.getCommentsForPost(postID).observe(getViewLifecycleOwner(),
                     comments -> recyclerView.setAdapter(new CommentAdapter(comments)));

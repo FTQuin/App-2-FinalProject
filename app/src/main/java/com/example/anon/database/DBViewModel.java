@@ -20,10 +20,6 @@ public class DBViewModel extends AndroidViewModel {
         mRepository = new DBRepository(getApplication());
     }
 
-    public void refreshComments(){
-        mRepository.refreshComments();
-    }
-
     public String getLocality(){
         return locality;
     }
@@ -79,5 +75,10 @@ public class DBViewModel extends AndroidViewModel {
         return mRepository.getCommentsForPost(postID);
     }
 
-    public void insertComment(Comment comment, Post post) { mRepository.insertComment(comment, post); }
+    public void refreshComments(){
+        mRepository.refreshComments();
+    }
+    public void insertComment(Comment comment, Post post) {
+        mRepository.insertComment(comment, post);
+    }
 }
