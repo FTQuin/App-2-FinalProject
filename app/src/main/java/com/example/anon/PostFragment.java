@@ -150,6 +150,7 @@ public class PostFragment extends Fragment {
                 }
                 break;
         }
+        int x =1;
     }
 
     //Opens specified ViewPostFragment.

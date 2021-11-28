@@ -1,5 +1,6 @@
 package com.example.anon;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.anon.databinding.FragmentMenuBinding;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -121,8 +125,20 @@ public class MenuFragment extends Fragment {
                 Toast.makeText(getContext(), "Signing Out", Toast.LENGTH_SHORT).show();
 
                 FirebaseAuth.getInstance().signOut();
-                getActivity().moveTaskToBack(true);
-                getActivity().finish();
+//                getActivity().moveTaskToBack(true);
+//                getActivity().finish();
+
+                //login
+                GoogleSignInOptions gso = new GoogleSignInOptions
+                        .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.web_client_id))
+                        .requestEmail()
+                        .build();
+
+                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this.getActivity(), gso);
+                mGoogleSignInClient.signOut();
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, 123);
             }
         });
 
