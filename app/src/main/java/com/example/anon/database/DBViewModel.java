@@ -30,10 +30,12 @@ public class DBViewModel extends AndroidViewModel {
 
     //Receives location data
     public void passLocation(String loc, String saa){
-        this.locality = loc;
-        this.subAdmin = saa;
+        if(!loc.equals(this.locality) || !saa.equals(this.subAdmin)) {
+            this.locality = loc;
+            this.subAdmin = saa;
 
-        mRepository.passLocation(loc, saa);
+            mRepository.passLocation(loc, saa);
+        }
     }
 
     public String getNewKey(){
