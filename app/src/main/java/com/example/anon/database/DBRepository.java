@@ -63,6 +63,7 @@ public class DBRepository {
         mFeedRef = mRootRef.child("feeds").child(saa).child(loc);
 
         Log.d("repo", "Location in repository: " + loc + saa);
+        new deleteAllPostAsyncTask(mPostDao).execute();
         refreshFeed();
     }
 
@@ -82,7 +83,6 @@ public class DBRepository {
         mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                new deleteAllPostAsyncTask(mPostDao).execute();
                 for(DataSnapshot data : snapshot.getChildren()){
                     Post p = data.getValue(Post.class);
                     new insertPostAsyncTask(mPostDao).execute(p);
