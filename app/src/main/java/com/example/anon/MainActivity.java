@@ -35,8 +35,6 @@ import com.example.anon.feed.FeedHolder;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
@@ -68,13 +66,11 @@ public class MainActivity extends AppCompatActivity {
     //GoogleSignInClient mGoogleSignInClient;
     //int RC_SIGN_IN = 123;
 
-
-    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //login
+        //Login with google account
         /*GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -105,15 +101,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         //Banner ad
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
+        MobileAds.initialize(this, initializationStatus -> {
         });
         mAdView = binding.adView;
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        //Goes through best practice location permission request procedure.
         enableMyLocation();
 
         //Prevents UI initialization until location permissions granted.
@@ -130,85 +124,76 @@ public class MainActivity extends AppCompatActivity {
         //Used to allow location text to scroll if too long for view
         binding.locationText.setSelected(true);
 
-        //===Bottom bar button onClick listeners===
-        binding.locationText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Fragment fragmentInFrame = getSupportFragmentManager()
-                        .findFragmentById(R.id.mainFragmentContainerView);
+        //Bottom menu bar button onClick listeners
+        binding.locationText.setOnClickListener(view -> {
+            final Fragment fragmentInFrame = getSupportFragmentManager()
+                    .findFragmentById(R.id.mainFragmentContainerView);
 
-                if (fragmentInFrame instanceof MapsFragment){
-                    fragmentManager.popBackStackImmediate();
-                    if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                        binding.mainFragmentContainerViewLeft.setVisibility(View.VISIBLE);
-                }else {
-                    fragmentManager.popBackStackImmediate();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
-                                    R.anim.genie_up, R.anim.genie_down)
-                            .add(binding.mainFragmentContainerView.getId(), mapsFragment)
-                            .addToBackStack(null).commit();
-                }
+            if (fragmentInFrame instanceof MapsFragment){
+                fragmentManager.popBackStackImmediate();
                 if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                    binding.mainFragmentContainerViewLeft.setVisibility(View.GONE);
+                    binding.mainFragmentContainerViewLeft.setVisibility(View.VISIBLE);
+            }else {
+                fragmentManager.popBackStackImmediate();
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
+                                R.anim.genie_up, R.anim.genie_down)
+                        .add(binding.mainFragmentContainerView.getId(), mapsFragment)
+                        .addToBackStack(null).commit();
             }
+            if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                binding.mainFragmentContainerViewLeft.setVisibility(View.GONE);
         });
 
-        binding.newPostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Fragment fragmentInFrame = getSupportFragmentManager()
-                        .findFragmentById(R.id.mainFragmentContainerView);
+        binding.newPostBtn.setOnClickListener(view -> {
+            final Fragment fragmentInFrame = getSupportFragmentManager()
+                    .findFragmentById(R.id.mainFragmentContainerView);
 
-                if (fragmentInFrame instanceof NewPostFragment){
-                    fragmentManager.popBackStackImmediate();
-                    ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
-                            135, 0).setDuration(250).start();
-                }else {
-                    if (fragmentInFrame instanceof MenuFragment){
-                        onBackPressed();
-                    }
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
-                                    R.anim.genie_up, R.anim.genie_down)
-                            .add(binding.mainFragmentContainerView.getId(), newPostFragment)
-                            .addToBackStack(null).commit();
-
-                    ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
-                            0, 135).setDuration(250).start();
-                }
-            }
-        });
-
-        binding.menuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Fragment fragmentInFrame = getSupportFragmentManager()
-                        .findFragmentById(R.id.mainFragmentContainerView);
-
+            if (fragmentInFrame instanceof NewPostFragment){
+                fragmentManager.popBackStackImmediate();
+                ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
+                        135, 0).setDuration(250).start();
+            }else {
                 if (fragmentInFrame instanceof MenuFragment){
-                    fragmentManager.popBackStackImmediate();
-                    binding.menuBtn.setImageResource(R.drawable.ic_menu);
-                } else {
-                    if (fragmentInFrame instanceof NewPostFragment){
-                        onBackPressed();
-                    }
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right,
-                                    R.anim.slide_in_right, R.anim.slide_out_right)
-                            .add(binding.mainFragmentContainerView.getId(), menuFragment)
-                            .addToBackStack("feed_frag").commit();
-
-                    Animation fadeOut = new AlphaAnimation(1, 0);
-                    fadeOut.setInterpolator(new AccelerateInterpolator());
-                    fadeOut.setDuration(300);
-
-                    ImageView menuIcn = binding.menuBtn;
-
-                    AnimatedVectorDrawable avd = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_menu_to_down);
-                    menuIcn.setImageDrawable(avd);
-                    avd.start();
+                    onBackPressed();
                 }
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
+                                R.anim.genie_up, R.anim.genie_down)
+                        .add(binding.mainFragmentContainerView.getId(), newPostFragment)
+                        .addToBackStack(null).commit();
+
+                ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
+                        0, 135).setDuration(250).start();
+            }
+        });
+
+        binding.menuBtn.setOnClickListener(view -> {
+            final Fragment fragmentInFrame = getSupportFragmentManager()
+                    .findFragmentById(R.id.mainFragmentContainerView);
+
+            if (fragmentInFrame instanceof MenuFragment){
+                fragmentManager.popBackStackImmediate();
+                binding.menuBtn.setImageResource(R.drawable.ic_menu);
+            } else {
+                if (fragmentInFrame instanceof NewPostFragment){
+                    onBackPressed();
+                }
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right,
+                                R.anim.slide_in_right, R.anim.slide_out_right)
+                        .add(binding.mainFragmentContainerView.getId(), menuFragment)
+                        .addToBackStack("feed_frag").commit();
+
+                Animation fadeOut = new AlphaAnimation(1, 0);
+                fadeOut.setInterpolator(new AccelerateInterpolator());
+                fadeOut.setDuration(300);
+
+                ImageView menuIcn = binding.menuBtn;
+
+                AnimatedVectorDrawable avd = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_menu_to_down);
+                menuIcn.setImageDrawable(avd);
+                avd.start();
             }
         });
     }
@@ -226,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
     * Location enabling/ permissions
     ==============================================================================================*/
 
-    @SuppressLint("MissingPermission")
+    //Requests device location & sets main fragment content accordingly
     public void getDeviceLocation() {
         /*
          * Get the best and most recent location of the device, which may be null in rare
@@ -240,15 +225,16 @@ public class MainActivity extends AppCompatActivity {
                     LocationListener listener = location -> { };
                     locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
                 }
-
+                //Task to get last device location, which is returned from above location request
                 Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Set the map's camera position to the current location of the device.
+                        // get device location returned from task
                         lastKnownLocation = task.getResult();
                         if (lastKnownLocation != null) {
                             Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
                             try {
+                                //Get all available info of current location
                                 List<Address> addresses = geocoder
                                         .getFromLocation(lastKnownLocation.getLatitude(),
                                         lastKnownLocation.getLongitude(), 1);
@@ -267,23 +253,21 @@ public class MainActivity extends AppCompatActivity {
                                 mBundle.putString("locality", locality);
                                 mBundle.putString("sub_admin_area", subAdmin);
 
-                                FeedHolder feedHolder1 = FeedHolder.newInstance(locality, subAdmin);
-                                FeedHolder feedHolder2 = new FeedHolder();
-
                                 newPostFragment.setArguments(mBundle);
-                                feedHolder2.setArguments(mBundle);
+                                feedHolder.setArguments(mBundle);
 
+                                //Pass current location to view model to get proper feed from DB
+                                DBViewModel viewModel = new ViewModelProvider(this).get(DBViewModel.class);
+                                viewModel.passLocation(locality, subAdmin);
+
+                                //set fragment to display location-specific feed
                                 fragmentManager.beginTransaction()
                                         .replace(binding.mainFragmentContainerView.getId(),
-                                                feedHolder1).commit();
+                                                feedHolder).commit();
 
                                 mapBundle.putDouble("latitude", lat);
                                 mapBundle.putDouble("longitude", lon);
                                 mapsFragment.setArguments(mapBundle);
-
-
-                                DBViewModel viewModel = new ViewModelProvider(this).get(DBViewModel.class);
-                                viewModel.passLocation(locality, subAdmin);
 
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -303,8 +287,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Check if location permissions granted. Request them if not
     private void enableMyLocation() {
-        // [START maps_check_location_permission]
+        // Check location permissions
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationPermissionGranted = true;
@@ -313,10 +298,9 @@ public class MainActivity extends AppCompatActivity {
             PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
         }
-        // [END maps_check_location_permission]
     }
 
-    // [START maps_check_location_permission_result]
+    // Result from checking location permissions
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -332,13 +316,10 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             // Permission was denied. Display an error message
-            // [START_EXCLUDE]
             // Display the missing permission error dialog when the fragments resume.
             permissionDenied = true;
-            // [END_EXCLUDE]
         }
     }
-    // [END maps_check_location_permission_result]
 
     @Override
     protected void onResumeFragments() {
@@ -350,9 +331,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Displays a dialog with error message explaining that the location permission is missing.
-     */
+    //Displays a dialog with error message explaining that the location permission is missing.
     private void showMissingPermissionError() {
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
