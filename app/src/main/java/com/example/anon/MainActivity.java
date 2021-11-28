@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        //startActivityForResult(signInIntent, RC_SIGN_IN);
         //end login
 
         feedHolder = new FeedHolder();

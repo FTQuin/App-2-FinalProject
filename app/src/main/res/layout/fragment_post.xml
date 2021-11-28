@@ -104,7 +104,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:gravity="center"
+            android:gravity="end"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

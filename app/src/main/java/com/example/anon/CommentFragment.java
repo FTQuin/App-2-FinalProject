@@ -4,18 +4,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 
-import com.example.anon.database.Comment;
+import com.example.anon.database.DBViewModel;
 import com.example.anon.databinding.FragmentCommentBinding;
 
 public class CommentFragment extends Fragment {
 
     private FragmentCommentBinding binding;
+    private DBViewModel viewModel;
+    private boolean upvoted = false;
+    private boolean downvoted = false;
+    private boolean voted = false;
 
     public CommentFragment() {
         // Required empty public constructor
@@ -42,6 +46,35 @@ public class CommentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.upVoteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                voteComment(0);
+            }
+        });
+        binding.downVoteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                voteComment(1);
+            }
+        });
+
+        //binding.upVoteBtn.setOnClickListener(view -> voteComment(comment, 0));
+
+        //binding.downVoteBtn.setOnClickListener(view -> voteComment(comment, 1));
+
+        /* Comment options. layout not added yet
+        AtomicInteger i = new AtomicInteger();
+        binding.postOptionsBtn.setOnClickListener(view -> {
+            if (i.get() == 0){
+                binding.optionsContainer.setVisibility(View.VISIBLE);
+                i.set(1);
+            } else {
+                binding.optionsContainer.setVisibility(View.INVISIBLE);
+                i.set(0);
+            }
+        });*/
     }
 
     public FragmentCommentBinding createBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container){
@@ -56,12 +89,45 @@ public class CommentFragment extends Fragment {
         return binding;
     }
 
-    public void setCommentView(Comment comment, ViewModel viewModel){
-        if (comment != null) {
+    private void voteComment(int vote){
+        //TODO: Fix voted, upvoted, and downvoted. currently not updating.
+        switch (vote){
+            //Upvote
+            case 0:
+                if(!voted) {
+                    voted = true;
+                    int numVotes = Integer.parseInt(binding.numVotesText.toString());
+                    numVotes = numVotes + 1;
+                    binding.numVotesText.setText(String.valueOf(numVotes));
+                }
+                if(!upvoted){
+                    Toast.makeText(binding.getRoot().getContext(), "Up Voted Post!", Toast.LENGTH_SHORT).show();
+                    upvoted = true;
+                    downvoted = false;
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "You cannot up vote twice.", Toast.LENGTH_SHORT).show();
+                }
+                break;
 
-        } else {
-            // Covers the case of data not being ready yet.
+            //Downvote
+            case 1:
+                if(!voted) {
+                    voted = true;
+                    int numVotes = Integer.parseInt(binding.numVotesText.toString());
+                    numVotes = numVotes + 1;
+                    binding.numVotesText.setText(String.valueOf(numVotes));
+                }
+                if(!downvoted){
+                    Toast.makeText(binding.getRoot().getContext(), "Down Voted Post!", Toast.LENGTH_SHORT).show();
+                    int numVotes = Integer.parseInt(binding.numVotesText.toString());
+                    numVotes = numVotes + 1;
+                    binding.numVotesText.setText(String.valueOf(numVotes));
+                    downvoted = true;
+                    upvoted = false;
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "You cannot down vote twice.", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
-
     }
 }

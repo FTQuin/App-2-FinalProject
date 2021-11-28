@@ -89,7 +89,6 @@ public class ViewPostFragment extends Fragment {
         commentRecycler = new CommentRecycler();
         commentRecycler = CommentRecycler.newInstance(postID);
         swipeRefreshContainer = binding.swipeRefreshContainer;
-//        currentPost = viewModel.getPost(postID);
 
         swipeRefreshContainer.setColorSchemeResources(R.color.theme_colour);
         swipeRefreshContainer.setRefreshing(true);
