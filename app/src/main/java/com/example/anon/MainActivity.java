@@ -27,7 +27,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.anon.database.DBViewModel;
 import com.example.anon.databinding.ActivityMainBinding;
 import com.example.anon.feed.FeedHolder;
 import com.google.android.gms.ads.AdRequest;
@@ -302,6 +304,10 @@ public class MainActivity extends AppCompatActivity {
                                 mapBundle.putDouble("latitude", lat);
                                 mapBundle.putDouble("longitude", lon);
                                 mapsFragment.setArguments(mapBundle);
+
+
+                                DBViewModel viewModel = new ViewModelProvider(this).get(DBViewModel.class);
+                                viewModel.passLocation(locality, subAdmin);
 
                             } catch (IOException e) {
                                 e.printStackTrace();

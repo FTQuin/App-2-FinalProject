@@ -82,17 +82,12 @@ public class FeedHolder extends Fragment {
                     @Override
                     public void run() {
                         //Refresh repository
-                        ((MainActivity)getActivity()).getDeviceLocation();
+                        ((MainActivity) requireActivity()).getDeviceLocation();
                         Toast.makeText(getContext(), "Location: " + locality, Toast.LENGTH_SHORT).show();
-                        viewModel.passLocation(locality, subAdminArea);
-                        viewModel.getAllPosts();
-
-                        //viewModel.refreshFeed();
                     }
                 }, 500);
                 //Stop refreshing animation when repository refresh is complete.
                 swipeRefreshContainer.setRefreshing(false);
-                viewModel.refreshFeed();
             }
         });
     }
