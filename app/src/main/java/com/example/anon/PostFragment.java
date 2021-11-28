@@ -161,19 +161,24 @@ public class PostFragment extends Fragment {
         Bundle mBundle = new Bundle();
         mBundle.putString("post_id", post.getPostId());
         mFragment.setArguments(mBundle);
+        boolean isLandscape = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
         final Fragment fragmentInFrame = ((MainActivity) view.getContext())
                 .getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainerView);
 
         int replaceID = R.id.mainFragmentContainerView;
-        if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        if(isLandscape) {
             replaceID = R.id.mainFragmentContainerViewLeft;
+            ((MainActivity) view.getContext()).binding.mainFragmentContainerViewLeft.setVisibility(View.VISIBLE);
+        }
 
         //To prevent infinite adding to back stack when clicking post in ViewPostFragment.
         if (fragmentInFrame instanceof FeedHolder){
-            ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
+            FragmentTransaction ft = ((MainActivity) view.getContext()).getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .replace(replaceID, mFragment).addToBackStack(null).commit();
+                    .replace(replaceID, mFragment);
+            if(!isLandscape) ft = ft.addToBackStack(null);
+            ft.commit();
         }
     }
 }

@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -46,7 +47,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+    public ActivityMainBinding binding;
     private MenuFragment menuFragment;
     private FeedHolder feedHolder;
     private NewPostFragment newPostFragment;
@@ -147,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
                             .add(binding.mainFragmentContainerView.getId(), mapsFragment)
                             .addToBackStack(null).commit();
                 }
+                if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    binding.mainFragmentContainerViewLeft.setVisibility(View.GONE);
             }
         });
 
