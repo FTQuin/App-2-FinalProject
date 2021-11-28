@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.anon.MainActivity;
 import com.example.anon.R;
 import com.example.anon.database.DBViewModel;
 import com.example.anon.databinding.FeedHolderBinding;
@@ -73,17 +75,24 @@ public class FeedHolder extends Fragment {
         swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //Refresh repository
-                viewModel.refreshFeed();
+                swipeRefreshContainer.setRefreshing(true);
 
                 final Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //Stop refreshing animation when repository refresh is complete.
-                        swipeRefreshContainer.setRefreshing(false);
+                        //Refresh repository
+                        ((MainActivity)getActivity()).getDeviceLocation();
+                        Toast.makeText(getContext(), "Location: " + locality, Toast.LENGTH_SHORT).show();
+                        viewModel.passLocation(locality, subAdminArea);
+                        viewModel.getAllPosts();
+
+                        //viewModel.refreshFeed();
                     }
                 }, 500);
+                //Stop refreshing animation when repository refresh is complete.
+                swipeRefreshContainer.setRefreshing(false);
+                viewModel.refreshFeed();
             }
         });
     }

@@ -30,7 +30,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.anon.databinding.ActivityMainBinding;
 import com.example.anon.feed.FeedHolder;
-import com.example.anon.feed.FeedRecycler;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -38,7 +37,6 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Initialize the UI after location permissions granted.
-    private void initUI(){
+    public void initUI(){
 
         getDeviceLocation();
 
@@ -249,14 +247,13 @@ public class MainActivity extends AppCompatActivity {
     ==============================================================================================*/
 
     @SuppressLint("MissingPermission")
-    private void getDeviceLocation() {
+    public void getDeviceLocation() {
         /*
          * Get the best and most recent location of the device, which may be null in rare
          * cases when a location is not available.
          */
         try {
             if (locationPermissionGranted) {
-
                 //Requests single location update
                 LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 if (locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -264,67 +261,56 @@ public class MainActivity extends AppCompatActivity {
                     locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
                 }
 
-                @SuppressLint("MissingPermission") Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            lastKnownLocation = task.getResult();
-                            if (lastKnownLocation != null) {
-                                Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
+                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Set the map's camera position to the current location of the device.
+                        lastKnownLocation = task.getResult();
+                        if (lastKnownLocation != null) {
+                            Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
+                            try {
+                                List<Address> addresses = geocoder
+                                        .getFromLocation(lastKnownLocation.getLatitude(),
+                                        lastKnownLocation.getLongitude(), 1);
 
-                                try {
-                                    List<Address> addresses = geocoder
-                                            .getFromLocation(lastKnownLocation.getLatitude(),
-                                            lastKnownLocation.getLongitude(), 1);
+                                Address address = addresses.get(0);
 
-                                    Address address = addresses.get(0);
+                                Log.d("=====Location: ", "Full: " + address);
 
-                                    Log.d("=====Location: ", "Full: " + address);
+                                String locality = address.getLocality();
+                                String subAdmin = address.getSubAdminArea();
+                                double lat = address.getLatitude();
+                                double lon = address.getLongitude();
 
-                                    String locality = address.getLocality();
-                                    String subAdmin = address.getSubAdminArea();
-                                    double lat = address.getLatitude();
-                                    double lon = address.getLongitude();
+                                binding.locationText.setText(locality);
 
-                                    binding.locationText.setText(locality);
+                                mBundle.putString("locality", locality);
+                                mBundle.putString("sub_admin_area", subAdmin);
 
-                                    mBundle.putString("locality", locality);
-                                    mBundle.putString("sub_admin_area", subAdmin);
+                                FeedHolder feedHolder1 = FeedHolder.newInstance(locality, subAdmin);
+                                FeedHolder feedHolder2 = new FeedHolder();
 
-                                    newPostFragment.setArguments(mBundle);
-                                    feedHolder.setArguments(mBundle);
+                                newPostFragment.setArguments(mBundle);
+                                feedHolder2.setArguments(mBundle);
 
-                                    //Populates feed after location is confirmed
-                                    final Fragment fragmentInFrame = getSupportFragmentManager()
-                                            .findFragmentById(R.id.mainFragmentContainerView);
+                                fragmentManager.beginTransaction()
+                                        .replace(binding.mainFragmentContainerView.getId(),
+                                                feedHolder1).commit();
 
-                                    if (fragmentInFrame instanceof FeedRecycler) {
-                                        fragmentManager.beginTransaction()
-                                                .replace(binding.mainFragmentContainerView.getId(),
-                                                feedHolder).commit();
-                                    } else {
-                                        fragmentManager.beginTransaction()
-                                                .add(binding.mainFragmentContainerView.getId(),
-                                                feedHolder).commit();
-                                    }
+                                mapBundle.putDouble("latitude", lat);
+                                mapBundle.putDouble("longitude", lon);
+                                mapsFragment.setArguments(mapBundle);
 
-                                    mapBundle.putDouble("latitude", lat);
-                                    mapBundle.putDouble("longitude", lon);
-                                    mapsFragment.setArguments(mapBundle);
-
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(getBaseContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getBaseContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Log.d("loc_app", "Current location is null. Using defaults.");
-                            Log.e("loc_app", "Exception: %s", task.getException());
-                            Toast.makeText(getBaseContext(), "Error retrieving current location.", Toast.LENGTH_SHORT).show();
-
                         }
+                    } else {
+                        Log.d("loc_app", "Current location is null. Using defaults.");
+                        Log.e("loc_app", "Exception: %s", task.getException());
+                        Toast.makeText(getBaseContext(), "Error retrieving current location.", Toast.LENGTH_SHORT).show();
+
                     }
                 });
             }
