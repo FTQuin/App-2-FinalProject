@@ -19,6 +19,8 @@ import com.example.anon.databinding.FragmentPostBinding;
 import com.example.anon.feed.FeedHolder;
 import com.example.anon.viewpost.ViewPostFragment;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class PostFragment extends Fragment {
 
     private FragmentPostBinding binding;
@@ -100,8 +102,15 @@ public class PostFragment extends Fragment {
 
         binding.downVoteBtn.setOnClickListener(view -> votePost(post, 1));
 
+        AtomicInteger i = new AtomicInteger();
         binding.postOptionsBtn.setOnClickListener(view -> {
-            //TODO: show options. (delete, edit, etc)
+            if (i.get() == 0){
+                binding.optionsContainer.setVisibility(View.VISIBLE);
+                i.set(1);
+            } else {
+                binding.optionsContainer.setVisibility(View.INVISIBLE);
+                i.set(0);
+            }
         });
 
         binding.commentBtn.setOnClickListener(view -> openPost(post, view));
