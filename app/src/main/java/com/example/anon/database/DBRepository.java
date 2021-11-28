@@ -64,13 +64,24 @@ public class DBRepository {
         refreshFeed();
     }
 
+    //Provides new key for adding posts or comments to database.
+    public String getNewKey(){
+        return mRootRef.push().getKey();
+    }
+
+    /*==============================================================================================
+    * Post Functionality
+    ==============================================================================================*/
+    public LiveData<List<Post>> getAllPosts() {
+        return mAllPosts;
+    }
+
     public void refreshFeed(){
         mFeedRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data : snapshot.getChildren()){
                     Post p = data.getValue(Post.class);
-
                     new insertPostAsyncTask(mPostDao).execute(p);
                 }
             }
@@ -82,40 +93,8 @@ public class DBRepository {
         });
     }
 
-    //Initializes comments. Not called until post is clicked.
-    //TODO: change this to initialize comments based off post ID.
-    //Currently initialized ALL comments, but only loads post id based ones into room db.
-    public void refreshComments(){
-        mComRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot data : snapshot.getChildren()){
-                    Comment c = data.getValue(Comment.class);
-                    new initCommentsAsyncTask(mCommentDao).execute(c);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("repo-error", "Failed to retrieve comments.", error.toException());
-            }
-        });
-    }
-
-    public String getNewKey(){
-        return mRootRef.push().getKey();
-    }
-
-    /*===================================================================
-    * Post Functionality
-    ===================================================================*/
-    public LiveData<List<Post>> getAllPosts() {
-        return mAllPosts;
-    }
-
     public void insertPost(Post post) {
         mFeedRef.child(post.getPostId()).setValue(post).addOnCompleteListener(task -> {
-            //mPostsRef.child(id).setValue(params[0]).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 new insertPostAsyncTask(mPostDao).execute(post);
                 Log.d("===TESTING: NEW_POST===", "Publish successful.");
@@ -128,9 +107,16 @@ public class DBRepository {
         mPostDao.deletePost(postId);
     }
 
-    public void votePost(String postId){
-        //mPostDao.votePost(postId);
-        new votePostAsyncTask(mPostDao).execute(postId);
+    public void votePost(Post post){
+        post.setNumVotes(post.getNumVotes() + 1);
+        //TODO: uncast
+        int votes = (int) post.getNumVotes();
+        mFeedRef.child(post.getPostId()).child("numVotes").setValue(votes).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                new votePostAsyncTask(mPostDao).execute(post.getPostId());
+                Log.d("repository", "===TESTING: VOTE_POST=== Vote successful.");
+            }
+        });
     }
 
     //Async tasks
@@ -172,9 +158,9 @@ public class DBRepository {
         }
     }
 
-    /*===================================================================
+    /*==============================================================================================
     * Comment Functionality
-    ===================================================================*/
+    ==============================================================================================*/
     public LiveData<List<Comment>> getAllComments() {
         return mAllComments;
     }
@@ -183,6 +169,28 @@ public class DBRepository {
         return mCommentDao.getCommentsForPost(postID);
     }
 
+    //Initializes comments. Not called until post is clicked.
+    //TODO: change this to initialize comments based off post ID.
+    //Currently initialized ALL comments, but only loads post id based ones into room db.
+    public void refreshComments(){
+        mComRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot data : snapshot.getChildren()){
+                    Comment c = data.getValue(Comment.class);
+                    new initCommentsAsyncTask(mCommentDao).execute(c);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("repo-error", "Failed to retrieve comments.", error.toException());
+            }
+        });
+    }
+
+    public void insertComment(Comment comment) {
+        new insertCommentAsyncTask(mCommentDao).execute(comment);
     public void insertComment(Comment comment, Post post) {
         post.setNumComments(post.getNumComments() + 1);
 

@@ -62,7 +62,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         }
 
         public void bind(Post post, int position){
-            postFragment.setPostView(post);
+            postFragment.setPostView(post, viewModel);
         }
     }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.example.anon.databinding.FragmentMenuBinding;
 public class MenuFragment extends Fragment {
 
     private FragmentMenuBinding binding;
+    private int btnOption;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -54,6 +56,9 @@ public class MenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        String upgrade = "Upgrade";
+        String signOutConfirm = "Yes, Sign me out";
+
         binding.background.animate().alpha(1.0f).setStartDelay(150).setDuration(150).setInterpolator(new LinearInterpolator());
 
         binding.menuPopup.animate().alpha(0.0f).setDuration(0);
@@ -65,9 +70,11 @@ public class MenuFragment extends Fragment {
 
         binding.upgradeBtn.setOnClickListener(view13 -> {
             //TODO: if version == upgraded. hide or disable button.
+            btnOption = 0;
             String title = "Upgrade";
             binding.menuPopupTitleText.setText(title);
             binding.menuPopupContentText.setText(R.string.upgrade_text);
+            binding.popupUpgradeBtn.setText(upgrade);
             binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
             binding.menuPopup.animate().alpha(1.0f).setDuration(200);
         });
@@ -82,25 +89,51 @@ public class MenuFragment extends Fragment {
 
         binding.yourPostsBtn.setOnClickListener(view1 -> {
             //TODO: if version == upgraded. show user's posts
+            btnOption = 0;
             //Note: would have to add user id's to posts so we may not do this.
             String title = "Your Posts";
             binding.menuPopupTitleText.setText(title);
             binding.menuPopupContentText.setText(R.string.your_posts_text_base_version);
+            binding.popupUpgradeBtn.setText(upgrade);
             binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
             binding.menuPopup.animate().alpha(1.0f).setDuration(200);
         });
 
         binding.yourLocationsBtn.setOnClickListener(view1 -> {
             //TODO: if version == upgraded. open map fragment with list of saved locations.
+            btnOption = 0;
             String title = "Your Locations";
             binding.menuPopupTitleText.setText(title);
             binding.menuPopupContentText.setText(R.string.your_locations_text_base_version);
+            binding.popupUpgradeBtn.setText(upgrade);
             binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
             binding.menuPopup.animate().alpha(1.0f).setDuration(200);
         });
 
         binding.popupUpgradeBtn.setOnClickListener(view14 -> {
-            //TODO: Add upgrade functionality.
+
+            if(btnOption == 0) {
+                //TODO: Add upgrade functionality.
+                Toast.makeText(getContext(), "Upgrading", Toast.LENGTH_SHORT).show();
+            } else if (btnOption == 1) {
+                //TODO: sign out of google. Show sign in screen.
+                Toast.makeText(getContext(), "Signing Out", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.signOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnOption = 1;
+                String title = "Sign Out";
+                String signOutMsg = "Are you sure you want to sign out? This will return you to" +
+                        " the sign in screen. Tap the back button to cancel.";
+                binding.menuPopupTitleText.setText(title);
+                binding.menuPopupContentText.setText(signOutMsg);
+                binding.popupUpgradeBtn.setText(signOutConfirm);
+                binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
+                binding.menuPopup.animate().alpha(1.0f).setDuration(200);
+            }
         });
     }
 }

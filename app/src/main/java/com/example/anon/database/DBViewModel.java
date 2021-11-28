@@ -64,7 +64,9 @@ public class DBViewModel extends AndroidViewModel {
         return null;
     }
 
-    public void votePost(String postId) {mRepository.votePost(postId);}
+    public void votePost(Post post) {
+        mRepository.votePost(post);
+    }
 
     public void insertPost(Post post) { mRepository.insertPost(post); }
 

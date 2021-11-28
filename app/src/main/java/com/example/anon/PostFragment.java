@@ -1,7 +1,6 @@
 package com.example.anon;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,12 +60,17 @@ public class PostFragment extends Fragment {
         return binding;
     }
 
-    public void setPostView(Post post){
+    public void setPostView(Post post, DBViewModel vm){
+
+        //Sets viewmodel from calling fragment.
+        viewModel = vm;
+
         if (post != null) {
             binding.continueReadingTxt.setVisibility(View.INVISIBLE);
             binding.postTitleText.setText(post.getTitle());
             binding.postContentText.setText(post.getContent());
             binding.postDateText.setText(post.getDate());
+            //binding.numVotesText.setText(String.valueOf(post.getNumVotes()));
             binding.numVotesText.setText(String.valueOf(post.getNumVotes()));
             binding.numCommentsText.setText(String.valueOf(post.getNumComments()));
         } else {
@@ -97,63 +101,52 @@ public class PostFragment extends Fragment {
             }
         });
 
-        binding.getRoot().setOnClickListener(view -> {
-            openPost(post, view);
-        });
+        binding.getRoot().setOnClickListener(view -> openPost(post, view));
 
-        binding.upVoteBtn.setOnClickListener(view -> {
-            //to update vote count in db only once.
-            //up and down vote counts don't actually do anything yet.
-            Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
-            if(!voted){
-                //access database via votePost(post.getPostId()).
-                //votePost(post);
-                voted = true;
-            }
-            if(!upvoted){
-                Toast.makeText(binding.getRoot().getContext(), "Up Voted Post!", Toast.LENGTH_SHORT).show();
-                //access database via votePost(post.getPostId()).
-                upvoted = true;
-                downvoted = false;
-            }else{
-                Toast.makeText(binding.getRoot().getContext(), "You cannot up vote twice.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.upVoteBtn.setOnClickListener(view -> votePost(post, 0));
 
-        binding.downVoteBtn.setOnClickListener(view -> {
-            //to update vote count in db only once.
-            //up and down vote counts don't actually do anything yet.
-            Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
-            if(!voted){
-                //TODO: access database via votePost(post.getPostId()).
-                voted = true;
-            }
-            if(!downvoted){
-                Toast.makeText(binding.getRoot().getContext(), "Down Voted Post!", Toast.LENGTH_SHORT).show();
-                downvoted = true;
-                upvoted = false;
-            }else{
-                Toast.makeText(binding.getRoot().getContext(), "You cannot down vote twice.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        binding.downVoteBtn.setOnClickListener(view -> votePost(post, 1));
 
         binding.postOptionsBtn.setOnClickListener(view -> {
             //TODO: show options. (delete, edit, etc)
         });
 
-        binding.commentBtn.setOnClickListener(view -> {
-            openPost(post, view);
-        });
+        binding.commentBtn.setOnClickListener(view -> openPost(post, view));
     }
 
-    private void votePost(Post post, View view){
-        String postID = post.getPostId();
+    private void votePost(Post post, int vote){
+        switch (vote){
+            //Upvote
+            case 0:
+                Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
+                if(!voted){
+                    voted = true;
+                    viewModel.votePost(post);
+                }
+                if(!upvoted){
+                    Toast.makeText(binding.getRoot().getContext(), "Up Voted Post!", Toast.LENGTH_SHORT).show();
+                    upvoted = true;
+                    downvoted = false;
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "You cannot up vote twice.", Toast.LENGTH_SHORT).show();
+                }
+                break;
 
-        if(postID != null){
-            Log.d("postFrag", "Post ID" + postID);
-            viewModel.votePost(postID);
-        }else{
-            Log.d("postFrag", "ERROR: post id null.");
+            //Downvote
+            case 1:
+                Toast.makeText(binding.getRoot().getContext(), "Voted Status: " + voted, Toast.LENGTH_SHORT).show();
+                if(!voted){
+                    voted = true;
+                    viewModel.votePost(post);
+                }
+                if(!downvoted){
+                    Toast.makeText(binding.getRoot().getContext(), "Down Voted Post!", Toast.LENGTH_SHORT).show();
+                    downvoted = true;
+                    upvoted = false;
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "You cannot down vote twice.", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 

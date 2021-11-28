@@ -28,10 +28,10 @@ public class Post {
     private String subAdminArea;
     @NonNull
     @ColumnInfo(name = "numVotes")
-    private long numVotes;
+    private int numVotes;
     @NonNull
     @ColumnInfo(name = "numComments")
-    private long numComments;
+    private int numComments;
     @NonNull
     @ColumnInfo(name = "date")
     private String date;
@@ -39,7 +39,7 @@ public class Post {
     public Post(){}
     public Post(@NonNull String postId, @NonNull String title, @NonNull String content,
                 @NonNull String date, @NonNull String locality, @NonNull String subAdminArea,
-                @NonNull long numVotes, @NonNull long numComments){
+                @NonNull int numVotes, @NonNull int numComments){
         this.postId = postId;
         this.title = title;
         this.content = content;
@@ -90,17 +90,17 @@ public class Post {
         this.subAdminArea = subAdminArea;
     }
 
-    public long getNumVotes(){
+    public int getNumVotes(){
         return numVotes;
     }
-    public void setNumVotes(long numVotes){
+    public void setNumVotes(int numVotes){
         this.numVotes = numVotes;
     }
 
-    public long getNumComments(){
+    public int getNumComments(){
         return numComments;
     }
-    public void setNumComments(long numComments){
+    public void setNumComments(int numComments){
         this.numComments = numComments;
     }
 
