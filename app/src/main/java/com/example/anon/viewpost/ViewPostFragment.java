@@ -104,7 +104,7 @@ public class ViewPostFragment extends Fragment {
             if(p.getPostId().equals(postID))
                 correctPost = p;
 
-        postFragment.setPostView(correctPost);
+        postFragment.setPostView(correctPost, viewModel);
 
         if (postFragment.getBinding().postContentText.getText().length() > 360){
             postFragment.getBinding().postContentText.setMaxLines(Integer.MAX_VALUE);
