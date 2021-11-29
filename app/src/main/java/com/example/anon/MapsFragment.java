@@ -97,7 +97,9 @@ public class MapsFragment extends Fragment {
                 @Override
                 public void onMapClick(@NonNull LatLng latLng) {
                     String title = "Upgrade Required";
+                    String upgrade = "Upgrade";
                     binding.menuPopupTitleText.setText(title);
+                    binding.popupUpgradeBtn.setText(upgrade);
                     binding.menuPopup.setVisibility(View.VISIBLE);
                     binding.background.setVisibility(View.VISIBLE);
                     binding.background.animate().alpha(1.0f).setDuration(200);

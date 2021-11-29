@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -105,9 +104,9 @@ public class PostFragment extends Fragment {
 
         binding.getRoot().setOnClickListener(view -> openPost(post, view));
 
-        binding.upVoteBtn.setOnClickListener(view -> votePost(post, 0));
+        binding.upVoteBtn.setOnClickListener(view -> viewModel.upVotePost(post));
 
-        binding.downVoteBtn.setOnClickListener(view -> votePost(post, 1));
+        binding.downVoteBtn.setOnClickListener(view -> viewModel.downVotePost(post));
 
         AtomicInteger i = new AtomicInteger();
         binding.postOptionsBtn.setOnClickListener(view -> {
@@ -121,36 +120,6 @@ public class PostFragment extends Fragment {
         });
 
         binding.commentBtn.setOnClickListener(view -> openPost(post, view));
-    }
-
-    private void votePost(Post post, int vote){
-        //TODO: Fix voted, upvoted, and downvoted. currently not updating.
-        switch (vote){
-            //Upvote
-            case 0:
-                if(!upvoted){
-                    viewModel.upVotePost(post);
-                    Toast.makeText(binding.getRoot().getContext(), "Up Voted Post!", Toast.LENGTH_SHORT).show();
-                    upvoted = true;
-                    downvoted = false;
-                }else{
-                    Toast.makeText(binding.getRoot().getContext(), "You cannot up vote twice.", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            //Downvote
-            case 1:
-                if(!downvoted){
-                    viewModel.downVotePost(post);
-                    Toast.makeText(binding.getRoot().getContext(), "Down Voted Post!", Toast.LENGTH_SHORT).show();
-                    downvoted = true;
-                    upvoted = false;
-                }else{
-                    Toast.makeText(binding.getRoot().getContext(), "You cannot down vote twice.", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
-        int x =1;
     }
 
     //Opens specified ViewPostFragment.

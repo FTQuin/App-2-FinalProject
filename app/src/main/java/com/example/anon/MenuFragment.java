@@ -28,9 +28,7 @@ public class MenuFragment extends Fragment {
     private FragmentMenuBinding binding;
     private int btnOption;
 
-    public MenuFragment() {
-        // Required empty public constructor
-    }
+    public MenuFragment() {}
 
     /**
      * Use this factory method to create a new instance of
@@ -38,7 +36,6 @@ public class MenuFragment extends Fragment {
      *
      * @return A new instance of fragment MenuFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static MenuFragment newInstance() {
         MenuFragment fragment = new MenuFragment();
         return fragment;
@@ -64,17 +61,16 @@ public class MenuFragment extends Fragment {
         String upgrade = "Upgrade";
         String signOutConfirm = "Yes, Sign me out";
 
-        binding.background.animate().alpha(1.0f).setStartDelay(150).setDuration(150).setInterpolator(new LinearInterpolator());
+        binding.background.animate().alpha(1.0f)
+                .setStartDelay(150)
+                .setDuration(150)
+                .setInterpolator(new LinearInterpolator());
 
         binding.menuPopup.animate().alpha(0.0f).setDuration(0);
-        //binding.menuPopup.setVisibility(View.INVISIBLE);
         binding.popupUpgradeBtn.setVisibility(View.INVISIBLE);
 
-        //binding.yourLocationsBtn.setEnabled(false);
-        //binding.yourPostsBtn.setEnabled(false);
-
+        //TODO: Direct user to payment/ upgrade screen
         binding.upgradeBtn.setOnClickListener(view13 -> {
-            //TODO: if version == upgraded. hide or disable button.
             btnOption = 0;
             String title = "Upgrade";
             binding.menuPopupTitleText.setText(title);
@@ -93,7 +89,6 @@ public class MenuFragment extends Fragment {
         });
 
         binding.yourPostsBtn.setOnClickListener(view1 -> {
-            //TODO: if version == upgraded. show user's posts
             btnOption = 0;
             //Note: would have to add user id's to posts so we may not do this.
             String title = "Your Posts";
@@ -105,7 +100,6 @@ public class MenuFragment extends Fragment {
         });
 
         binding.yourLocationsBtn.setOnClickListener(view1 -> {
-            //TODO: if version == upgraded. open map fragment with list of saved locations.
             btnOption = 0;
             String title = "Your Locations";
             binding.menuPopupTitleText.setText(title);
@@ -118,10 +112,7 @@ public class MenuFragment extends Fragment {
         binding.popupUpgradeBtn.setOnClickListener(view14 -> {
 
             if(btnOption == 0) {
-                //TODO: Add upgrade functionality.
-                Toast.makeText(getContext(), "Upgrading", Toast.LENGTH_SHORT).show();
             } else if (btnOption == 1) {
-                //TODO: sign out of google. Show sign in screen.
                 Toast.makeText(getContext(), "Signing Out", Toast.LENGTH_SHORT).show();
 
                 FirebaseAuth.getInstance().signOut();

@@ -2,7 +2,6 @@ package com.example.anon;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +12,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,8 +38,6 @@ import com.example.anon.feed.FeedHolder;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private NewPostFragment newPostFragment;
     private MapsFragment mapsFragment;
     private AdView mAdView;
-
     FragmentManager fragmentManager = getSupportFragmentManager();
 
     //Variables for location
@@ -77,13 +75,23 @@ public class MainActivity extends AppCompatActivity {
     int RC_SIGN_IN = 123;
     private FirebaseAuth mAuth;
 
-    @SuppressLint("MissingPermission")
-    //GoogleSignInClient mGoogleSignInClient;
-    //int RC_SIGN_IN = 123;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //login
+        mAuth = FirebaseAuth.getInstance();
+        GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+        //end login
 
         feedHolder = new FeedHolder();
         menuFragment = new MenuFragment();
@@ -137,83 +145,90 @@ public class MainActivity extends AppCompatActivity {
     //Initialize the UI after location permissions granted.
     public void initUI(){
 
-        getDeviceLocation();
+        if(!isNetworkAvailable()){
+            Toast.makeText(this, "Error: You need to be connected to the internet to use Anon.\n" +
+                    "Please connect to a network and restart the app.", Toast.LENGTH_LONG).show();
+        } else {
+            getDeviceLocation();
 
-        //Used to allow location text to scroll if too long for view
-        binding.locationText.setSelected(true);
+            //Used to allow location text to scroll if too long for view
+            binding.locationText.setSelected(true);
 
-        //Bottom menu bar button onClick listeners
-        binding.locationText.setOnClickListener(view -> {
-            final Fragment fragmentInFrame = getSupportFragmentManager()
-                    .findFragmentById(R.id.mainFragmentContainerView);
+            //Bottom menu bar button onClick listeners
+            binding.locationText.setOnClickListener(view -> {
+                final Fragment fragmentInFrame = getSupportFragmentManager()
+                        .findFragmentById(R.id.mainFragmentContainerView);
 
-            if (fragmentInFrame instanceof MapsFragment){
-                fragmentManager.popBackStackImmediate();
+                if (fragmentInFrame instanceof MapsFragment){
+                    fragmentManager.popBackStackImmediate();
+                    if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                        binding.mainFragmentContainerViewLeft.setVisibility(View.VISIBLE);
+                }else {
+                    fragmentManager.popBackStackImmediate();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
+                                    R.anim.genie_up, R.anim.genie_down)
+                            .add(binding.mainFragmentContainerView.getId(), mapsFragment)
+                            .addToBackStack(null).commit();
+                }
                 if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                    binding.mainFragmentContainerViewLeft.setVisibility(View.VISIBLE);
-            }else {
-                fragmentManager.popBackStackImmediate();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
-                                R.anim.genie_up, R.anim.genie_down)
-                        .add(binding.mainFragmentContainerView.getId(), mapsFragment)
-                        .addToBackStack(null).commit();
-            }
-            if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                binding.mainFragmentContainerViewLeft.setVisibility(View.GONE);
-        });
+                    binding.mainFragmentContainerViewLeft.setVisibility(View.GONE);
+            });
 
-        binding.newPostBtn.setOnClickListener(view -> {
-            final Fragment fragmentInFrame = getSupportFragmentManager()
-                    .findFragmentById(R.id.mainFragmentContainerView);
+            binding.newPostBtn.setOnClickListener(view -> {
+                final Fragment fragmentInFrame = getSupportFragmentManager()
+                        .findFragmentById(R.id.mainFragmentContainerView);
 
-            if (fragmentInFrame instanceof NewPostFragment){
-                fragmentManager.popBackStackImmediate();
-                ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
-                        135, 0).setDuration(250).start();
-            }else {
-                if (fragmentInFrame instanceof MenuFragment){
-                    onBackPressed();
-                }
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
-                                R.anim.genie_up, R.anim.genie_down)
-                        .add(binding.mainFragmentContainerView.getId(), newPostFragment)
-                        .addToBackStack(null).commit();
-
-                ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
-                        0, 135).setDuration(250).start();
-            }
-        });
-
-        binding.menuBtn.setOnClickListener(view -> {
-            final Fragment fragmentInFrame = getSupportFragmentManager()
-                    .findFragmentById(R.id.mainFragmentContainerView);
-
-            if (fragmentInFrame instanceof MenuFragment){
-                fragmentManager.popBackStackImmediate();
-                binding.menuBtn.setImageResource(R.drawable.ic_menu);
-            } else {
                 if (fragmentInFrame instanceof NewPostFragment){
-                    onBackPressed();
+                    fragmentManager.popBackStackImmediate();
+                    ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
+                            135, 0).setDuration(250).start();
+                }else {
+                    if (fragmentInFrame instanceof MenuFragment){
+                        onBackPressed();
+                    }
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
+                                    R.anim.genie_up, R.anim.genie_down)
+                            .add(binding.mainFragmentContainerView.getId(), newPostFragment)
+                            .addToBackStack(null).commit();
+
+                    ObjectAnimator.ofFloat(binding.newPostBtn, "rotation",
+                            0, 135).setDuration(250).start();
                 }
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right,
-                                R.anim.slide_in_right, R.anim.slide_out_right)
-                        .add(binding.mainFragmentContainerView.getId(), menuFragment)
-                        .addToBackStack("feed_frag").commit();
+            });
 
-                Animation fadeOut = new AlphaAnimation(1, 0);
-                fadeOut.setInterpolator(new AccelerateInterpolator());
-                fadeOut.setDuration(300);
+            binding.menuBtn.setOnClickListener(view -> {
+                final Fragment fragmentInFrame = getSupportFragmentManager()
+                        .findFragmentById(R.id.mainFragmentContainerView);
 
-                ImageView menuIcn = binding.menuBtn;
+                if (fragmentInFrame instanceof MenuFragment){
+                    fragmentManager.popBackStackImmediate();
+                    binding.menuBtn.setImageResource(R.drawable.ic_menu);
+                } else {
+                    if (fragmentInFrame instanceof NewPostFragment){
+                        onBackPressed();
+                    }
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right,
+                                    R.anim.slide_in_right, R.anim.slide_out_right)
+                            .add(binding.mainFragmentContainerView.getId(), menuFragment)
+                            .addToBackStack("feed_frag").commit();
 
-                AnimatedVectorDrawable avd = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_menu_to_down);
-                menuIcn.setImageDrawable(avd);
-                avd.start();
-            }
-        });
+                    Animation fadeOut = new AlphaAnimation(1, 0);
+                    fadeOut.setInterpolator(new AccelerateInterpolator());
+                    fadeOut.setDuration(300);
+
+                    ImageView menuIcn = binding.menuBtn;
+
+                    AnimatedVectorDrawable avd = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_menu_to_down);
+                    menuIcn.setImageDrawable(avd);
+                    avd.start();
+                }
+            });
+        }
+
+
     }
 
     public void onBackPressed(){
@@ -226,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*==============================================================================================
-    * Location enabling/ permissions
+    * Location/ network checking/ enabling/ permissions
     ==============================================================================================*/
 
     //Requests device location & sets main fragment content accordingly
@@ -353,5 +368,12 @@ public class MainActivity extends AppCompatActivity {
     private void showMissingPermissionError() {
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
