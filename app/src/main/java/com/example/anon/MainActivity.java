@@ -10,6 +10,10 @@ package com.example.anon;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +26,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,6 +63,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -138,6 +144,27 @@ public class MainActivity extends AppCompatActivity {
         if (locationPermissionGranted){
             initUI();
         }
+
+        //notification
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        Intent intent1 = new Intent(MainActivity.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) this.getSystemService(MainActivity.this.ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "chan_name";
+            String description = "channel_description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
     }
 
     @Override
