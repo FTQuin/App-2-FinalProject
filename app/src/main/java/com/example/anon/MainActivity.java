@@ -1,7 +1,15 @@
+/*==================================================================================================
+* File: MainActivity.java
+* Description: Java Class for activity_main.xml, holds all of the fragments that run in the app
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +35,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -52,6 +61,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Java Class for activity_main.xml, holds all of the fragments that run in the app
+ */
 public class MainActivity extends AppCompatActivity {
 
     public ActivityMainBinding binding;
@@ -59,8 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private FeedHolder feedHolder;
     private NewPostFragment newPostFragment;
     private MapsFragment mapsFragment;
-    private AdView mAdView;
-    FragmentManager fragmentManager = getSupportFragmentManager();
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
 
     //Variables for location
     int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -75,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     int RC_SIGN_IN = 123;
     private FirebaseAuth mAuth;
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        //noinspection deprecation
         startActivityForResult(signInIntent, RC_SIGN_IN);
         //end login
 
@@ -103,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Remove top app title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //noinspection ConstantConditions
         getSupportActionBar().hide();
 
         //Implementing View Binding
@@ -113,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         //Banner ad
         MobileAds.initialize(this, initializationStatus -> {
         });
-        mAdView = binding.adView;
+        AdView mAdView = binding.adView;
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -133,16 +147,16 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == RC_SIGN_IN){
             try {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                task.getResult(ApiException.class);
             }catch (Exception e){
                 e.printStackTrace();
             }
-//            this.moveTaskToBack(true);
-//            this.finish();
         }
     }
 
-    //Initialize the UI after location permissions granted.
+    /**
+     * Initialize the UI after location permissions granted.
+     */
     public void initUI(){
 
         if(!isNetworkAvailable()){
@@ -159,12 +173,12 @@ public class MainActivity extends AppCompatActivity {
                 final Fragment fragmentInFrame = getSupportFragmentManager()
                         .findFragmentById(R.id.mainFragmentContainerView);
 
+                fragmentManager.popBackStackImmediate();
                 if (fragmentInFrame instanceof MapsFragment){
-                    fragmentManager.popBackStackImmediate();
                     if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                        binding.mainFragmentContainerViewLeft.setVisibility(View.VISIBLE);
+                        if (binding.mainFragmentContainerViewLeft != null)
+                            binding.mainFragmentContainerViewLeft.setVisibility(View.VISIBLE);
                 }else {
-                    fragmentManager.popBackStackImmediate();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.genie_up, R.anim.genie_down,
                                     R.anim.genie_up, R.anim.genie_down)
@@ -172,7 +186,8 @@ public class MainActivity extends AppCompatActivity {
                             .addToBackStack(null).commit();
                 }
                 if(getApplicationContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                    binding.mainFragmentContainerViewLeft.setVisibility(View.GONE);
+                    if (binding.mainFragmentContainerViewLeft != null)
+                        binding.mainFragmentContainerViewLeft.setVisibility(View.GONE);
             });
 
             binding.newPostBtn.setOnClickListener(view -> {
@@ -221,9 +236,10 @@ public class MainActivity extends AppCompatActivity {
 
                     ImageView menuIcn = binding.menuBtn;
 
-                    AnimatedVectorDrawable avd = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_menu_to_down);
+                    AnimatedVectorDrawable avd = (AnimatedVectorDrawable) AppCompatResources.getDrawable(this, R.drawable.avd_menu_to_down);
                     menuIcn.setImageDrawable(avd);
-                    avd.start();
+                    if (avd != null)
+                        avd.start();
                 }
             });
         }
@@ -244,7 +260,10 @@ public class MainActivity extends AppCompatActivity {
     * Location/ network checking/ enabling/ permissions
     ==============================================================================================*/
 
-    //Requests device location & sets main fragment content accordingly
+    /**
+     * Requests device location & sets main fragment content accordingly
+     */
+    @SuppressLint("MissingPermission")
     public void getDeviceLocation() {
         /*
          * Get the best and most recent location of the device, which may be null in rare
@@ -264,48 +283,46 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // get device location returned from task
                         lastKnownLocation = task.getResult();
-                        if (lastKnownLocation != null) {
-                            Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
-                            try {
-                                //Get all available info of current location
-                                List<Address> addresses = geocoder
-                                        .getFromLocation(lastKnownLocation.getLatitude(),
-                                        lastKnownLocation.getLongitude(), 1);
+                        Geocoder geocoder = new Geocoder(getBaseContext(), Locale.getDefault());
+                        try {
+                            //Get all available info of current location
+                            List<Address> addresses = geocoder
+                                    .getFromLocation(lastKnownLocation.getLatitude(),
+                                    lastKnownLocation.getLongitude(), 1);
 
-                                Address address = addresses.get(0);
+                            Address address = addresses.get(0);
 
-                                Log.d("=====Location: ", "Full: " + address);
+                            Log.d("=====Location: ", "Full: " + address);
 
-                                String locality = address.getLocality();
-                                String subAdmin = address.getSubAdminArea();
-                                double lat = address.getLatitude();
-                                double lon = address.getLongitude();
+                            String locality = address.getLocality();
+                            String subAdmin = address.getSubAdminArea();
+                            double lat = address.getLatitude();
+                            double lon = address.getLongitude();
 
-                                binding.locationText.setText(locality);
+                            binding.locationText.setText(locality);
 
-                                mBundle.putString("locality", locality);
-                                mBundle.putString("sub_admin_area", subAdmin);
+                            mBundle.putString("locality", locality);
+                            mBundle.putString("sub_admin_area", subAdmin);
 
-                                newPostFragment.setArguments(mBundle);
-                                feedHolder.setArguments(mBundle);
+                            newPostFragment.setArguments(mBundle);
+                            feedHolder.setArguments(mBundle);
 
-                                //Pass current location to view model to get proper feed from DB
-                                DBViewModel viewModel = new ViewModelProvider(this).get(DBViewModel.class);
-                                viewModel.passLocation(locality, subAdmin);
+                            //Pass current location to view model to get proper feed from DB
+                            DBViewModel viewModel = new ViewModelProvider(this).get(DBViewModel.class);
+                            viewModel.passLocation(locality, subAdmin);
 
-                                //set fragment to display location-specific feed
-                                fragmentManager.beginTransaction()
-                                        .replace(binding.mainFragmentContainerView.getId(),
-                                                feedHolder).commit();
+                            //set fragment to display location-specific feed
+                            fragmentManager.beginTransaction()
+                                    .replace(binding.mainFragmentContainerView.getId(),
+                                            feedHolder).commit();
 
-                                mapBundle.putDouble("latitude", lat);
-                                mapBundle.putDouble("longitude", lon);
-                                mapsFragment.setArguments(mapBundle);
+                            mapBundle.putDouble("latitude", lat);
+                            mapBundle.putDouble("longitude", lon);
+                            mapsFragment.setArguments(mapBundle);
 
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(getBaseContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getBaseContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Log.d("loc_app", "Current location is null. Using defaults.");
@@ -320,7 +337,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //Check if location permissions granted. Request them if not
+    /**
+     * Check if location permissions granted. Request them if not
+     */
     private void enableMyLocation() {
         // Check location permissions
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -333,7 +352,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Result from checking location permissions
+    /**
+     * Result from checking location permissions
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -364,15 +385,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //Displays a dialog with error message explaining that the location permission is missing.
+    /**
+     * Displays a dialog with error message explaining that the location permission is missing.
+     */
     private void showMissingPermissionError() {
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
 
+    /**
+     * Checks if user has access to the internet
+     */
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        @SuppressLint("MissingPermission")
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }

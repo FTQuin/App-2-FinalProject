@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: FeedRecycler.java
+* Description: Java Class for feed_recycler.xml
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon.feed;
 
 import android.content.Context;
@@ -8,24 +15,22 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.anon.R;
 import com.example.anon.database.DBViewModel;
 
+/**
+ * Java Class for feed_recycler.xml
+ */
 public class FeedRecycler extends Fragment {
-
-    private int mColumnCount = 1;
-    private DBViewModel viewModel;
 
     public FeedRecycler() {
     }
 
     public static FeedRecycler newInstance() {
-        FeedRecycler fragment = new FeedRecycler();
-        return fragment;
+        return new FeedRecycler();
     }
 
     @Override
@@ -38,17 +43,13 @@ public class FeedRecycler extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.feed_recycler, container, false);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
+        DBViewModel viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             viewModel.getAllPosts().observe(getViewLifecycleOwner(),
                     posts -> recyclerView.setAdapter(new PostListAdapter(posts, getContext())));
         }

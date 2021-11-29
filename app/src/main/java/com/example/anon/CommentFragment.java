@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: CommentFragment.java
+* Description: Java Class for fragment_comment.xml
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon;
 
 import android.os.Bundle;
@@ -11,6 +18,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.anon.databinding.FragmentCommentBinding;
 
+/**
+ * Java Class for fragment_comment.xml
+ */
 public class CommentFragment extends Fragment {
 
     private FragmentCommentBinding binding;
@@ -18,8 +28,7 @@ public class CommentFragment extends Fragment {
     public CommentFragment() {}
 
     public static CommentFragment newInstance() {
-        CommentFragment fragment = new CommentFragment();
-        return fragment;
+        return new CommentFragment();
     }
 
     @Override

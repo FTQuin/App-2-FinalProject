@@ -1,9 +1,17 @@
+/*==================================================================================================
+* File: PostListAdapter.java
+* Description: Java Class for feed_recycler.xml
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon.feed;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +23,9 @@ import com.example.anon.database.Post;
 
 import java.util.List;
 
+/**
+ * Java Class for feed_recycler.xml
+ */
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
 
     private final List<Post> postList;
@@ -26,6 +37,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         this.context = context;
     }
 
+    @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         viewModel = new ViewModelProvider((FragmentActivity) parent.getContext()).get(DBViewModel.class);
@@ -40,12 +52,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
 
-        holder.bind(postList.get(position), position);
+        holder.bind(postList.get(position));
 
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
         if (postList != null)
@@ -61,8 +71,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             this.postFragment = postFragment;
         }
 
-        public void bind(Post post, int position){
-            postFragment.setPostView(post, viewModel);
+        public void bind(Post post){
+            postFragment.setPostToView(post);
         }
     }
 }

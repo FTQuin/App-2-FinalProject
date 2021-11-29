@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: ViewPostFragment.java
+* Description: Java Class for comment_recycler.xml
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon.viewpost;
 
 import android.app.Activity;
@@ -72,7 +79,7 @@ public class ViewPostFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentViewPostBinding.inflate(getLayoutInflater());
@@ -96,14 +103,16 @@ public class ViewPostFragment extends Fragment {
         f.beginTransaction().replace(R.id.fragmentContainerViewComments, commentRecycler).commit();
 
         postFragment = (PostFragment) f.findFragmentById(R.id.fragmentContainerViewPost);
-        postFragment.createBinding(getLayoutInflater(), binding.getRoot());
+        if(postFragment != null)
+            postFragment.createBinding(getLayoutInflater(), binding.getRoot());
 
         viewModel.getAllPosts().observe(getViewLifecycleOwner(), postList -> {
             currentPost = viewModel.getPost(postID);
             if(currentPost != null) {
-                postFragment.setPostView(currentPost, viewModel);
-                if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                    binding.postTitleTextLandscape.setText(currentPost.getTitle());
+                postFragment.setPostToView(currentPost);
+                if (requireContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    if (binding.postTitleTextLandscape != null)
+                        binding.postTitleTextLandscape.setText(currentPost.getTitle());
             }
         });
 
@@ -142,15 +151,14 @@ public class ViewPostFragment extends Fragment {
                 Comment comment = new Comment(id, postID, commentContent, 1, dateStr);
 
                 viewModel.insertComment(comment, currentPost);
-                postFragment.setPostView(currentPost, viewModel);
+                postFragment.setPostToView(currentPost);
                 viewModel.refreshComments();
 
                 // hide keyboard and clear text view
                 txtComment.setText("");
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
             }
         });
-
     }
 }

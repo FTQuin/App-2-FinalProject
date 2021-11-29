@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: NewPostFragment.java
+* Description: Java Class for fragment_new_post.xml, used when user wants to create a new post
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon;
 
 import android.app.Activity;
@@ -28,6 +35,7 @@ import java.util.Locale;
  * A simple {@link Fragment} subclass.
  * Use the {@link NewPostFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * Java Class for fragment_new_post.xml, used when user wants to create a new post
  */
 public class NewPostFragment extends Fragment {
     private static final String ARG_LOCALITY = "locality";
@@ -63,7 +71,7 @@ public class NewPostFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNewPostBinding.inflate(inflater, container, false);
 
@@ -78,40 +86,37 @@ public class NewPostFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
-        binding.publishPostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editTitle = binding.titleInput.getText().toString();
-                editContent = binding.contentInput.getText().toString();
+        binding.publishPostBtn.setOnClickListener(view1 -> {
+            editTitle = binding.titleInput.getText().toString();
+            editContent = binding.contentInput.getText().toString();
 
-                //Checks if title and content are blank before attempting to write to DB.
-                if (TextUtils.isEmpty(editTitle) || TextUtils.isEmpty(editContent)) {
-                    Toast.makeText(getContext(), "All fields must be filled in", Toast.LENGTH_SHORT).show();
-                } else {
-                    Date d = Calendar.getInstance().getTime();
-                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
-                    date = df.format(d);
-                    String loc = locality;
-                    String saa = subAdminArea;
-                    key = viewModel.getNewKey();
+            //Checks if title and content are blank before attempting to write to DB.
+            if (TextUtils.isEmpty(editTitle) || TextUtils.isEmpty(editContent)) {
+                Toast.makeText(getContext(), "All fields must be filled in", Toast.LENGTH_SHORT).show();
+            } else {
+                Date d = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy. hh:mm aa", Locale.getDefault());
+                date = df.format(d);
+                String loc = locality;
+                String saa = subAdminArea;
+                key = viewModel.getNewKey();
 
-                    Post post = new Post(key, editTitle, editContent, date, loc, saa, 1, 0);
+                Post post = new Post(key, editTitle, editContent, date, loc, saa, 1, 0);
 
-                    viewModel.insertPost(post);
-                    viewModel.refreshFeed();
+                viewModel.insertPost(post);
+                viewModel.refreshFeed();
 
-                    binding.titleInput.setText("");
-                    binding.contentInput.setText("");
+                binding.titleInput.setText("");
+                binding.contentInput.setText("");
 
-                    // hide keyboard
-                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+                // hide keyboard
+                InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
 
-                    //Closes new post fragment.
-                    //NOTE: Fragment must be call addToBackStack() before commit() in main
-                    getActivity().getSupportFragmentManager().popBackStackImmediate();
+                //Closes new post fragment.
+                //NOTE: Fragment must be call addToBackStack() before commit() in main
+                requireActivity().getSupportFragmentManager().popBackStackImmediate();
 
-                }
             }
         });
     }

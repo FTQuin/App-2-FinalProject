@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: CommentRecycler.java
+* Description: Java Class for comment_recycler.xml
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon.viewpost;
 
 import android.content.Context;

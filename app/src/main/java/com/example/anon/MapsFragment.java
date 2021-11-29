@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: MapsFragment.java
+* Description: Java Class for fragment_maps.xml, used when user wants to view their location
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon;
 
 import android.os.Bundle;
@@ -18,9 +25,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * Java Class for fragment_maps.xml, used when user wants to view their location
+ */
 public class MapsFragment extends Fragment {
 
-    private GoogleMap mMap;
     private FragmentMapsBinding binding;
     private static final int DEFAULT_ZOOM = 15;
 
@@ -68,7 +77,7 @@ public class MapsFragment extends Fragment {
         }
     }
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+    private final OnMapReadyCallback callback = new OnMapReadyCallback() {
         /**
          * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
@@ -80,31 +89,28 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            mMap = googleMap;
 
             binding.menuPopup.setVisibility(View.INVISIBLE);
             binding.background.setVisibility(View.INVISIBLE);
 
             LatLng currentLocation = new LatLng(latitude, longitude);
 
-            Marker marker = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Your Current Location"));
-            marker.showInfoWindow();
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM));
-            mMap.getUiSettings().setAllGesturesEnabled(false);
+            Marker marker = googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Your Current Location"));
+            if (marker != null)
+                marker.showInfoWindow();
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM));
+            googleMap.getUiSettings().setAllGesturesEnabled(false);
 
-            mMap.setBuildingsEnabled(true);
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(@NonNull LatLng latLng) {
-                    String title = "Upgrade Required";
-                    String upgrade = "Upgrade";
-                    binding.menuPopupTitleText.setText(title);
-                    binding.popupUpgradeBtn.setText(upgrade);
-                    binding.menuPopup.setVisibility(View.VISIBLE);
-                    binding.background.setVisibility(View.VISIBLE);
-                    binding.background.animate().alpha(1.0f).setDuration(200);
-                    binding.menuPopup.animate().alpha(1.0f).setDuration(200);
-                }
+            googleMap.setBuildingsEnabled(true);
+            googleMap.setOnMapClickListener(latLng -> {
+                String title = "Upgrade Required";
+                String upgrade = "Upgrade";
+                binding.menuPopupTitleText.setText(title);
+                binding.popupUpgradeBtn.setText(upgrade);
+                binding.menuPopup.setVisibility(View.VISIBLE);
+                binding.background.setVisibility(View.VISIBLE);
+                binding.background.animate().alpha(1.0f).setDuration(200);
+                binding.menuPopup.animate().alpha(1.0f).setDuration(200);
             });
         }
 

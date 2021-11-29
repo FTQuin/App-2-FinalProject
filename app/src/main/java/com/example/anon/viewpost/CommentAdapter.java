@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: CommentAdapter.java
+* Description: Java Class for comment_recycler.xml
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon.viewpost;
 
 import android.view.LayoutInflater;
@@ -5,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +23,9 @@ import com.example.anon.databinding.FragmentCommentBinding;
 
 import java.util.List;
 
+/**
+ * Java Class for comment_recycler.xml
+ */
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     private final List<Comment> commentList;
@@ -24,6 +35,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         commentList = comments;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         viewModel = new ViewModelProvider((FragmentActivity) parent.getContext()).get(DBViewModel.class);
@@ -52,7 +64,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return commentList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;
         public final TextView mNumVotesView;
         public final TextView mDateTimeView;
@@ -69,6 +81,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             mDownvoteButton = binding.downVoteBtn;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";

@@ -1,3 +1,11 @@
+/*==================================================================================================
+* File: PostFragment.java
+* Description: Java Class for fragment_post.xml, used mainly in FeedAdapter.java when a new post
+*              is created
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon;
 
 import android.content.Context;
@@ -22,22 +30,23 @@ import com.example.anon.databinding.FragmentPostBinding;
 import com.example.anon.feed.FeedHolder;
 import com.example.anon.viewpost.ViewPostFragment;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Java Class for fragment_post.xml, used mainly in FeedAdapter.java when a new post
+ * is created
+ */
 public class PostFragment extends Fragment {
 
     private FragmentPostBinding binding;
     private DBViewModel viewModel;
-    private boolean upvoted = false;
-    private boolean downvoted = false;
-    private boolean voted = false;
     private Context context;
 
     public PostFragment() {}
 
     public static PostFragment newInstance() {
-        PostFragment fragment = new PostFragment();
-        return fragment;
+        return new PostFragment();
     }
 
     @Override
@@ -51,8 +60,15 @@ public class PostFragment extends Fragment {
         return createBinding(inflater, container).getRoot();
     }
 
+    /**
+     * used in feed adapter to get the binding for the current post
+     * @param inflater layout inflater for post_fragment
+     * @param container viewgroup of the post
+     * @return binding of the current post fragment
+     */
     public FragmentPostBinding createBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container){
-        context = container.getContext();
+        if (container != null)
+            context = container.getContext();
         viewModel = new ViewModelProvider((FragmentActivity) context).get(DBViewModel.class);
         // Inflate the layout for this fragment using view binding
         if(binding == null)
@@ -61,13 +77,18 @@ public class PostFragment extends Fragment {
         return binding;
     }
 
+    /**
+     * @return binding of the current post
+     */
     public FragmentPostBinding getBinding() {
         return binding;
     }
 
-    public void setPostView(Post post, DBViewModel vm){
-        //Sets view model from calling fragment.
-//        viewModel = vm;
+    /**
+     * used in feed adapter to set the post for the postFragment
+     * @param post post for the current fragment
+     */
+    public void setPostToView(Post post){
 
         if (post != null) {
             binding.continueReadingTxt.setVisibility(View.INVISIBLE);
@@ -102,7 +123,10 @@ public class PostFragment extends Fragment {
             }
         });
 
-        binding.getRoot().setOnClickListener(view -> openPost(post, view));
+        binding.getRoot().setOnClickListener(view -> {
+            if (post != null)
+                openPost(post, view);
+        });
 
         binding.upVoteBtn.setOnClickListener(view -> viewModel.upVotePost(post));
 
@@ -119,10 +143,17 @@ public class PostFragment extends Fragment {
             }
         });
 
-        binding.commentBtn.setOnClickListener(view -> openPost(post, view));
+        binding.commentBtn.setOnClickListener(view -> {
+            if (post != null)
+                openPost(post, view);
+        });
     }
 
-    //Opens specified ViewPostFragment.
+    /**
+     * Opens specified ViewPostFragment.
+     * @param post post to open
+     * @param view used to get the context
+     */
     private void openPost(Post post, View view){
         ViewPostFragment mFragment = new ViewPostFragment();
         Bundle mBundle = new Bundle();
@@ -148,7 +179,7 @@ public class PostFragment extends Fragment {
         int replaceID = R.id.mainFragmentContainerView;
         if(isLandscape) {
             replaceID = R.id.mainFragmentContainerViewLeft;
-            ((MainActivity) view.getContext()).binding.mainFragmentContainerViewLeft.setVisibility(View.VISIBLE);
+            Objects.requireNonNull(((MainActivity) view.getContext()).binding.mainFragmentContainerViewLeft).setVisibility(View.VISIBLE);
         }
 
         //To prevent infinite adding to back stack when clicking post in ViewPostFragment.

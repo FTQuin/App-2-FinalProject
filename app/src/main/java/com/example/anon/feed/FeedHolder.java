@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: FeedHolder.java
+* Description: Java Class for feed_holder.xml, it is need inorder add swipe refresh
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon.feed;
 
 import android.os.Bundle;
@@ -18,10 +25,12 @@ import com.example.anon.R;
 import com.example.anon.database.DBViewModel;
 import com.example.anon.databinding.FeedHolderBinding;
 
+/**
+ * Java Class for feed_holder.xml, it is need inorder add swipe refresh
+ */
 public class FeedHolder extends Fragment {
 
     private FeedHolderBinding binding;
-    private DBViewModel viewModel;
 
     private static final String ARG_LOCALITY = "locality";
     private static final String ARG_SUB_ADMIN_AREA = "sub_admin_area";
@@ -54,7 +63,7 @@ public class FeedHolder extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         binding = FeedHolderBinding.inflate(getLayoutInflater());
-        viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
+        DBViewModel viewModel = new ViewModelProvider(requireActivity()).get(DBViewModel.class);
 
         //Checks if view model has any location data before initializing.
         if (viewModel.getLocality() == null || viewModel.getSubAdmin() == null) {
@@ -71,23 +80,17 @@ public class FeedHolder extends Fragment {
         SwipeRefreshLayout swipeRefreshContainer = binding.swipeRefreshContainer;
         swipeRefreshContainer.setColorSchemeResources(R.color.theme_colour);
 
-        swipeRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshContainer.setRefreshing(true);
+        swipeRefreshContainer.setOnRefreshListener(() -> {
+            swipeRefreshContainer.setRefreshing(true);
 
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Refresh repository
-                        if(getActivity()!=null)
-                            ((MainActivity) getActivity()).getDeviceLocation();
-                    }
-                }, 500);
-                //Stop refreshing animation when repository refresh is complete.
-                swipeRefreshContainer.setRefreshing(false);
-            }
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> {
+                //Refresh repository
+                if(getActivity()!=null)
+                    ((MainActivity) getActivity()).getDeviceLocation();
+            }, 500);
+            //Stop refreshing animation when repository refresh is complete.
+            swipeRefreshContainer.setRefreshing(false);
         });
     }
 }

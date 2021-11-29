@@ -1,3 +1,10 @@
+/*==================================================================================================
+* File: MenuFragment.java
+* Description: Java Class for fragment_menu.xml, used when user wants to view the settings menu
+* Authors: Shea Holden, Quin Adam
+* Date: November 03, 2021
+* Project: Anon
+==================================================================================================*/
 package com.example.anon;
 
 import android.content.Intent;
@@ -37,8 +44,7 @@ public class MenuFragment extends Fragment {
      * @return A new instance of fragment MenuFragment.
      */
     public static MenuFragment newInstance() {
-        MenuFragment fragment = new MenuFragment();
-        return fragment;
+        return new MenuFragment();
     }
 
     @Override
@@ -47,7 +53,7 @@ public class MenuFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentMenuBinding.inflate(inflater, container, false);
@@ -69,7 +75,6 @@ public class MenuFragment extends Fragment {
         binding.menuPopup.animate().alpha(0.0f).setDuration(0);
         binding.popupUpgradeBtn.setVisibility(View.INVISIBLE);
 
-        //TODO: Direct user to payment/ upgrade screen
         binding.upgradeBtn.setOnClickListener(view13 -> {
             btnOption = 0;
             String title = "Upgrade";
@@ -111,41 +116,37 @@ public class MenuFragment extends Fragment {
 
         binding.popupUpgradeBtn.setOnClickListener(view14 -> {
 
-            if(btnOption == 0) {
-            } else if (btnOption == 1) {
+            if (btnOption == 1) {
                 Toast.makeText(getContext(), "Signing Out", Toast.LENGTH_SHORT).show();
 
+                // sign out
                 FirebaseAuth.getInstance().signOut();
-//                getActivity().moveTaskToBack(true);
-//                getActivity().finish();
 
-                //login
+                //login prompt
                 GoogleSignInOptions gso = new GoogleSignInOptions
                         .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(getString(R.string.web_client_id))
                         .requestEmail()
                         .build();
 
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this.getActivity(), gso);
+                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this.requireActivity(), gso);
                 mGoogleSignInClient.signOut();
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                //noinspection deprecation
                 startActivityForResult(signInIntent, 123);
             }
         });
 
-        binding.signOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnOption = 1;
-                String title = "Sign Out";
-                String signOutMsg = "Are you sure you want to sign out? This will return you to" +
-                        " the sign in screen. Tap the back button to cancel.";
-                binding.menuPopupTitleText.setText(title);
-                binding.menuPopupContentText.setText(signOutMsg);
-                binding.popupUpgradeBtn.setText(signOutConfirm);
-                binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
-                binding.menuPopup.animate().alpha(1.0f).setDuration(200);
-            }
+        binding.signOutBtn.setOnClickListener(v -> {
+            btnOption = 1;
+            String title = "Sign Out";
+            String signOutMsg = "Are you sure you want to sign out? This will return you to" +
+                    " the sign in screen. Tap the back button to cancel.";
+            binding.menuPopupTitleText.setText(title);
+            binding.menuPopupContentText.setText(signOutMsg);
+            binding.popupUpgradeBtn.setText(signOutConfirm);
+            binding.popupUpgradeBtn.setVisibility(View.VISIBLE);
+            binding.menuPopup.animate().alpha(1.0f).setDuration(200);
         });
     }
 }
