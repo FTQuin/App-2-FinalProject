@@ -76,11 +76,15 @@ public class ExampleInstrumentedTest {
         try {
             Thread.sleep(5000);
         }catch (Exception e){}
+        String initNumString = onView(withIndex(withId(R.id.numVotesText), 0)).toString();
+        int initNum = Integer.parseInt(initNumString);
+        String nextNum = String.valueOf(initNum + 1);
+
         onView(withIndex(withId(R.id.upVoteBtn), 0)).perform(click());
 
         // Check that the text was changed.
         onView(withIndex(withId(R.id.numVotesText), 0))
-                .check(matches(withText("36")));
+                .check(matches(withText(nextNum)));
     }
 
     @After
