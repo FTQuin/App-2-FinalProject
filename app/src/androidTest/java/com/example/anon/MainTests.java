@@ -50,7 +50,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class UpvoteDownVoteTest {
+public class MainTests {
     EspressoIdlingResource eir = new EspressoIdlingResource();
     String initialNumString;
     int initialNum;
@@ -66,7 +66,7 @@ public class UpvoteDownVoteTest {
     }
 
     @Test
-    public void upVoteTest() {
+    public void upVotePostTest() {
         initialNumString = getText(onView(withIndex(withId(R.id.numVotesText), 0)));
         initialNum = Integer.parseInt(initialNumString);
 
@@ -79,7 +79,7 @@ public class UpvoteDownVoteTest {
     }
 
     @Test
-    public void downVoteTest() {
+    public void downVotePostTest() {
         initialNumString = getText(onView(withIndex(withId(R.id.numVotesText), 0)));
         initialNum = Integer.parseInt(initialNumString);
 
@@ -89,6 +89,26 @@ public class UpvoteDownVoteTest {
         // Check that the text was changed.
         onView(withIndex(withId(R.id.numVotesText), 0))
                 .check(matches(withText(String.valueOf(initialNum - 1))));
+    }
+
+    @Test
+    public void postTest(){
+        String testPostTitle = "JUnit Test Title.";
+        String testPostContent = "JUnit Test Post.";
+
+        onView(withIndex(withId(R.id.newPostBtn), 0)).perform(click());
+
+        onView(withIndex(withId(R.id.titleInput), 0))
+                .perform(typeText(testPostTitle));
+        onView(withIndex(withId(R.id.contentInput), 0))
+                .perform(typeText(testPostContent));
+        onView(withId(R.id.publishPostBtn)).perform(click());
+
+        // Check that the text was added.
+        onView(withIndex(withId(R.id.postTitleText), 0))
+                .check(matches(withText(testPostTitle)));
+        onView(withIndex(withId(R.id.postContentText), 0))
+                .check(matches(withText(testPostContent)));
     }
 
     @Test
@@ -104,6 +124,36 @@ public class UpvoteDownVoteTest {
         // Check that the text was added.
         onView(withIndex(withId(R.id.content), 0))
                 .check(matches(withText(testComment)));
+    }
+
+    @Test
+    public void upVoteCommentTest() {
+        onView(withIndex(withId(R.id.postCardView), 0)).perform(click());
+
+        initialNumString = getText(onView(withIndex(withId(R.id.numVotesText), 0)));
+        initialNum = Integer.parseInt(initialNumString);
+
+        // click upvote
+        onView(withIndex(withId(R.id.upVoteBtn), 0)).perform(click());
+
+        // Check that the text was changed.
+        onView(withIndex(withId(R.id.numVotesText), 0))
+                .check(matches(withText(String.valueOf(initialNum + 1))));
+    }
+
+    @Test
+    public void downVoteCommentTest() {
+        onView(withIndex(withId(R.id.postCardView), 0)).perform(click());
+
+        initialNumString = getText(onView(withIndex(withId(R.id.numVotesText), 0)));
+        initialNum = Integer.parseInt(initialNumString);
+
+        // click down vote
+        onView(withIndex(withId(R.id.downVoteBtn), 0)).perform(click());
+
+        // Check that the text was changed.
+        onView(withIndex(withId(R.id.numVotesText), 0))
+                .check(matches(withText(String.valueOf(initialNum - 1))));
     }
 
     @After
