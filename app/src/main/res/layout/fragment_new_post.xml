@@ -17,21 +17,24 @@
         <EditText
             android:id="@+id/titleInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:autofillHints="Title"
             android:ems="10"
-            android:hint="Title (Required)"
+            android:hint="@string/title_required"
             android:inputType="textPersonName"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:ignore="TextContrastCheck" />
 
         <EditText
             android:id="@+id/contentInput"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:gravity="top"
-            android:hint="What do you want to say? (Required)"
+            android:hint="@string/what_do_you_want_to_say_required"
             android:inputType="textMultiLine"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            tools:ignore="TextContrastCheck"
+            android:autofillHints="" />
 
         <Button
             android:id="@+id/publishPostBtn"
@@ -43,7 +46,7 @@
             android:layout_marginBottom="2dp"
             android:paddingStart="30dp"
             android:paddingEnd="30dp"
-            android:text="Done"
+            android:text="@string/done"
             app:cornerRadius="0dp" />
     </LinearLayout>
 
@@ -54,5 +57,6 @@
         android:background="@color/shadow"
         android:clickable="true"
         android:translationZ="-1dp"
-        android:alpha="0"/>
+        android:alpha="0"
+        android:focusable="true" />
 </FrameLayout>

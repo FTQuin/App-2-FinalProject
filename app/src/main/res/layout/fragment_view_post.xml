@@ -44,9 +44,12 @@
                 android:layout_marginStart="4dp"
                 android:layout_weight="0.30"
                 android:background="@drawable/new_comment_et"
-                android:hint="Write a comment..."
+                android:hint="@string/write_a_comment"
                 android:padding="6dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+                android:inputType="textMultiLine"
+                android:autofillHints="" />
 
             <ImageButton
                 android:id="@+id/postCommentBtn"
@@ -54,7 +57,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_add_comment_40" />
+                android:contentDescription="@string/post_comment_description"
+                android:src="@drawable/ic_add_comment_40"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
 

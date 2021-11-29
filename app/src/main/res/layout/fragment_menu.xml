@@ -23,12 +23,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="Your Posts"
+            android:text="@string/your_posts"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <View
             android:layout_width="140dp"
-            android:layout_height="2px"
+            android:layout_height="1dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@color/theme_colour"/>
@@ -38,11 +38,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="Your Locations"
+            android:text="@string/your_locations"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
         <View
             android:layout_width="140dp"
-            android:layout_height="2px"
+            android:layout_height="1dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@color/theme_colour"/>
@@ -52,11 +52,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="Upgrade"
+            android:text="@string/upgrade"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
         <View
             android:layout_width="140dp"
-            android:layout_height="2px"
+            android:layout_height="1dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@color/theme_colour"/>
@@ -66,12 +66,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="Help and Support"
+            android:text="@string/help_and_support"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <View
             android:layout_width="140dp"
-            android:layout_height="2px"
+            android:layout_height="1dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@color/theme_colour"/>
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="Sign Out"
+            android:text="@string/sign_out"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
     </LinearLayout>
 
@@ -101,7 +101,6 @@
             android:id="@+id/menuPopupTitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
@@ -112,7 +111,6 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="TextView"
             android:textColor="@color/black" />
 
         <Button
@@ -120,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Upgrade now" />
+            android:text="@string/upgrade_now" />
 
     </LinearLayout>
 
@@ -135,5 +133,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusable="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

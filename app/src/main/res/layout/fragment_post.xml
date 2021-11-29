@@ -30,8 +30,9 @@
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="-7dp"
-            android:paddingEnd="-12dp"
             android:background="@android:color/transparent"
+            android:contentDescription="@string/post_options_description"
+            android:paddingEnd="-12dp"
             android:src="@drawable/ic_options"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -40,7 +41,7 @@
         <View
             android:id="@+id/dividerTop"
             android:layout_width="match_parent"
-            android:layout_height="2px"
+            android:layout_height="1dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@color/theme_colour"
@@ -79,7 +80,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="-4dp"
-            android:text="Continue Reading..."
+            android:contentDescription="@string/continue_reading_description"
+            android:text="@string/continue_reading"
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/black"
@@ -91,7 +93,7 @@
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="2px"
+            android:layout_height="1dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@color/theme_colour"
@@ -116,6 +118,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
+                android:contentDescription="@string/see_comments_description"
                 android:src="@drawable/ic_comment"
                 tools:ignore="TouchTargetSizeCheck" />
 
@@ -130,7 +133,6 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/white" />
 
-
             <ImageButton
                 android:id="@+id/upVoteBtn"
                 android:layout_width="48dp"
@@ -138,6 +140,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_toEndOf="@+id/commentBtn"
                 android:background="@android:color/transparent"
+                android:contentDescription="@string/up_vote_post_description"
                 android:src="@drawable/ic_thumb_up"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -156,6 +159,7 @@
                 android:layout_height="48dp"
                 android:layout_toEndOf="@+id/numVotesText"
                 android:background="@android:color/transparent"
+                android:contentDescription="@string/down_vote_post_description"
                 android:src="@drawable/ic_thumb_down"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -181,12 +185,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="Edit"
+                android:text="@string/edit"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
             <View
                 android:layout_width="70dp"
-                android:layout_height="2px"
+                android:layout_height="1dp"
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
                 android:background="@color/theme_colour"/>
@@ -196,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="Delete"
+                android:text="@string/delete"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         </LinearLayout>

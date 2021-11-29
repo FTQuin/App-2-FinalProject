@@ -34,6 +34,31 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="web_client_id">24133792449-9kv8sl1vv04c0t4k9fefa37vv15k3h5q.apps.googleusercontent.com</string>
+    <string name="new_post_description">New post</string>
+    <string name="menu_description">Menu</string>
+    <string name="location">Location</string>
+    <string name="up_vote_comment_description">Up Vote Comment</string>
+    <string name="down_vote_description">Down vote</string>
+    <string name="layout_divider_description">Layout divider</string>
+    <string name="your_posts">Your Posts</string>
+    <string name="your_locations">Your Locations</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="help_and_support">Help and Support</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="upgrade_now">Upgrade now</string>
+    <string name="title_required">Title (Required)</string>
+    <string name="what_do_you_want_to_say_required">What do you want to say? (Required)</string>
+    <string name="done">Done</string>
+    <string name="post_options_description">Post options</string>
+    <string name="continue_reading_description">Continue reading</string>
+    <string name="continue_reading">Continue Reading...</string>
+    <string name="see_comments_description">See comments</string>
+    <string name="up_vote_post_description">Up vote post</string>
+    <string name="down_vote_post_description">Down vote post</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="post_comment_description">Post comment</string>
+    <string name="write_a_comment">Write a comment...</string>
 
     <!--    Authentication    -->
     <!--    <string name="default_web_client_id">24133792449-9kv8sl1vv04c0t4k9fefa37vv15k3h5q.apps.googleusercontent.com</string>-->
