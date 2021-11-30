@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:24133792449:android:dc2266994baea4bffb5a40",
+        "mobilesdk_app_id": "1:24133792449:android:4afc925e799411c8fb5a40",
         "android_client_info": {
-          "package_name": "com.example.anon"
+          "package_name": "com.anon.anon"
         }
       },
       "oauth_client": [

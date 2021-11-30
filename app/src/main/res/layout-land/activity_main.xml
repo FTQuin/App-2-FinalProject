@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".MainActivity" >
+    tools:context="com.anon.anon.MainActivity" >
 
     <LinearLayout
         android:layout_width="0dp"
@@ -19,7 +19,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/mainFragmentContainerViewLeft"
-            android:name="com.example.anon.viewpost.ViewPostFragment"
+            android:name="com.anon.anon.viewpost.ViewPostFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="2dp"
@@ -33,7 +33,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/mainFragmentContainerView"
-                android:name="com.example.anon.feed.FeedHolder"
+                android:name="com.anon.anon.feed.FeedHolder"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginStart="2dp"
