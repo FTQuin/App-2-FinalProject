@@ -8,7 +8,7 @@
     android:fadeScrollbars="true"
     android:isScrollContainer="true"
     app:layout_scrollFlags="scroll"
-    tools:context="com.anon.anon.viewpost.ViewPostFragment">
+    tools:context="com.anonApp.anon.viewpost.ViewPostFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerViewPost"
-            android:name="com.anon.anon.PostFragment"
+            android:name="com.anonApp.anon.PostFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/background"
@@ -42,7 +42,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerViewComments"
-            android:name="com.anon.anon.viewpost.CommentRecycler"
+            android:name="com.anonApp.anon.viewpost.CommentRecycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="5dp"

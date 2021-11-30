@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list"
-    android:name="com.anon.finalproject.ViewPostFragment"
+    android:name="com.anonApp.finalproject.ViewPostFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.anon.anon.viewpost.CommentRecycler"
+    tools:context="com.anonApp.anon.viewpost.CommentRecycler"
     tools:listitem="@layout/fragment_comment" />

@@ -8,7 +8,7 @@
     android:fadeScrollbars="true"
     android:isScrollContainer="true"
     app:layout_scrollFlags="scroll"
-    tools:context="com.anon.anon.feed.FeedRecycler">
+    tools:context="com.anonApp.anon.feed.FeedRecycler">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerViewFeed"
-            android:name="com.anon.anon.feed.FeedRecycler"
+            android:name="com.anonApp.anon.feed.FeedRecycler"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/background"
